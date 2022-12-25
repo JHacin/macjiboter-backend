@@ -1,0 +1,38 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Cat;
+use App\Models\CatLocation;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class CatFactory extends Factory
+{
+    /**
+     * @var string
+     */
+    protected $model = Cat::class;
+
+    public function definition(): array
+    {
+        $randomStoryHtml = "";
+        $numParagraphs = rand(2,4);
+
+        for($k = 0; $k < $numParagraphs; $k++) {
+            $randomStoryHtml .= "<p>{$this->faker->paragraph(rand(1, 8))}</p>";
+        }
+
+        return [
+            'name' => $this->faker->unique()->name,
+            'gender' => array_rand(Cat::GENDER_LABELS),
+            'status' => array_rand(Cat::STATUS_LABELS),
+            'story_short' => $this->faker->text(config('validation.cat.story_short_maxlength')),
+            'story' => $randomStoryHtml,
+            'date_of_birth' => $this->faker->date(),
+            'date_of_arrival_mh' => $this->faker->date(),
+            'date_of_arrival_boter' => $this->faker->date(),
+            'location_id' => CatLocation::factory(),
+            'is_group' => false,
+        ];
+    }
+}

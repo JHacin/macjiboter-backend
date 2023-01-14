@@ -15,12 +15,9 @@ class CatFactory extends Factory
 
     public function definition(): array
     {
-        $randomStoryHtml = "";
-        $numParagraphs = rand(2,4);
+        $numParagraphs = rand(2, 4);
 
-        for($k = 0; $k < $numParagraphs; $k++) {
-            $randomStoryHtml .= "<p>{$this->faker->paragraph(rand(1, 8))}</p>";
-        }
+        $randomStoryHtml = str_repeat("<p>{$this->faker->paragraph(rand(1, 8))}</p>", $numParagraphs);
 
         return [
             'name' => $this->faker->unique()->name,

@@ -17,6 +17,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Venturecraft\Revisionable\Revision;
 use Venturecraft\Revisionable\RevisionableTrait;
+use App\Models\Traits\ClearsGlobalScopes;
 
 /**
  * App\Models\Cat
@@ -70,7 +71,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  */
 class Cat extends Model
 {
-    use HasFactory, CrudTrait, RevisionableTrait, HasSlug;
+    use HasFactory, CrudTrait, RevisionableTrait, HasSlug, ClearsGlobalScopes;
 
     /*
     |--------------------------------------------------------------------------

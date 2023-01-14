@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ClearsGlobalScopes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Database\Factories\SponsorshipFactory;
 use Eloquent;
@@ -59,7 +60,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  */
 class Sponsorship extends Model implements BankTransferFields
 {
-    use HasFactory, CrudTrait, RevisionableTrait;
+    use HasFactory, CrudTrait, RevisionableTrait, ClearsGlobalScopes;
 
     /*
     |--------------------------------------------------------------------------

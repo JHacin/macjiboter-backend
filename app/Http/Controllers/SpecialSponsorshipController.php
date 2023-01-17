@@ -7,7 +7,10 @@ use App\Http\Requests\SpecialSponsorshipRequest;
 use App\Mail\SpecialSponsorshipMail;
 use App\Models\PersonData;
 use App\Models\SpecialSponsorship;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SpecialSponsorshipController extends Controller
 {
@@ -41,5 +44,26 @@ class SpecialSponsorshipController extends Controller
         $this->sponsorshipMail->sendInitialInstructionsEmail($sponsorship);
 
         return response()->json(['status' => 'success']);
+    }
+
+    public function getRecent(Request $request): JsonResponse
+    {
+        $request->validate([
+            'types' => ['required', 'array', Rule::in(SpecialSponsorship::TYPES)],
+        ]);
+
+        $startOfPreviousMonth = Carbon::now()->subMonth()->startOfMonth();
+
+        $sponsorships = SpecialSponsorship::whereNotNull('confirmed_at')
+            ->whereIn('type', $request->input('types'))
+            ->whereDate('confirmed_at', '>=', $startOfPreviousMonth)
+            ->get()
+            ->each(function (SpecialSponsorship $sponsorship) {
+                if (!$sponsorship->is_anonymous) {
+                    $sponsorship->load('sponsor');
+                }
+            });
+
+        return response()->json($sponsorships);
     }
 }

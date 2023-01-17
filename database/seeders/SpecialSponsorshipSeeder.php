@@ -10,7 +10,6 @@ class SpecialSponsorshipSeeder extends Seeder
 {
     public function run()
     {
-        SpecialSponsorship::factory()->count(50)->create();
-        SpecialSponsorship::factory(['confirmed_at' => Carbon::now()])->count(25)->create();
+        SpecialSponsorship::factory()->count(1000)->create();
     }
 }

@@ -32,6 +32,7 @@ Route::get('/cats/{cat}', [CatsController::class, 'getOne']);
 Route::post('/cats/{cat:id}/adopt', [CatSponsorshipController::class, 'submitForm']);
 
 Route::post('/special-sponsorships', [SpecialSponsorshipController::class, 'submitForm']);
+Route::get('/special-sponsorships/recent', [SpecialSponsorshipController::class, 'getRecent']);
 
 Route::get('/person-data/{personData}', [PersonDataController::class, 'getOne']);
 

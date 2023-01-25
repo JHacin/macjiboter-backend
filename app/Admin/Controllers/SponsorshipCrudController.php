@@ -254,7 +254,6 @@ class SponsorshipCrudController extends CrudController
                 'dusk' => 'payer-wrapper'
             ]
         ]);
-
         $this->crud->addField([
             'name' => 'payment_type',
             'label' => trans('sponsorship.payment_type'),
@@ -295,7 +294,10 @@ class SponsorshipCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        $this->crud->removeField('email_warning');
         $this->crud->setValidation(AdminSponsorshipUpdateRequest::class);
+        $this->crud->addField(CrudFieldGenerator::giftMessageField());
+        $this->crud->addField(CrudFieldGenerator::giftNotesField());
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'ended_at',
             'label' => 'Datum konca',

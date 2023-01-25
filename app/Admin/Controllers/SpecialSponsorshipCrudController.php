@@ -234,5 +234,8 @@ class SpecialSponsorshipCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        $this->crud->addField(CrudFieldGenerator::giftMessageField());
+        $this->crud->addField(CrudFieldGenerator::giftNotesField());
     }
 }

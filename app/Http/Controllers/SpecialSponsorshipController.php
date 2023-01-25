@@ -37,6 +37,8 @@ class SpecialSponsorshipController extends Controller
             'is_gift' => $isGift,
             'is_anonymous' => $request->input('is_anonymous'),
             'amount' => $request->input('amount'),
+            'gift_message' => $isGift ? $request->input('gift_message') : null,
+            'gift_notes' => $isGift ? $request->input('gift_notes') : null,
         ];
 
         $sponsorship = SpecialSponsorship::create($params);

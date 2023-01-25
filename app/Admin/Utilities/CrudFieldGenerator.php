@@ -163,4 +163,30 @@ class CrudFieldGenerator
             ]
         ], $additions);
     }
+
+    public static function giftMessageField(): array
+    {
+        return [
+            'name' => 'gift_message',
+            'type' => 'textarea',
+            'label' => trans('sponsorship.gift_message'),
+            'attributes' => [
+                'disabled' => true,
+                'rows' => 4,
+            ]
+        ];
+    }
+
+    public static function giftNotesField(): array
+    {
+        return [
+            'name' => 'gift_notes',
+            'type' => 'textarea',
+            'label' => trans('sponsorship.gift_notes'),
+            'attributes' => [
+                'disabled' => true,
+                'rows' => 6,
+            ]
+        ];
+    }
 }

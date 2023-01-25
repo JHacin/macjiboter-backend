@@ -20,6 +20,8 @@ class CreateSponsorshipsTable extends Migration
             $table->integer('requested_duration')->nullable();
             $table->boolean('is_active')->default(false);
             $table->date('ended_at')->nullable();
+            $table->text('gift_message')->nullable();
+            $table->text('gift_notes')->nullable();
             $table->timestamps();
         });
     }

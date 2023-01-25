@@ -25,6 +25,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property Carbon|null $confirmed_at
  * @property bool $is_anonymous
  * @property string $amount
+ * @property string|null $gift_message
+ * @property string|null $gift_notes
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read string $payment_purpose
@@ -41,6 +43,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|SpecialSponsorship whereAmount($value)
  * @method static Builder|SpecialSponsorship whereConfirmedAt($value)
  * @method static Builder|SpecialSponsorship whereCreatedAt($value)
+ * @method static Builder|SpecialSponsorship whereGiftMessage($value)
+ * @method static Builder|SpecialSponsorship whereGiftNotes($value)
  * @method static Builder|SpecialSponsorship whereId($value)
  * @method static Builder|SpecialSponsorship whereIsAnonymous($value)
  * @method static Builder|SpecialSponsorship whereIsGift($value)

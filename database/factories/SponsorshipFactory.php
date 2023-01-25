@@ -21,7 +21,9 @@ class SponsorshipFactory extends Factory
             'monthly_amount' => 5,
             'is_active' => true,
             'is_anonymous' => $this->faker->boolean(20),
-            'is_gift' => false,
+            'is_gift' => $this->faker->boolean(20),
+            'gift_notes' => $this->faker->text(),
+            'gift_message' => $this->faker->text(),
         ];
     }
 }

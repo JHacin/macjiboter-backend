@@ -44,6 +44,8 @@ class CatSponsorshipController extends Controller
             'requested_duration' => $isGift ? $request->input('requested_duration') : null,
             'is_anonymous' => $request->input('is_anonymous'),
             'is_active' => false,
+            'gift_message' => $isGift ? $request->input('gift_message') : null,
+            'gift_notes' => $isGift ? $request->input('gift_notes') : null,
         ]);
 
         $this->sponsorshipMail->sendInitialInstructionsEmail($sponsorship);

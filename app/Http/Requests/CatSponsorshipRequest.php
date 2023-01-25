@@ -44,6 +44,8 @@ class CatSponsorshipRequest extends FormRequest
                 'giftee_zip_code' => ['nullable', 'string', 'max:255'],
                 'giftee_city' => ['nullable', 'string', 'max:255'],
                 'giftee_country' => ['nullable', new CountryCode],
+                'gift_message' => ['nullable', 'string', 'max:500'],
+                'gift_notes' => ['nullable', 'string', 'max:500'],
                 'requested_duration' => [
                     'nullable',
                     'numeric',

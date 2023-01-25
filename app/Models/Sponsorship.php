@@ -15,7 +15,6 @@ use Illuminate\Support\Carbon;
 use Venturecraft\Revisionable\Revision;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-
 /**
  * App\Models\Sponsorship
  *
@@ -30,6 +29,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property int|null $requested_duration
  * @property bool $is_active
  * @property Carbon|null $ended_at
+ * @property string|null $gift_message
+ * @property string|null $gift_notes
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Cat|null $cat
@@ -46,6 +47,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|Sponsorship whereCatId($value)
  * @method static Builder|Sponsorship whereCreatedAt($value)
  * @method static Builder|Sponsorship whereEndedAt($value)
+ * @method static Builder|Sponsorship whereGiftMessage($value)
+ * @method static Builder|Sponsorship whereGiftNotes($value)
  * @method static Builder|Sponsorship whereId($value)
  * @method static Builder|Sponsorship whereIsActive($value)
  * @method static Builder|Sponsorship whereIsAnonymous($value)

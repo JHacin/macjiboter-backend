@@ -24,8 +24,10 @@ class SpecialSponsorshipFactory extends Factory
                 ? $this->faker->dateTimeBetween('-1 years', '-1 day')
                 : null,
             'is_anonymous' => $this->faker->boolean(80),
-            'is_gift' => false,
+            'is_gift' => $this->faker->boolean(),
             'amount' => $this->faker->numberBetween(5, 100),
+            'gift_notes' => $this->faker->text(),
+            'gift_message' => $this->faker->text(),
         ];
     }
 }

@@ -10,6 +10,6 @@ return [
     'is_gift' => 'Podarjeno',
     'requested_duration' => 'Trajanje (v mesecih)',
     'payment_reference_number' => 'Referenca',
-    'gift_message' => 'Osebno sporočilo',
-    'gift_notes' => 'Opombe',
+    'gift_message' => 'Osebno sporočilo obdarovancu',
+    'gift_notes' => 'Opombe glede darila',
 ];

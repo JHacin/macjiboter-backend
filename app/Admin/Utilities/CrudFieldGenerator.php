@@ -96,12 +96,12 @@ class CrudFieldGenerator
             'type' => 'number',
             'prefix' => '€',
             'hint' => 'Decimalne vrednosti naj bodo ločene s piko. Dovoljeni sta največ 2 decimalki.',
-            'attributes' => [
+            'attributes' => array_merge([
                 'min' => '0.00',
                 'max' => config('validation.integer_max'),
                 'step' => '1',
                 'placeholder' => '0.00'
-            ],
+            ], $additions['attributes'] ?? []),
         ], $additions);
     }
 

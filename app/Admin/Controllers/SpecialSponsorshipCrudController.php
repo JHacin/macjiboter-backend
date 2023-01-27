@@ -213,7 +213,10 @@ class SpecialSponsorshipCrudController extends CrudController
             'label' => trans('special_sponsorship.amount'),
             'wrapper' => [
                 'dusk' => 'amount-wrapper'
-            ]
+            ],
+            'attributes' => [
+                'required' => 'required',
+            ],
         ]));
 
         $this->crud->addField(CrudFieldGenerator::dateField([
@@ -229,6 +232,11 @@ class SpecialSponsorshipCrudController extends CrudController
                 'dusk' => 'is_anonymous-wrapper'
             ]
         ]);
+
+        $this->crud->addField(CrudFieldGenerator::dateField([
+            'name' => 'gift_requested_activation_date',
+            'label' => trans('special_sponsorship.gift_requested_activation_date'),
+        ]));
     }
 
     protected function setupUpdateOperation()

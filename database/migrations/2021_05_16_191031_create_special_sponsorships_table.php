@@ -18,6 +18,7 @@ class CreateSpecialSponsorshipsTable extends Migration
             $table->decimal('amount');
             $table->text('gift_message')->nullable();
             $table->text('gift_notes')->nullable();
+            $table->date('gift_requested_activation_date')->nullable();
             $table->timestamps();
         });
     }

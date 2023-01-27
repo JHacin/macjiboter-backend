@@ -28,6 +28,7 @@ class SpecialSponsorshipFactory extends Factory
             'amount' => $this->faker->numberBetween(5, 100),
             'gift_notes' => $this->faker->text(),
             'gift_message' => $this->faker->text(),
+            'gift_requested_activation_date' => $this->faker->boolean(5) ? $this->faker->date() : null,
         ];
     }
 }

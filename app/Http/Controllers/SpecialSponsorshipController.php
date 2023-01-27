@@ -7,6 +7,7 @@ use App\Http\Requests\SpecialSponsorshipRequest;
 use App\Mail\SpecialSponsorshipMail;
 use App\Models\PersonData;
 use App\Models\SpecialSponsorship;
+use App\Models\Sponsorship;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ class SpecialSponsorshipController extends Controller
             'amount' => $request->input('amount'),
             'gift_message' => $isGift ? $request->input('gift_message') : null,
             'gift_notes' => $isGift ? $request->input('gift_notes') : null,
+            'gift_requested_activation_date' => $isGift ? $request->input('gift_requested_activation_date') : null,
         ];
 
         $sponsorship = SpecialSponsorship::create($params);

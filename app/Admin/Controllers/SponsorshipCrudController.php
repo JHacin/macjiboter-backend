@@ -224,7 +224,10 @@ class SponsorshipCrudController extends CrudController
             'label' => trans('admin.sponsorship_monthly_amount'),
             'wrapper' => [
                 'dusk' => 'monthly_amount-wrapper'
-            ]
+            ],
+            'attributes' => [
+                'required' => 'required',
+            ],
         ]));
         $this->crud->addField([
             'name' => 'is_gift',

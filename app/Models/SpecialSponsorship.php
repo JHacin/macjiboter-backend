@@ -27,6 +27,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property string $amount
  * @property string|null $gift_message
  * @property string|null $gift_notes
+ * @property string|null $gift_requested_activation_date
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read string $payment_purpose
@@ -45,6 +46,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|SpecialSponsorship whereCreatedAt($value)
  * @method static Builder|SpecialSponsorship whereGiftMessage($value)
  * @method static Builder|SpecialSponsorship whereGiftNotes($value)
+ * @method static Builder|SpecialSponsorship whereGiftRequestedActivationDate($value)
  * @method static Builder|SpecialSponsorship whereId($value)
  * @method static Builder|SpecialSponsorship whereIsAnonymous($value)
  * @method static Builder|SpecialSponsorship whereIsGift($value)
@@ -128,6 +130,7 @@ class SpecialSponsorship extends Model implements BankTransferFields
         'is_anonymous' => 'boolean',
         'is_gift' => 'boolean',
         'confirmed_at' => 'date',
+        'gift_requested_activation_date' => 'date',
     ];
 
     /*

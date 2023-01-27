@@ -42,6 +42,11 @@ class SpecialSponsorshipRequest extends FormRequest
                 'giftee_country' => ['nullable', new CountryCode],
                 'gift_message' => ['nullable', 'string', 'max:500'],
                 'gift_notes' => ['nullable', 'string', 'max:500'],
+                'gift_requested_activation_date' => [
+                    'nullable',
+                    'date',
+                    'after_or_equal:' . now()->addDays(3)->startOf("day")->toString(),
+                ],
                 'requested_duration' => [
                     'nullable',
                     'numeric',

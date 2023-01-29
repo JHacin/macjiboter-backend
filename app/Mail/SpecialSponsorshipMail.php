@@ -17,7 +17,7 @@ class SpecialSponsorshipMail
         $this->mailClient = $mailClient;
     }
 
-    public function sendInitialInstructionsEmail(SpecialSponsorship $sponsorship)
+    public function sendInitialInstructionsEmail(SpecialSponsorship $sponsorship): void
     {
 
         $sponsor = $sponsorship->sponsor;

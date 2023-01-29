@@ -16,12 +16,7 @@ class SponsorshipMessageHandler
         $this->mailClient = $mailClient;
     }
 
-
-    /**
-     * @param \App\Models\SponsorshipMessage $message
-     * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
-     */
-    public function send(SponsorshipMessage $message)
+    public function send(SponsorshipMessage $message): void
     {
         $this->mailClient->send([
             'to' => $message->sponsor->email,

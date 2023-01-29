@@ -18,10 +18,6 @@ class SponsorshipMail
         $this->mailClient = $mailClient;
     }
 
-    /**
-     * @param \App\Models\Sponsorship $sponsorship
-     * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
-     */
     public function sendInitialInstructionsEmail(Sponsorship $sponsorship): void
     {
         $template = $sponsorship->payment_type === Sponsorship::PAYMENT_TYPE_BANK_TRANSFER
@@ -33,7 +29,7 @@ class SponsorshipMail
         $cat = $sponsorship->cat;
 
         $variables = [
-            'app_url' => config('app.url'),
+            'frontend_url' => config('app.frontend_url'),
             'boter_moski' => $sponsor->gender === PersonData::GENDER_MALE,
             'boter_ime' => $sponsor->first_name ?? '/',
             'boter_priimek' => $sponsor->last_name ?? '/',
@@ -50,7 +46,7 @@ class SponsorshipMail
             'placnik_drzava' => $payer->country ? CountryList::COUNTRY_NAMES[$payer->country] : '/',
             'placnik_email' => $payer->email,
             'muca_ime' => $cat->name,
-//            'muca_povezava' => url(route('cat_details', $cat)),
+            'muca_povezava' => config('app.frontend_url') . '/muce/' . $cat->slug,
             'je_darilo' => $sponsorship->is_gift === true,
             'je_anonimno' => $sponsorship->is_anonymous === true,
             'znesek' => CurrencyFormat::format($sponsorship->monthly_amount),

@@ -18,7 +18,7 @@ class MailClient
         $this->domain = config('services.mailgun.domain');
     }
 
-    public function send(array $params)
+    public function send(array $params): void
     {
         if (!Settings::hasValueTrue(Settings::KEY_ENABLE_EMAILS)) {
             return;
@@ -34,7 +34,7 @@ class MailClient
         );
     }
 
-    public function addMemberToList(string $list, string $email, array $variables)
+    public function addMemberToList(string $list, string $email, array $variables): void
     {
         if (!Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
             return;
@@ -52,7 +52,7 @@ class MailClient
         }
     }
 
-    public function updateListMember(string $list, string $email, array $parameters)
+    public function updateListMember(string $list, string $email, array $parameters): void
     {
         if (!Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
             return;
@@ -69,7 +69,7 @@ class MailClient
         }
     }
 
-    public function removeMemberFromList(string $list, string $email)
+    public function removeMemberFromList(string $list, string $email): void
     {
         if (!Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
             return;
@@ -90,7 +90,7 @@ class MailClient
         return sprintf('%s@%s', $list, config('services.mailgun.domain'));
     }
 
-    protected function logException(Exception $e)
+    protected function logException(Exception $e): void
     {
         Log::error($e->getMessage(), ['trace' => $e->getTrace()]);
     }

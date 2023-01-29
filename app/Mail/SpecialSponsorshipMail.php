@@ -24,7 +24,7 @@ class SpecialSponsorshipMail
         $payer = $sponsorship->payer ?? $sponsor;
 
         $variables = [
-            'app_url' => config('app.url'),
+            'frontend_url' => config('app.frontend_url'),
             'boter_moski' => $sponsor->gender === PersonData::GENDER_MALE,
             'boter_ime' => $sponsor->first_name ?? '/',
             'boter_priimek' => $sponsor->last_name ?? '/',

@@ -72,11 +72,6 @@
       "url": "https://repo.backpackforlaravel.com/"
     }
   ],
-  "extra": {
-    "laravel": {
-      "dont-discover": ["barryvdh/laravel-ide-helper"]
-    }
-  },
   "config": {
     "optimize-autoloader": true,
     "preferred-install": "dist",

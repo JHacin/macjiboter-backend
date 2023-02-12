@@ -14,7 +14,7 @@ class AdminSponsorshipMessageTypeRequest extends FormRequest
 
     public function rules(): array
     {
-        $currentId = $this->get("id");
+        $currentId = $this->get('id');
 
         return [
             'name' => [

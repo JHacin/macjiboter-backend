@@ -14,19 +14,21 @@ class AdminSponsorshipMessageTypeRequest extends FormRequest
 
     public function rules(): array
     {
+        $currentId = $this->get("id");
+
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('sponsorship_message_types', 'name'),
+                Rule::unique('sponsorship_message_types', 'name')->ignore($currentId),
             ],
             'subject' => ['required', 'string', 'max:255'],
             'template_id' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('sponsorship_message_types', 'template_id'),
+                Rule::unique('sponsorship_message_types', 'template_id')->ignore($currentId),
             ],
             'is_active' => ['boolean']
         ];

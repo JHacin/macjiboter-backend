@@ -19,7 +19,7 @@ jobs:
           php-version: "8.1"
 
       - name: Add Composer auth credentials for Backpack
-        run: composer config http-basic.backpackforlaravel.com "${{ BACKPACK_USERNAME }}" "${{ BACKPACK_PASSWORD }}" --global
+        run: composer config http-basic.backpackforlaravel.com "${{ secrets.BACKPACK_USERNAME }}" "${{ secrets.BACKPACK_PASSWORD }}" --global
 
       - name: Install dependencies
         run: composer install

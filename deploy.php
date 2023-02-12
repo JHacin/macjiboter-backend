@@ -14,9 +14,10 @@ add('writable_dirs', []);
 
 // Hosts
 
-host('64.225.102.159')
-    ->set('remote_user', 'deployer')
-    ->set('deploy_path', '~/macjiboter-backend');
+host('staging')
+    ->setHostname('64.225.102.159')
+    ->setRemoteUser('deployer')
+    ->setDeployPath('~/macjiboter-backend');
 
 // Hooks
 

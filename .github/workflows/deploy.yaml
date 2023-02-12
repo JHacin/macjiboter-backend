@@ -27,6 +27,9 @@ jobs:
       - name: Deploy
         uses: deployphp/action@v1
         with:
+          # Output of `cat ~/.ssh/id_rsa`.
           private-key: ${{ secrets.PRIVATE_KEY }}
+          # Output of `ssh-keyscan [VPS hostname]`.
+          # Copy just the line where the SSH public key matches the PRIVATE_KEY
           known-hosts: ${{ secrets.KNOWN_HOSTS }}
           dep: deploy staging

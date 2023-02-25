@@ -9,6 +9,8 @@ class TemplateApiClient
     public function retrieveTemplate(string $templateId): string
     {
         $requestUrl =
+            config('services.mailgun.scheme') .
+            '://' .
             config('services.mailgun.endpoint') .
             '/v3/' .
             config('services.mailgun.domain') .

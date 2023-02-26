@@ -20,6 +20,11 @@ host('staging')
     ->setRemoteUser('deployer')
     ->setDeployPath('~/macjiboter-backend');
 
+// Tasks
+
+task('artisan:backup:run', artisan('backup:run'))->desc('Makes a backup of the DB and storage');
+
 // Hooks
 
+before('artisan:migrate', 'artisan:backup:run');
 after('deploy:failed', 'deploy:unlock');

@@ -21,7 +21,7 @@ return [
     'save_action_changed_notification' => 'Privzeto dejanje po vnosu se je spremenilo.',
 
     // Create form
-    'add' => 'Dodaj vnos tipa',
+    'add' => 'Nov vnos',
     'back_to_all' => 'Nazaj na seznam ',
     'cancel' => 'Prekliči',
     'add_a_new' => 'Dodaj nov vnos tipa ',

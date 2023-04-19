@@ -12,7 +12,7 @@ class CrudColumnGenerator
         return [
             'name' => 'id',
             'label' => trans('model.id'),
-            'type' => 'number',
+            'type' => 'text',
             'searchLogic' => function (Builder $query, $column, $searchTerm) {
                 $query->orWhere('id', '=', $searchTerm);
             }

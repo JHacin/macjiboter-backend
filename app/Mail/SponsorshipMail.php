@@ -65,7 +65,7 @@ class SponsorshipMail
         if ($sponsorship->payment_type === Sponsorship::PAYMENT_TYPE_DIRECT_DEBIT) {
             $params['attachment'] = [
                 [
-                    'filePath' => Storage::disk('public')->path('docs/trajnik_pooblastilo.pdf'),
+                    'filePath' => Storage::disk('s3')->url('static/trajnik_pooblastilo.pdf'),
                     'filename' => 'trajnik_pooblastilo.pdf',
                 ]
             ];

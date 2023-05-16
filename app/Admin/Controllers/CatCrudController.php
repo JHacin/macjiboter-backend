@@ -263,12 +263,14 @@ class CatCrudController extends CrudController
         $cat = $this->crud->getCurrentEntry();
         $photos = $this->crud->getRequest()->input('crud_photos_array');
 
-        foreach ($photos as $index => $payload) {
-            CatPhotoService::create($cat, [
-                'url' => $payload['url'],
-                'index' => $index,
-                'caption' => $payload['caption'],
-            ]);
+        if ($photos) {
+            foreach ($photos as $index => $payload) {
+                CatPhotoService::create($cat, [
+                    'url' => $payload['url'],
+                    'index' => $index,
+                    'caption' => $payload['caption'],
+                ]);
+            }
         }
 
         return $response;

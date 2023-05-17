@@ -42,15 +42,6 @@ class AdminUserUpdateRequest extends FormRequest
             ],
             'name' => ['required'],
             'password' => ['confirmed'],
-            'personData.first_name' => ['nullable', 'string', 'max:255'],
-            'personData.last_name' => ['nullable', 'string', 'max:255'],
-            'personData.gender' => ['required', Rule::in(PersonData::GENDERS)],
-            'personData.date_of_birth' => ['nullable', 'date', 'before:now'],
-            'personData.address' => ['nullable', 'string', 'max:255'],
-            'personData.zip_code' => ['nullable', 'string', 'max:255'],
-            'personData.city' => ['nullable', 'string', 'max:255'],
-            'personData.country' => ['nullable', new CountryCode],
-            'is_active' => ['boolean'],
         ];
     }
 }

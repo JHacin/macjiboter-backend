@@ -1,3 +1,7 @@
+@php
+    use App\Models\User;
+@endphp
+
 <li class="nav-item">
     <a id="goHome" class="nav-link" href="{{ backpack_url(config('routes.admin.dashboard')) }}">
         <i class="la la-home nav-icon"></i> {{ trans('backpack::base.dashboard') }}
@@ -48,31 +52,32 @@
     </a>
 </li>
 
+@if(Auth::user()->hasAnyRole([User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN]))
+    <li class="nav-item">
+        <div class="nav-title">Uporabniki</div>
+        <a class="nav-link" href="{{ backpack_url(config('routes.admin.users')) }}">
+            <i class="la la-user nav-icon"></i> {{ trans('backpack::permissionmanager.users') }}
+        </a>
+        <a class="nav-link" href="{{ backpack_url(config('routes.admin.roles')) }}">
+            <i class="la la-id-badge nav-icon"></i> {{ trans('backpack::permissionmanager.roles') }}
+        </a>
+        {{--    <a class="nav-link" href="{{ backpack_url(config('routes.admin.permissions')) }}">--}}
+        {{--        <i class="la la-key nav-icon"></i> {{ trans('backpack::permissionmanager.permission_plural') }}--}}
+        {{--    </a>--}}
+    </li>
+@endif
 
-<li class="nav-item">
-    <div class="nav-title">Uporabniki</div>
-    <a class="nav-link" href="{{ backpack_url(config('routes.admin.users')) }}">
-        <i class="la la-user nav-icon"></i> {{ trans('backpack::permissionmanager.users') }}
-    </a>
-    <a class="nav-link" href="{{ backpack_url(config('routes.admin.roles')) }}">
-        <i class="la la-id-badge nav-icon"></i> {{ trans('backpack::permissionmanager.roles') }}
-    </a>
-    <a class="nav-link" href="{{ backpack_url(config('routes.admin.permissions')) }}">
-        <i class="la la-key nav-icon"></i> {{ trans('backpack::permissionmanager.permission_plural') }}
-    </a>
-</li>
-
-@role(\App\Models\User::ROLE_SUPER_ADMIN)
-<li class="nav-item">
-    <div class="nav-title">Advanced</div>
-    <a class="nav-link" href="{{ backpack_url('setting') }}">
-        <i class="nav-icon la la-cog"></i> Settings
-    </a>
-    <a class="nav-link" href="{{ backpack_url('log') }}">
-        <i class="nav-icon la la-terminal"></i> Logs
-    </a>
-    <a class="nav-link" href="{{ backpack_url('backup') }}">
-        <i class="nav-icon la la-hdd-o"></i> Backups
-    </a>
-</li>
+@role(User::ROLE_SUPER_ADMIN)
+    <li class="nav-item">
+        <div class="nav-title">Advanced</div>
+        <a class="nav-link" href="{{ backpack_url('setting') }}">
+            <i class="nav-icon la la-cog"></i> Settings
+        </a>
+        <a class="nav-link" href="{{ backpack_url('log') }}">
+            <i class="nav-icon la la-terminal"></i> Logs
+        </a>
+        <a class="nav-link" href="{{ backpack_url('backup') }}">
+            <i class="nav-icon la la-hdd-o"></i> Backups
+        </a>
+    </li>
 @endrole

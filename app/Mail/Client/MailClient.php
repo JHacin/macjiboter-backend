@@ -6,6 +6,7 @@ use App\Settings\Settings;
 use Exception;
 use Log;
 use Mailgun\Mailgun;
+use Psr\Http\Client\ClientExceptionInterface;
 
 class MailClient
 {
@@ -28,10 +29,17 @@ class MailClient
             $params['to'] = config('mail.vars.test_to_address');
         }
 
-        $this->client->messages()->send(
-            $this->domain,
-            array_merge(['from' => config('mail.from.address')], $params)
-        );
+        $from = config('mail.from.address');
+        $name = config('mail.from.name');
+
+        try {
+            $this->client->messages()->send(
+                $this->domain,
+                array_merge(['from' => "{$name} <{$from}>"], $params)
+            );
+        } catch (Exception|ClientExceptionInterface $e) {
+            $this->logException($e);
+        }
     }
 
     public function addMemberToList(string $list, string $email, array $variables): void

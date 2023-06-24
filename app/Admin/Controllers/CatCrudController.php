@@ -40,7 +40,7 @@ class CatCrudController extends CrudController
     /**
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         $this->crud->setModel(Cat::class);
         $this->clearModelGlobalScopes([Cat::SCOPE_ONLY_PUBLICALLY_VISIBLE_STATUSES]);
@@ -52,7 +52,7 @@ class CatCrudController extends CrudController
         $this->crud->enableExportButtons();
     }
 
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         $this->crud->addColumn(CrudColumnGenerator::id());
         $this->crud->addColumn([
@@ -100,7 +100,7 @@ class CatCrudController extends CrudController
         $this->addFilters();
     }
 
-    protected function addFilters()
+    protected function addFilters(): void
     {
         $this->crud->addFilter(
             [
@@ -121,7 +121,7 @@ class CatCrudController extends CrudController
         CrudFilterGenerator::addBooleanFilter($this->crud, 'is_group', trans('cat.is_group'));
     }
 
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminCatRequest::class);
 
@@ -236,6 +236,7 @@ class CatCrudController extends CrudController
                     'type' => 'image',
                     'crop' => true,
                     'aspect_ratio' => 1,
+                    'hint' => 'Dovoljeni formati: .jpg/.jpeg, .png, .gif, .webp'
                 ],
                 [
                     'name' => 'caption',
@@ -246,6 +247,7 @@ class CatCrudController extends CrudController
 
             'new_item_label' => 'Dodaj sliko',
             'init_rows' => 0,
+            'max_rows' => 5,
             'reorder' => true,
         ]);
     }

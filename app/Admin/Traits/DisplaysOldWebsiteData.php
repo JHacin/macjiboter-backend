@@ -19,6 +19,12 @@ trait DisplaysOldWebsiteData
             return;
         }
 
+        foreach ($this->crud->fields() as $key => $field) {
+            if (!isset($field["tab"])) {
+                $this->crud->modifyField($key, ["tab" => "Urejanje"]);
+            }
+        }
+
         $this->crud->addField([
             'name' => 'prev_data',
             'type' => 'db_migration_meta',

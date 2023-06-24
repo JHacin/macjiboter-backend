@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Cat;
+use App\Models\PersonData;
 use App\Models\User;
 use App\Settings\Settings;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Storage;
 
@@ -20,6 +23,7 @@ class MigrationSeeder extends Seeder
         $this->addAdminUser();
         $this->addSettings();
         $this->addCats();
+        $this->addSponsors();
     }
 
     protected function addAdminUser(): void
@@ -50,32 +54,6 @@ class MigrationSeeder extends Seeder
             'field' => '{"name":"value","label":"Veljavno?","type":"checkbox"}',
             'active' => 1,
         ]);
-    }
-
-    /**
-     * @throws Exception
-     */
-    protected function importCsv($url): bool|array
-    {
-        if (!$url) {
-            throw new Exception("CSV URL empty");
-        }
-
-        $header = null;
-        $data = array();
-
-        if (($handle = fopen($url, "r")) !== false) {
-            while (($row = fgetcsv($handle)) !== false) {
-                if (!$header) {
-                    $header = $row;
-                } else {
-                    $data[] = array_combine($header, $row);
-                }
-            }
-            fclose($handle);
-        }
-
-        return $data;
     }
 
     /**
@@ -116,19 +94,93 @@ class MigrationSeeder extends Seeder
 
 
             $entry = Cat::create([
-                "name" => $record["ime"],
+                "name" => $this->parseNullableString($record["ime"]),
                 "story_short" => "",
                 "status" => $status,
                 "gender" => $gender,
-                "story" => $record["zgodba"] === "NULL" ? null : $record["zgodba"],
+                "story" => $this->parseNullableString($record["zgodba"]),
             ]);
 
-            DB::table("db_migration_meta")->insert([
-                "entity" => "cat",
-                "new_id" => $entry->id,
-                "prev_id" => $record["id"],
-                "prev_data" => json_encode($record),
-            ]);
+            $this->storeRecordMigrationMeta("cat", $entry, $record);
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function addSponsors(): void
+    {
+        $csvUrl = Storage::disk('s3')->url('migration/mb_macji_botri.csv');
+        $records = $this->importCsv($csvUrl);
+
+        foreach ($records as $record) {
+            $entry = PersonData::create([
+                "email" => $this->parseNullableString($record["email"]),
+                "gender" => $record["spol"] === "M" ? PersonData::GENDER_MALE : PersonData::GENDER_FEMALE,
+                "first_name" => $this->parseNullableString($record["ime"]),
+                "last_name" => $this->parseNullableString($record["priimek"]),
+                "date_of_birth" => $this->parseNullableDate($record["datum_rojstva"]),
+                "address" => $this->parseNullableString($record["naslov"]),
+                "zip_code" => $this->parseNullableString($record["postna_st"]),
+                "city" => $this->parseNullableString($record["kraj"]),
+            ]);
+
+            $this->storeRecordMigrationMeta("sponsor", $entry, $record);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function importCsv($url): bool|array
+    {
+        if (!$url) {
+            throw new Exception("CSV URL empty");
+        }
+
+        $header = null;
+        $data = array();
+
+        if (($handle = fopen($url, "r")) !== false) {
+            while (($row = fgetcsv($handle)) !== false) {
+                if (!$header) {
+                    $header = $row;
+                } else {
+                    $data[] = array_combine($header, $row);
+                }
+            }
+            fclose($handle);
+        }
+
+        return $data;
+    }
+
+    protected function storeRecordMigrationMeta(string $entity, Cat|PersonData $model, array $csvRecord): void
+    {
+        DB::table("db_migration_meta")->insert([
+            "entity" => $entity,
+            "new_id" => $model->id,
+            "prev_id" => $csvRecord["id"],
+            "prev_data" => json_encode($csvRecord),
+        ]);
+    }
+
+    protected function parseNullableString(string $value): string|null
+    {
+        return $value === "NULL" ? null : $value;
+    }
+
+    protected function parseNullableDate(string $value): string|null
+    {
+        $dateString = $this->parseNullableString($value);
+
+        if (
+            !$dateString ||
+            Carbon::parse($dateString)->year < 1 // When stored in the prev DB as 0000-00-00
+        ) {
+            return null;
+        }
+
+        return $dateString;
     }
 }

@@ -154,4 +154,26 @@ class CrudColumnGenerator
             'thousands_sep' => '.',
         ], $additions);
     }
+
+    public static function cat(): array
+    {
+        return [
+            'name' => 'cat',
+            'entity' => 'unscopedCat', // removes status scope
+            'label' => trans('cat.cat'),
+            'type' => 'relationship',
+            'wrapper' => [
+                'href' => function ($crud, $column, $entry, $related_key) {
+                    return backpack_url(config('routes.admin.cats'), [$related_key, 'edit']);
+                },
+            ],
+            'searchLogic' => function (Builder $query, $column, $searchTerm) {
+                $query->orWhereHas('cat', function (Builder $query) use ($searchTerm) {
+                    $query
+                        ->where('name', 'like', "%$searchTerm%")
+                        ->orWhere('id', 'like', "%$searchTerm%");
+                });
+            }
+        ];
+    }
 }

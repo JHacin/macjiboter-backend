@@ -33,6 +33,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|SponsorshipMessage whereSponsorId($value)
  * @method static Builder|SponsorshipMessage whereUpdatedAt($value)
  * @method static SponsorshipMessageFactory factory(...$parameters)
+ * @property-read \App\Models\Cat|null $unscopedCat
  * @mixin Eloquent
  */
 class SponsorshipMessage extends Model
@@ -73,6 +74,12 @@ class SponsorshipMessage extends Model
     public function cat(): BelongsTo
     {
         return $this->belongsTo(Cat::class, 'cat_id');
+    }
+
+    /** @noinspection PhpUnused */
+    public function unscopedCat(): BelongsTo
+    {
+        return $this->cat()->withoutGlobalScopes();
     }
 
     /*

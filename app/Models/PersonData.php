@@ -143,6 +143,7 @@ class PersonData extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /** @noinspection PhpUnused */
     public function unscopedSponsorships(): HasMany
     {
         return $this->sponsorships()->withoutGlobalScopes();

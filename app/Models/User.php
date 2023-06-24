@@ -51,7 +51,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @mixin Eloquent
  * @property-read string $email_and_id
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
@@ -61,6 +60,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $roles_count
  * @method static Builder|User permission($permissions)
  * @method static Builder|User role($roles, $guard = null)
+ * @mixin Eloquent
  */
 class User extends Authenticatable
 {

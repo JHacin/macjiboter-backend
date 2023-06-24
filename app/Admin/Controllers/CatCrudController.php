@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminCatRequest;
 use App\Admin\Traits\ClearsModelGlobalScopes;
+use App\Admin\Traits\DisplaysOldWebsiteData;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
@@ -21,7 +22,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class CatCrudController extends CrudController
@@ -35,7 +35,7 @@ class CatCrudController extends CrudController
     }
     use DeleteOperation;
     use ReviseOperation;
-    use ClearsModelGlobalScopes;
+    use ClearsModelGlobalScopes, DisplaysOldWebsiteData;
 
     /**
      * @throws Exception
@@ -135,6 +135,7 @@ class CatCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'name-input-wrapper'
             ],
+            'tab' => 'Podatki',
         ]);
         $this->crud->addField([
             'name' => 'gender',
@@ -146,6 +147,7 @@ class CatCrudController extends CrudController
                 'dusk' => 'gender-input-wrapper'
             ],
             'hint' => 'Pri skupinah muc spol ni obvezen.',
+            'tab' => 'Podatki',
         ]);
         $this->crud->addField([
             'name' => 'status',
@@ -163,7 +165,8 @@ class CatCrudController extends CrudController
                 '<em>trenutno ne išče botrov</em>: objavljena, botrstvo ni možno, prikazana je opomba<br>' .
                 '<em>ne išče botrov</em>: ni objavljena, botrstvo ni možno<br>' .
                 '<em>v novem domu</em>: ni objavljena, botrstvo ni možno<br>' .
-                '<em>RIP</em>: ni objavljena, botrstvo ni možno<br>'
+                '<em>RIP</em>: ni objavljena, botrstvo ni možno<br>',
+            'tab' => 'Podatki',
         ]);
         $this->crud->addField([
             'name' => 'is_group',
@@ -179,6 +182,7 @@ class CatCrudController extends CrudController
                 'dusk' => 'is_group-input-wrapper'
             ],
             'hint' => 'Ali naj se ta vnos obravnava kot druge skupine - Čombe, Pozitivčki, Bubiji...',
+            'tab' => 'Podatki',
         ]);
         $this->crud->addField([
             'name' => 'story_short',
@@ -190,10 +194,12 @@ class CatCrudController extends CrudController
                 'required' => 'required',
                 'rows' => 3,
             ],
+            'tab' => 'Zgodba',
         ]);
         $this->crud->addField(CrudFieldGenerator::richTextField([
             'name' => 'story',
             'label' => trans('cat.story'),
+            'tab' => 'Zgodba',
         ]));
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'date_of_birth',
@@ -201,6 +207,7 @@ class CatCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'date-of-birth-input-wrapper'
             ],
+            'tab' => 'Podatki',
         ]));
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'date_of_arrival_mh',
@@ -208,6 +215,7 @@ class CatCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'date-of-arrival-mh-input-wrapper'
             ],
+            'tab' => 'Podatki',
         ]));
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'date_of_arrival_boter',
@@ -215,6 +223,7 @@ class CatCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'date-of-arrival-boter-input-wrapper'
             ],
+            'tab' => 'Podatki',
         ]));
         $this->crud->addField([
             'name' => 'location_id',
@@ -224,6 +233,7 @@ class CatCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'location-input-wrapper'
             ],
+            'tab' => 'Podatki',
         ]);
         $this->crud->addField([
             'name' => 'crud_photos_array',
@@ -249,12 +259,14 @@ class CatCrudController extends CrudController
             'init_rows' => 0,
             'max_rows' => 5,
             'reorder' => true,
+            'tab' => 'Slike',
         ]);
     }
 
     protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
+        $this->displayOldWebsiteData("cat");
     }
 
     public function store(): Response

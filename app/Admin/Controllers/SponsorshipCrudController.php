@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Admin\Requests\AdminSponsorshipRequest;
 use App\Admin\Requests\AdminSponsorshipUpdateRequest;
 use App\Admin\Traits\ClearsModelGlobalScopes;
+use App\Admin\Traits\DisplaysOldWebsiteData;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
@@ -30,12 +31,12 @@ class SponsorshipCrudController extends CrudController
     use UpdateOperation;
     use DeleteOperation;
     use ReviseOperation;
-    use ClearsModelGlobalScopes;
+    use ClearsModelGlobalScopes, DisplaysOldWebsiteData;
 
     /**
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         $this->crud->setModel(Sponsorship::class);
         $this->clearModelGlobalScopes([Sponsorship::SCOPE_ONLY_ACTIVE]);
@@ -47,7 +48,7 @@ class SponsorshipCrudController extends CrudController
         $this->crud->enableExportButtons();
     }
 
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         $this->crud->addColumn(CrudColumnGenerator::id());
         $this->crud->addColumn([
@@ -141,7 +142,7 @@ class SponsorshipCrudController extends CrudController
         $this->addFilters();
     }
 
-    protected function addFilters()
+    protected function addFilters(): void
     {
         $this->crud->addFilter(
             [
@@ -191,7 +192,7 @@ class SponsorshipCrudController extends CrudController
     }
 
 
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminSponsorshipRequest::class);
 
@@ -294,7 +295,7 @@ class SponsorshipCrudController extends CrudController
         ]);
     }
 
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
         $this->crud->removeField('email_warning');
@@ -312,8 +313,10 @@ class SponsorshipCrudController extends CrudController
                 'dusk' => 'ended_at-wrapper'
             ]
         ]));
+        $this->displayOldWebsiteData("sponsorship");
     }
 
+    /** @noinspection PhpUnused */
     public function cancelSponsorship(Sponsorship $sponsorship): RedirectResponse
     {
         $this->crud->hasAccessOrFail('update');

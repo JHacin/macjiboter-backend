@@ -4,10 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Cat;
 use App\Models\PersonData;
+use App\Models\Sponsorship;
 use App\Models\User;
 use App\Settings\Settings;
+use Arr;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,9 @@ use Storage;
 
 class MigrationSeeder extends Seeder
 {
+    public array $catMigrationCache = [];
+    public array $sponsorMigrationCache = [];
+
     /**
      * @throws Exception
      */
@@ -24,6 +28,7 @@ class MigrationSeeder extends Seeder
         $this->addSettings();
         $this->addCats();
         $this->addSponsors();
+        $this->addSponsorships();
     }
 
     protected function addAdminUser(): void
@@ -101,7 +106,9 @@ class MigrationSeeder extends Seeder
                 "story" => $this->parseNullableString($record["zgodba"]),
             ]);
 
-            $this->storeRecordMigrationMeta("cat", $entry, $record);
+            $this->catMigrationCache[$record["id"]] = ["new_id" => $entry->id];
+
+            $this->persistRecordMigrationMeta("cat", $entry, $record);
         }
     }
 
@@ -125,7 +132,46 @@ class MigrationSeeder extends Seeder
                 "city" => $this->parseNullableString($record["kraj"]),
             ]);
 
-            $this->storeRecordMigrationMeta("sponsor", $entry, $record);
+            $this->sponsorMigrationCache[$record["id"]] = [
+                "new_id" => $entry->id,
+                "datum_pristopa" => $record["datum_pristopa"],
+                "potrjen_pristop" => $record["potrjen_pristop"],
+                "trenutno_aktiven" => $record["trenutno_aktiven"],
+            ];
+
+            $this->persistRecordMigrationMeta("sponsor", $entry, $record);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function addSponsorships(): void
+    {
+        $csvUrl = Storage::disk('s3')->url('migration/mb_posvojitve.csv');
+        $records = $this->importCsv($csvUrl);
+
+        foreach ($records as $record) {
+            $catEntry = Arr::get($this->catMigrationCache, $record["id_muce"]);
+            $sponsorEntry = Arr::get($this->sponsorMigrationCache, $record["id_botra"]);
+            $endedAt = $this->parseNullableDate($record["datum_konca"]);
+
+            $isActive = $sponsorEntry &&
+                $endedAt === null &&
+                $this->parseNullableDate($sponsorEntry["datum_pristopa"]) !== null &&
+                $this->parseBoolean($sponsorEntry["potrjen_pristop"]) &&
+                $this->parseBoolean($sponsorEntry["trenutno_aktiven"]);
+
+            $entry = Sponsorship::create([
+                "cat_id" => $catEntry ? $catEntry["new_id"] : null,
+                "sponsor_id" => $sponsorEntry ? $sponsorEntry["new_id"] : null,
+                "is_anonymous" => $this->parseBoolean($record["anonimno"]),
+                "monthly_amount" => (int)$record["znesek"],
+                "is_active" => $isActive,
+                "ended_at" => $endedAt,
+            ]);
+
+            $this->persistRecordMigrationMeta("sponsorship", $entry, $record);
         }
     }
 
@@ -155,7 +201,7 @@ class MigrationSeeder extends Seeder
         return $data;
     }
 
-    protected function storeRecordMigrationMeta(string $entity, Cat|PersonData $model, array $csvRecord): void
+    protected function persistRecordMigrationMeta(string $entity, Cat|PersonData|Sponsorship $model, array $csvRecord): void
     {
         DB::table("db_migration_meta")->insert([
             "entity" => $entity,
@@ -182,5 +228,10 @@ class MigrationSeeder extends Seeder
         }
 
         return $dateString;
+    }
+
+    protected function parseBoolean(string $value): bool
+    {
+        return $value === "1";
     }
 }

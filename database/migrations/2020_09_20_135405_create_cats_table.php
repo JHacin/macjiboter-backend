@@ -17,7 +17,6 @@ class CreateCatsTable extends Migration
             $table->text('story_short');
             $table->text('story')->nullable();
             $table->date('date_of_arrival_mh')->nullable();
-            $table->date('date_of_arrival_boter')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->boolean('is_group')->default(false);
             $table->timestamps();

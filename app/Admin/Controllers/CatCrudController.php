@@ -73,11 +73,6 @@ class CatCrudController extends CrudController
             'type' => 'date',
         ]);
         $this->crud->addColumn([
-            'name' => 'date_of_arrival_boter',
-            'label' => trans('cat.date_of_arrival_boter'),
-            'type' => 'date',
-        ]);
-        $this->crud->addColumn([
             'name' => 'location',
             'label' => trans('cat.location'),
             'type' => 'relationship',
@@ -214,14 +209,6 @@ class CatCrudController extends CrudController
             'label' => trans('cat.date_of_arrival_mh'),
             'wrapper' => [
                 'dusk' => 'date-of-arrival-mh-input-wrapper'
-            ],
-            'tab' => 'Podatki',
-        ]));
-        $this->crud->addField(CrudFieldGenerator::dateField([
-            'name' => 'date_of_arrival_boter',
-            'label' => trans('cat.date_of_arrival_boter'),
-            'wrapper' => [
-                'dusk' => 'date-of-arrival-boter-input-wrapper'
             ],
             'tab' => 'Podatki',
         ]));

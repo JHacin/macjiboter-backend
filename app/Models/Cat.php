@@ -29,7 +29,6 @@ use App\Models\Traits\ClearsGlobalScopes;
  * @property string $story_short
  * @property string|null $story
  * @property Carbon|null $date_of_arrival_mh
- * @property Carbon|null $date_of_arrival_boter
  * @property Carbon|null $date_of_birth
  * @property bool $is_group
  * @property Carbon|null $created_at
@@ -136,7 +135,6 @@ class Cat extends Model
     protected $casts = [
         'date_of_birth' => 'date',
         'date_of_arrival_mh' => 'date',
-        'date_of_arrival_boter' => 'date',
         'is_group' => 'boolean',
     ];
 

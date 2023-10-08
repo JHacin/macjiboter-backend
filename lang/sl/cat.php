@@ -11,8 +11,8 @@ return [
     'story' => 'Zgodba',
     'story_short' => 'Kratek opis',
     'is_group' => 'Skupina',
+    'is_published' => 'Objavljena',
     'date_of_arrival_mh' => 'Datum sprejema v Mačjo hišo',
-    'date_of_arrival_boter' => 'Datum vstopa v botrstvo',
     'temp_not_seeking_sponsors_text' => 'Muca trenutno ne išče novih botrov.',
     'num_sponsors' => '{0} 0 botrov|{1} 1 boter|{2} 2 botra|{3,4} :count botri|[5,*] :count botrov'
 ];

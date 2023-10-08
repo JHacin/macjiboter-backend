@@ -3,6 +3,7 @@
 namespace App\Admin\Utilities;
 
 use App\Models\PersonData;
+use App\Models\UnscopedCat;
 use App\Utilities\CountryList;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 
@@ -186,6 +187,24 @@ class CrudFieldGenerator
             'attributes' => [
                 'disabled' => true,
                 'rows' => 6,
+            ]
+        ];
+    }
+
+    public static function cat(): array
+    {
+        return [
+            'name' => 'cat',
+            'entity'=> 'unscopedCat', // clears status scope
+            'model' => UnscopedCat::class, // clears status scope
+            'label' => trans('cat.cat'),
+            'type' => 'relationship',
+            'placeholder' => 'Izberi muco',
+            'attributes' => [
+                'required' => 'required',
+            ],
+            'wrapper' => [
+                'dusk' => 'cat-wrapper'
             ]
         ];
     }

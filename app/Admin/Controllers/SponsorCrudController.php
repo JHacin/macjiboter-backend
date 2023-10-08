@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminSponsorRequest;
+use App\Admin\Traits\DisplaysOldWebsiteData;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Models\PersonData;
@@ -25,11 +26,12 @@ class SponsorCrudController extends CrudController
     use UpdateOperation;
     use DeleteOperation;
     use ReviseOperation;
+    use DisplaysOldWebsiteData;
 
     /**
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         $this->crud->setModel(PersonData::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsors'));
@@ -38,7 +40,7 @@ class SponsorCrudController extends CrudController
         $this->crud->enableExportButtons();
     }
 
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         $this->crud->addColumn(CrudColumnGenerator::id());
         $this->crud->addColumn(CrudColumnGenerator::email());
@@ -53,7 +55,7 @@ class SponsorCrudController extends CrudController
             'suffix' => ' botrstev',
             'wrapper' => [
                 'dusk' => 'related-sponsorships-link',
-                'href' => function ($crud, $column, $entry, $related_key) {
+                'href' => function ($crud, $column, $entry) {
                     return backpack_url(
                         config('routes.admin.sponsorships') .
                         '?sponsor=' .
@@ -70,14 +72,14 @@ class SponsorCrudController extends CrudController
             'suffix' => ' botrstev',
             'wrapper' => [
                 'dusk' => 'related-unscopedSponsorships-link',
-                'href' => function ($crud, $column, $entry, $related_key) {
+                'href' => function ($crud, $column, $entry) {
                     return backpack_url(config('routes.admin.sponsorships') . '?sponsor=' . $entry->getKey());
                 },
             ],
         ]);
     }
 
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminSponsorRequest::class);
 
@@ -96,11 +98,13 @@ class SponsorCrudController extends CrudController
         CrudFieldGenerator::addPersonDataFields($this->crud);
     }
 
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
+        $this->displayOldWebsiteData("sponsor");
     }
 
+    /** @noinspection PhpUnused */
     public function cancelAllSponsorships(PersonData $sponsor): RedirectResponse
     {
         $this->crud->hasAccessOrFail('update');

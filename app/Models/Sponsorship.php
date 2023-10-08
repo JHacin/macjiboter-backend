@@ -59,6 +59,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|Sponsorship whereRequestedDuration($value)
  * @method static Builder|Sponsorship whereSponsorId($value)
  * @method static Builder|Sponsorship whereUpdatedAt($value)
+ * @property-read \App\Models\Cat|null $unscopedCat
  * @mixin Eloquent
  */
 class Sponsorship extends Model implements BankTransferFields
@@ -130,6 +131,12 @@ class Sponsorship extends Model implements BankTransferFields
     public function cat(): BelongsTo
     {
         return $this->belongsTo(Cat::class, 'cat_id');
+    }
+
+    /** @noinspection PhpUnused */
+    public function unscopedCat(): BelongsTo
+    {
+        return $this->cat()->withoutGlobalScopes();
     }
 
     public function sponsor(): BelongsTo

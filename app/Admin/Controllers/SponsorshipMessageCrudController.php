@@ -4,6 +4,8 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminSponsorshipMessageRequest;
 use App\Admin\Utilities\CrudColumnGenerator;
+use App\Admin\Utilities\CrudFieldGenerator;
+use App\Admin\Utilities\CrudFilterGenerator;
 use App\Mail\Client\TemplateApiClient;
 use App\Mail\MailTemplateParser;
 use App\Mail\SponsorshipMessageHandler;
@@ -87,21 +89,7 @@ class SponsorshipMessageCrudController extends CrudController
                 });
             }
         ]);
-        $this->crud->addColumn([
-            'name' => 'cat',
-            'label' => trans('sponsorship_message.cat'),
-            'type' => 'relationship',
-            'wrapper' => [
-                'href' => function ($crud, $column, $entry, $related_key) {
-                    return backpack_url(config('routes.admin.cats'), [$related_key, 'edit']);
-                },
-            ],
-            'searchLogic' => function (Builder $query, $column, $searchTerm) {
-                $query->orWhereHas('cat', function (Builder $query) use ($searchTerm) {
-                    $query->where('name', 'like', "%$searchTerm%");
-                });
-            }
-        ]);
+        $this->crud->addColumn(CrudColumnGenerator::cat());
         $this->crud->addColumn(CrudColumnGenerator::createdAt(['label' => 'Poslano']));
 
         $this->addFilters();
@@ -135,19 +123,7 @@ class SponsorshipMessageCrudController extends CrudController
                 $this->crud->addClause('where', 'sponsor_id', $value);
             }
         );
-        $this->crud->addFilter(
-            [
-                'name' => 'cat',
-                'type' => 'select2',
-                'label' => trans('sponsorship_message.cat'),
-            ],
-            function () {
-                return Cat::all()->pluck('name_and_id', 'id')->toArray();
-            },
-            function ($value) {
-                $this->crud->addClause('where', 'cat_id', $value);
-            }
-        );
+        CrudFilterGenerator::addCatFilter($this->crud);
     }
 
     protected function setupCreateOperation()
@@ -182,18 +158,7 @@ class SponsorshipMessageCrudController extends CrudController
                 'dusk' => 'sponsor-wrapper'
             ]
         ]);
-        $this->crud->addField([
-            'name' => 'cat',
-            'label' => trans('sponsorship_message.cat'),
-            'type' => 'relationship',
-            'placeholder' => 'Izberi muco',
-            'attributes' => [
-                'required' => 'required',
-            ],
-            'wrapper' => [
-                'dusk' => 'cat-wrapper'
-            ]
-        ]);
+        $this->crud->addField(CrudFieldGenerator::cat());
         $this->crud->addField([
             'name'  => 'separator_1',
             'type'  => 'custom_html',

@@ -6,7 +6,7 @@ trait ClearsModelGlobalScopes
 {
     public function clearModelGlobalScopes(array $scopes): void
     {
-        $this->crud->query = $this->crud->query->withoutGlobalScopes($scopes);
-        $this->crud->model->withoutGlobalScopes($scopes);
+        $this->crud->query = clone $this->crud->totalQuery = $this->crud->query->withoutGlobalScopes($scopes);
+        $this->crud->model->clearGlobalScopes($scopes);
     }
 }

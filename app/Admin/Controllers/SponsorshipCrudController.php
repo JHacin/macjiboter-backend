@@ -5,10 +5,10 @@ namespace App\Admin\Controllers;
 use App\Admin\Requests\AdminSponsorshipRequest;
 use App\Admin\Requests\AdminSponsorshipUpdateRequest;
 use App\Admin\Traits\ClearsModelGlobalScopes;
+use App\Admin\Traits\DisplaysOldWebsiteData;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
-use App\Models\Cat;
 use App\Models\PersonData;
 use App\Models\Sponsorship;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -30,12 +30,12 @@ class SponsorshipCrudController extends CrudController
     use UpdateOperation;
     use DeleteOperation;
     use ReviseOperation;
-    use ClearsModelGlobalScopes;
+    use ClearsModelGlobalScopes, DisplaysOldWebsiteData;
 
     /**
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         $this->crud->setModel(Sponsorship::class);
         $this->clearModelGlobalScopes([Sponsorship::SCOPE_ONLY_ACTIVE]);
@@ -47,26 +47,10 @@ class SponsorshipCrudController extends CrudController
         $this->crud->enableExportButtons();
     }
 
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         $this->crud->addColumn(CrudColumnGenerator::id());
-        $this->crud->addColumn([
-            'name' => 'cat',
-            'label' => trans('cat.cat'),
-            'type' => 'relationship',
-            'wrapper' => [
-                'href' => function ($crud, $column, $entry, $related_key) {
-                    return backpack_url(config('routes.admin.cats'), [$related_key, 'edit']);
-                },
-            ],
-            'searchLogic' => function (Builder $query, $column, $searchTerm) {
-                $query->orWhereHas('cat', function (Builder $query) use ($searchTerm) {
-                    $query
-                        ->where('name', 'like', "%$searchTerm%")
-                        ->orWhere('id', 'like', "%$searchTerm%");
-                });
-            }
-        ]);
+        $this->crud->addColumn(CrudColumnGenerator::cat());
         $this->crud->addColumn([
             'name' => 'sponsor',
             'label' => trans('sponsor.sponsor'),
@@ -141,21 +125,9 @@ class SponsorshipCrudController extends CrudController
         $this->addFilters();
     }
 
-    protected function addFilters()
+    protected function addFilters(): void
     {
-        $this->crud->addFilter(
-            [
-                'name' => 'cat',
-                'type' => 'select2',
-                'label' => trans('cat.cat'),
-            ],
-            function () {
-                return Cat::all()->pluck('name_and_id', 'id')->toArray();
-            },
-            function ($value) {
-                $this->crud->addClause('where', 'cat_id', $value);
-            }
-        );
+        CrudFilterGenerator::addCatFilter($this->crud);
 
         $this->crud->addFilter(
             [
@@ -191,22 +163,11 @@ class SponsorshipCrudController extends CrudController
     }
 
 
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminSponsorshipRequest::class);
 
-        $this->crud->addField([
-            'name' => 'cat',
-            'label' => trans('cat.cat'),
-            'type' => 'relationship',
-            'placeholder' => 'Izberi muco',
-            'attributes' => [
-                'required' => 'required',
-            ],
-            'wrapper' => [
-                'dusk' => 'cat-wrapper'
-            ]
-        ]);
+        $this->crud->addField(CrudFieldGenerator::cat());
         $this->crud->addField([
             'name' => 'sponsor',
             'label' => trans('sponsor.sponsor'),
@@ -294,7 +255,7 @@ class SponsorshipCrudController extends CrudController
         ]);
     }
 
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
         $this->crud->removeField('email_warning');
@@ -312,8 +273,10 @@ class SponsorshipCrudController extends CrudController
                 'dusk' => 'ended_at-wrapper'
             ]
         ]));
+        $this->displayOldWebsiteData("sponsorship");
     }
 
+    /** @noinspection PhpUnused */
     public function cancelSponsorship(Sponsorship $sponsorship): RedirectResponse
     {
         $this->crud->hasAccessOrFail('update');

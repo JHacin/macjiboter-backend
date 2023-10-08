@@ -2,6 +2,7 @@
 
 namespace App\Admin\Utilities;
 
+use App\Models\Cat;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 
 class CrudFilterGenerator
@@ -23,6 +24,24 @@ class CrudFilterGenerator
             $options,
             function ($value) use ($crud, $fieldName) {
                 $crud->addClause('where', $fieldName, $value);
+            }
+        );
+    }
+
+    public static function addCatFilter(CrudPanel $crud): void
+    {
+        $crud->addFilter(
+            [
+                'name' => 'cat',
+                'type' => 'select2',
+                'label' => trans('cat.cat'),
+            ],
+            function () {
+                // clears status scope
+                return Cat::withoutGlobalScopes()->get()->pluck('name_and_id', 'id')->toArray();
+            },
+            function ($value) use ($crud) {
+                $crud->addClause('where', 'cat_id', $value);
             }
         );
     }

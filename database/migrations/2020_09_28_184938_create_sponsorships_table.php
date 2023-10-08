@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateSponsorshipsTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create('sponsorships', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -16,7 +16,7 @@ class CreateSponsorshipsTable extends Migration
             $table->boolean('is_gift')->default(false);
             $table->boolean('is_anonymous')->default(false);
             $table->smallInteger('payment_type')->default(Sponsorship::PAYMENT_TYPE_BANK_TRANSFER);
-            $table->decimal('monthly_amount');
+            $table->decimal('monthly_amount', 10);
             $table->integer('requested_duration')->nullable();
             $table->boolean('is_active')->default(false);
             $table->date('ended_at')->nullable();
@@ -26,7 +26,7 @@ class CreateSponsorshipsTable extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('sponsorships');
     }

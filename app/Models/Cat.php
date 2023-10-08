@@ -31,6 +31,7 @@ use App\Models\Traits\ClearsGlobalScopes;
  * @property Carbon|null $date_of_arrival_mh
  * @property Carbon|null $date_of_birth
  * @property bool $is_group
+ * @property bool $is_published
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $slug
@@ -59,6 +60,7 @@ use App\Models\Traits\ClearsGlobalScopes;
  * @method static Builder|Cat whereGender($value)
  * @method static Builder|Cat whereId($value)
  * @method static Builder|Cat whereIsGroup($value)
+ * @method static Builder|Cat whereIsPublished($value)
  * @method static Builder|Cat whereLocationId($value)
  * @method static Builder|Cat whereName($value)
  * @method static Builder|Cat whereSlug($value)
@@ -114,7 +116,7 @@ class Cat extends Model
         self::STATUS_RIP,
     ];
 
-    public const SCOPE_ONLY_PUBLICALLY_VISIBLE_STATUSES = 'cat_onlyStatusesNotExcludedFromPublic';
+    public const SCOPE_ONLY_PUBLICLY_VISIBLE_CATS = 'cat_onlyPubliclyVisible';
 
     /*
     |--------------------------------------------------------------------------
@@ -136,6 +138,7 @@ class Cat extends Model
         'date_of_birth' => 'date',
         'date_of_arrival_mh' => 'date',
         'is_group' => 'boolean',
+        'is_published' => 'boolean',
     ];
 
     /**
@@ -202,10 +205,12 @@ class Cat extends Model
     /**
      * @inheritDoc
      */
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::addGlobalScope(self::SCOPE_ONLY_PUBLICALLY_VISIBLE_STATUSES, function (Builder $builder) {
-            $builder->whereNotIn('status', self::STATUSES_EXCLUDED_FROM_PUBLIC);
+        static::addGlobalScope(self::SCOPE_ONLY_PUBLICLY_VISIBLE_CATS, function (Builder $builder) {
+            $builder
+                ->whereNotIn('status', self::STATUSES_EXCLUDED_FROM_PUBLIC)
+                ->where('is_published', true);
         });
 
         static::deleting(function(Cat $cat) {
@@ -268,7 +273,7 @@ class Cat extends Model
     {
         $classes = 'btn btn-sm btn-link';
 
-        if (in_array($this->status, self::STATUSES_EXCLUDED_FROM_PUBLIC)) {
+        if (!$this->is_published || in_array($this->status, self::STATUSES_EXCLUDED_FROM_PUBLIC)) {
             $classes .= ' disabled';
         }
 

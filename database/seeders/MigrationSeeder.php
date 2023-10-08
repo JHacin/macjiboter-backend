@@ -104,6 +104,7 @@ class MigrationSeeder extends Seeder
                 "status" => $status,
                 "gender" => $gender,
                 "story" => $this->parseNullableString($record["zgodba"]),
+                "is_published" => $record["objavi_zgodbo"] === "1",
             ]);
 
             $this->catMigrationCache[$record["id"]] = ["new_id" => $entry->id];

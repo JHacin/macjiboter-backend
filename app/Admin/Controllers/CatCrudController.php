@@ -43,7 +43,7 @@ class CatCrudController extends CrudController
     public function setup(): void
     {
         $this->crud->setModel(Cat::class);
-        $this->clearModelGlobalScopes([Cat::SCOPE_ONLY_PUBLICALLY_VISIBLE_STATUSES]);
+        $this->clearModelGlobalScopes([Cat::SCOPE_ONLY_PUBLICLY_VISIBLE_CATS]);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.cats'));
         $this->crud->setEntityNameStrings('Muca', 'Muce');
         $this->crud->setSubheading('Dodaj novo muco', 'create');
@@ -66,27 +66,32 @@ class CatCrudController extends CrudController
             'label' => trans('cat.status'),
             'type' => 'text'
         ]);
+        $this->crud->addColumn([
+            'name' => 'is_published',
+            'label' => trans('cat.is_published'),
+            'type' => 'boolean',
+        ]);
         $this->crud->addColumn(CrudColumnGenerator::genderLabel());
-        $this->crud->addColumn([
-            'name' => 'date_of_arrival_mh',
-            'label' => trans('cat.date_of_arrival_mh'),
-            'type' => 'date',
-        ]);
-        $this->crud->addColumn([
-            'name' => 'location',
-            'label' => trans('cat.location'),
-            'type' => 'relationship',
-            'wrapper' => [
-                'href' => function ($crud, $column, $entry, $related_key) {
-                    return backpack_url(config('routes.admin.cat_locations'), [$related_key, 'edit']);
-                },
-            ],
-            'searchLogic' => function (Builder $query, $column, $searchTerm) {
-                $query->orWhereHas('location', function (Builder $query) use ($searchTerm) {
-                    $query->where('name', 'like', "%$searchTerm%");
-                });
-            }
-        ]);
+//        $this->crud->addColumn([
+//            'name' => 'date_of_arrival_mh',
+//            'label' => trans('cat.date_of_arrival_mh'),
+//            'type' => 'date',
+//        ]);
+//        $this->crud->addColumn([
+//            'name' => 'location',
+//            'label' => trans('cat.location'),
+//            'type' => 'relationship',
+//            'wrapper' => [
+//                'href' => function ($crud, $column, $entry, $related_key) {
+//                    return backpack_url(config('routes.admin.cat_locations'), [$related_key, 'edit']);
+//                },
+//            ],
+//            'searchLogic' => function (Builder $query, $column, $searchTerm) {
+//                $query->orWhereHas('location', function (Builder $query) use ($searchTerm) {
+//                    $query->where('name', 'like', "%$searchTerm%");
+//                });
+//            }
+//        ]);
         $this->crud->addColumn(CrudColumnGenerator::createdAt());
         $this->crud->addColumn(CrudColumnGenerator::updatedAt());
 
@@ -114,6 +119,7 @@ class CatCrudController extends CrudController
         CrudFilterGenerator::addDropdownFilter($this->crud, 'gender', trans('cat.gender'), Cat::GENDER_LABELS);
         CrudFilterGenerator::addDropdownFilter($this->crud, 'status', trans('cat.status'), Cat::STATUS_LABELS);
         CrudFilterGenerator::addBooleanFilter($this->crud, 'is_group', trans('cat.is_group'));
+        CrudFilterGenerator::addBooleanFilter($this->crud, 'is_published', trans('cat.is_published'));
     }
 
     protected function setupCreateOperation(): void
@@ -161,6 +167,19 @@ class CatCrudController extends CrudController
                 '<em>ne išče botrov</em>: ni objavljena, botrstvo ni možno<br>' .
                 '<em>v novem domu</em>: ni objavljena, botrstvo ni možno<br>' .
                 '<em>RIP</em>: ni objavljena, botrstvo ni možno<br>',
+            'tab' => 'Podatki',
+        ]);
+        $this->crud->addField([
+            'name' => 'is_published',
+            'label' => trans('cat.is_published') . '?',
+            'type' => 'radio',
+            'options' => [
+                1 => 'Da',
+                0 => 'Ne',
+            ],
+            'default' => 0,
+            'inline' => true,
+            'hint' => 'Ali naj se muco objavi. Na objavo vpliva tudi status.',
             'tab' => 'Podatki',
         ]);
         $this->crud->addField([

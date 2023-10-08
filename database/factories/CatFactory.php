@@ -29,6 +29,7 @@ class CatFactory extends Factory
             'date_of_arrival_mh' => $this->faker->date(),
             'location_id' => CatLocation::factory(),
             'is_group' => $this->faker->boolean(5),
+            'is_published' => $this->faker->boolean(80),
         ];
     }
 }

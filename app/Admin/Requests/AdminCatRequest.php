@@ -25,6 +25,7 @@ class AdminCatRequest extends FormRequest
             'story_short' => ['required', 'string', 'max:'.config('validation.cat.story_short_maxlength') ],
             'story' => ['nullable', 'string'],
             'is_group' => ['boolean'],
+            'is_published' => ['boolean'],
             'crud_photos_array.*.caption' => ['nullable', 'string', 'max:100'],
             'crud_photos_array.*.url' => ['required', 'string'],
         ];

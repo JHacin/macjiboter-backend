@@ -95,7 +95,7 @@ class SponsorshipMessageCrudController extends CrudController
         $this->addFilters();
     }
 
-    protected function addFilters()
+    protected function addFilters(): void
     {
         $this->crud->addFilter(
             [
@@ -117,7 +117,7 @@ class SponsorshipMessageCrudController extends CrudController
                 'label' => trans('sponsorship_message.sponsor'),
             ],
             function () {
-                return PersonData::all()->pluck('email_id', 'id')->toArray();
+                return PersonData::all()->pluck('email_and_id', 'id')->toArray();
             },
             function ($value) {
                 $this->crud->addClause('where', 'sponsor_id', $value);

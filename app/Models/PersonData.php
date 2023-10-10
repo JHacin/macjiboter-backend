@@ -33,6 +33,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property Carbon|null $updated_at
  * @property-read string $email_and_id
  * @property-read string $gender_label
+ * @property-read bool $is_active
  * @property-read Collection|Revision[] $revisionHistory
  * @property-read int|null $revision_history_count
  * @property-read Collection|SponsorshipMessage[] $sponsorshipMessages
@@ -189,6 +190,11 @@ class PersonData extends Model
     public function getEmailAndIdAttribute(): string
     {
         return sprintf('%s (%d)', $this->email, $this->id);
+    }
+
+    public function getIsActiveAttribute(): bool
+    {
+        return true;
     }
 
     /*

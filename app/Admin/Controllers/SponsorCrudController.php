@@ -77,6 +77,25 @@ class SponsorCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->addFilters();
+    }
+
+    protected function addFilters(): void
+    {
+        $this->crud->addFilter(
+            [
+                'name' => 'is_active',
+                'type' => 'dropdown',
+                'label' => 'Aktiven',
+            ],
+            [true => 'Da', false => 'Ne'],
+            function ($active) {
+                $this->crud->query = $active
+                    ? $this->crud->query->whereHas('sponsorships')
+                    : $this->crud->query->whereDoesntHave('sponsorships');
+            }
+        );
     }
 
     protected function setupCreateOperation(): void

@@ -23,7 +23,7 @@
             class="msg-preview-copy-to-clipboard btn btn-secondary btn-sm"
             data-clipboard-target=".msg-preview-content-body"
         >
-            Kopiraj
+            Kopiraj besedilo
         </button>
     </div>
 

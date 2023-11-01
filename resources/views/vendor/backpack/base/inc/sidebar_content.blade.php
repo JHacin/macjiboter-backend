@@ -41,7 +41,13 @@
         <i class="las la-list nav-icon"></i> Vrste pisem
     </a>
     <a class="nav-link" href="{{ backpack_url(config('routes.admin.sponsorship_messages')) }}">
-        <i class="las la-paper-plane nav-icon"></i> Pošiljanje
+        <i class="las la-paper-plane nav-icon"></i> Poslana pisma
+    </a>
+    <a class="nav-link" href="{{ backpack_url(config('routes.admin.sponsorship_messages_add')) }}">
+        <i class="las la-envelope nav-icon"></i> Pošlji enemu botru
+    </a>
+    <a class="nav-link" href="{{ backpack_url(config('routes.admin.notify_active_sponsors')) }}">
+        <i class="las la-mail-bulk nav-icon"></i> Pošlji aktivnim botrom
     </a>
 </li>
 

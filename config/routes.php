@@ -51,6 +51,8 @@ return [
         'sponsorship_message_types_edit' => 'vrste-pisem/{id}/edit',
         'sponsorship_messages' => 'pisma',
         'sponsorship_messages_add' => 'pisma/create',
+        'notify_active_sponsors' => 'pisma-aktivnim-botrom',
+        'get_active_sponsorships_for_cat' => 'pisma/{cat:id}/get-active-sponsorships',
         'get_messages_sent_to_sponsor' => 'pisma/{sponsor}/get-sent-messages',
         'get_parsed_template_preview' => 'pisma/parsed-template-preview',
         'news' => 'novice',

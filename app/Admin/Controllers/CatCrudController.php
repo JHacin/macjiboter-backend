@@ -19,7 +19,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\ReviseOperation\ReviseOperation;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
+use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,9 @@ class CatCrudController extends CrudController
     use CreateOperation {
         store as traitStore;
     }
-    use DeleteOperation;
+    use DeleteOperation {
+        destroy as traitDestroy;
+    }
     use ListOperation;
     use ReviseOperation;
     use UpdateOperation {
@@ -292,6 +294,8 @@ class CatCrudController extends CrudController
             }
         }
 
+        $this->revalidateClientPage($this->getCurrentEntrySlug());
+
         return $response;
     }
 
@@ -303,6 +307,21 @@ class CatCrudController extends CrudController
         $response = $this->traitUpdate();
 
         $this->updatePhotos();
+        $this->revalidateClientPage($this->getCurrentEntrySlug());
+
+        return $response;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function destroy($id): string
+    {
+        $slug = $this->getCurrentEntrySlug();
+
+        $response = $this->traitDestroy($id);
+
+        $this->revalidateClientPage($slug);
 
         return $response;
     }
@@ -357,5 +376,20 @@ class CatCrudController extends CrudController
         } else {
             $cat->photos->where('url', $url)->first()->update($attributes);
         }
+    }
+
+    private function revalidateClientPage(string $slug)
+    {
+        $client = new Client(['base_uri' => config('app.frontend_url')]);
+
+        $client->request('POST', 'api/revalidate-cat', [
+            'query' => ['secret' => config('app.frontend_revalidate_secret')],
+            'json' => ['slug' => $slug],
+        ]);
+    }
+
+    private function getCurrentEntrySlug(): string
+    {
+        return $this->crud->getCurrentEntry()->slug;
     }
 }

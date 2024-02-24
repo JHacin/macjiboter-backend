@@ -57,6 +57,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
+    'frontend_revalidate_secret' => env('FRONTEND_REVALIDATE_SECRET'),
 
     'asset_url' => env('ASSET_URL'),
 

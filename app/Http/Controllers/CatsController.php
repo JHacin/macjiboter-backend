@@ -12,7 +12,7 @@ class CatsController extends Controller
     public function getAll(Request $request): JsonResponse
     {
         $search = $request->query('search');
-        $perPage = 12;
+        $perPage = $request->query('per_page') ?: 12;
         $sort = $request->query('sort');
 
         $result = Cat::when($search, function (Builder $query, string $search) {

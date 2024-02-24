@@ -13,18 +13,17 @@ use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\ReviseOperation\ReviseOperation;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 
 class SpecialSponsorshipCrudController extends CrudController
 {
-    use ListOperation;
     use CreateOperation;
-    use UpdateOperation;
     use DeleteOperation;
+    use ListOperation;
     use ReviseOperation;
+    use UpdateOperation;
 
     /**
      * @throws Exception
@@ -32,7 +31,7 @@ class SpecialSponsorshipCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(SpecialSponsorship::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.special_sponsorships'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.special_sponsorships'));
         $this->crud->setEntityNameStrings('Posebno botrstvo', 'Posebna botrstva');
         $this->crud->enableExportButtons();
     }
@@ -65,7 +64,7 @@ class SpecialSponsorshipCrudController extends CrudController
                         ->where('email', 'like', "%$searchTerm%")
                         ->orWhere('id', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn([
             'name' => 'payer',
@@ -82,7 +81,7 @@ class SpecialSponsorshipCrudController extends CrudController
                         ->where('email', 'like', "%$searchTerm%")
                         ->orWhere('id', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn([
             'name' => 'confirmed_at',
@@ -96,7 +95,7 @@ class SpecialSponsorshipCrudController extends CrudController
         ]);
         $this->crud->addColumn(CrudColumnGenerator::moneyColumn([
             'name' => 'amount',
-            'label' => trans('special_sponsorship.amount')
+            'label' => trans('special_sponsorship.amount'),
         ]));
         $this->crud->addColumn(CrudColumnGenerator::createdAt());
         $this->crud->addColumn(CrudColumnGenerator::updatedAt());
@@ -151,7 +150,7 @@ class SpecialSponsorshipCrudController extends CrudController
             function ($value) {
                 $dates = json_decode($value);
                 $this->crud->addClause('where', 'confirmed_at', '>=', $dates->from);
-                $this->crud->addClause('where', 'confirmed_at', '<=', $dates->to . ' 23:59:59');
+                $this->crud->addClause('where', 'confirmed_at', '<=', $dates->to.' 23:59:59');
             }
         );
 
@@ -172,7 +171,7 @@ class SpecialSponsorshipCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'type-input-wrapper'
+                'dusk' => 'type-input-wrapper',
             ],
         ]);
 
@@ -185,8 +184,8 @@ class SpecialSponsorshipCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'sponsor-wrapper'
-            ]
+                'dusk' => 'sponsor-wrapper',
+            ],
         ]);
 
         $this->crud->addField([
@@ -194,8 +193,8 @@ class SpecialSponsorshipCrudController extends CrudController
             'label' => 'Botrstvo je podarjeno',
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_gift-wrapper'
-            ]
+                'dusk' => 'is_gift-wrapper',
+            ],
         ]);
 
         $this->crud->addField([
@@ -204,15 +203,15 @@ class SpecialSponsorshipCrudController extends CrudController
             'type' => 'relationship',
             'placeholder' => 'Izberi plačnika',
             'wrapper' => [
-                'dusk' => 'payer-wrapper'
-            ]
+                'dusk' => 'payer-wrapper',
+            ],
         ]);
 
         $this->crud->addField(CrudFieldGenerator::moneyField([
             'name' => 'amount',
             'label' => trans('special_sponsorship.amount'),
             'wrapper' => [
-                'dusk' => 'amount-wrapper'
+                'dusk' => 'amount-wrapper',
             ],
             'attributes' => [
                 'required' => 'required',
@@ -229,8 +228,8 @@ class SpecialSponsorshipCrudController extends CrudController
             'label' => trans('special_sponsorship.is_anonymous'),
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_anonymous-wrapper'
-            ]
+                'dusk' => 'is_anonymous-wrapper',
+            ],
         ]);
 
         $this->crud->addField(CrudFieldGenerator::dateField([

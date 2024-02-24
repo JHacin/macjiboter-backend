@@ -27,7 +27,7 @@ class SpecialSponsorshipRequest extends FormRequest
             'is_anonymous' => ['boolean'],
             'is_gift' => ['boolean'],
             'is_agreed_to_terms' => ['accepted'],
-            'amount' => ['required', 'numeric', 'min:' . SpecialSponsorship::TYPE_AMOUNTS[$this->input('type')]],
+            'amount' => ['required', 'numeric', 'min:'.SpecialSponsorship::TYPE_AMOUNTS[$this->input('type')]],
         ];
 
         if ($this->get('is_gift')) {
@@ -45,13 +45,13 @@ class SpecialSponsorshipRequest extends FormRequest
                 'gift_requested_activation_date' => [
                     'nullable',
                     'date',
-                    'after_or_equal:' . now()->addDays(3)->startOf("day")->toString(),
+                    'after_or_equal:'.now()->addDays(3)->startOf('day')->toString(),
                 ],
                 'requested_duration' => [
                     'nullable',
                     'numeric',
                     'min:1',
-                    'max:' . config('validation.integer_max'),
+                    'max:'.config('validation.integer_max'),
                 ],
             ];
 
@@ -62,7 +62,7 @@ class SpecialSponsorshipRequest extends FormRequest
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function failedValidation(Validator $validator)
     {

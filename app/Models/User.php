@@ -39,6 +39,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $notifications_count
  * @property-read Collection|PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -51,6 +52,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
+ *
  * @property-read string $email_and_id
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
@@ -58,13 +60,15 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $revision_history_count
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
+ *
  * @method static Builder|User permission($permissions)
  * @method static Builder|User role($roles, $guard = null)
+ *
  * @mixin Eloquent
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, CrudTrait, RevisionableTrait;
+    use CrudTrait, HasApiTokens, HasFactory, HasRoles, Notifiable, RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -73,7 +77,9 @@ class User extends Authenticatable
     */
 
     public const ROLE_SUPER_ADMIN = 'super-admin';
+
     public const ROLE_ADMIN = 'admin';
+
     public const ROLE_EDITOR = 'editor';
 
     public const ADMIN_ROLES = [
@@ -93,7 +99,7 @@ class User extends Authenticatable
     /**
      * The relationships that should always be loaded.
      */
-//    protected $with = ['personData'];
+    //    protected $with = ['personData'];
 
     /**
      * The attributes that are mass assignable.
@@ -102,7 +108,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-//        'is_active'
+        //        'is_active'
     ];
 
     /**
@@ -117,14 +123,14 @@ class User extends Authenticatable
      * The attributes that should be cast.
      */
     protected $casts = [
-//        'is_active' => 'boolean',
+        //        'is_active' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
 
     /**
      * Used in Backpack when showing the model instance label via relationship inputs.
      */
-//    protected $identifiableAttribute = 'email_and_id';
+    //    protected $identifiableAttribute = 'email_and_id';
 
     /*
 |--------------------------------------------------------------------------
@@ -132,10 +138,6 @@ class User extends Authenticatable
 |--------------------------------------------------------------------------
 */
 
-    /**
-     * @param string $password
-     * @return string
-     */
     public static function generateSecurePassword(string $password): string
     {
         return Hash::make($password);
@@ -143,8 +145,6 @@ class User extends Authenticatable
 
     /**
      * Check if this user has one of the admin roles.
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {
@@ -162,10 +162,10 @@ class User extends Authenticatable
      *
      * @return HasOne
      */
-//    public function personData(): HasOne
-//    {
-//        return $this->hasOne(PersonData::class, 'user_id');
-//    }
+    //    public function personData(): HasOne
+    //    {
+    //        return $this->hasOne(PersonData::class, 'user_id');
+    //    }
 
     /*
     |--------------------------------------------------------------------------
@@ -181,8 +181,6 @@ class User extends Authenticatable
 
     /**
      * Returns the email followed by the ID enclosed in parentheses.
-     *
-     * @return string
      */
     public function getEmailAndIdAttribute(): string
     {

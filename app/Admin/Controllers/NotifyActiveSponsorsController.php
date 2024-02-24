@@ -48,7 +48,7 @@ class NotifyActiveSponsorsController extends Controller
         $cat = Cat::find($request->input('cat'));
         $messageType = SponsorshipMessageType::find($request->input('messageType'));
 
-        if (!$cat || !$messageType) {
+        if (! $cat || ! $messageType) {
             return back()->with('error-message', 'Prišlo je do napake pri pridobivanju podatkov na strežniku.')->withInput();
         }
 

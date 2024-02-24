@@ -7,7 +7,6 @@ use App\Http\Requests\SpecialSponsorshipRequest;
 use App\Mail\SpecialSponsorshipMail;
 use App\Models\PersonData;
 use App\Models\SpecialSponsorship;
-use App\Models\Sponsorship;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -63,7 +62,7 @@ class SpecialSponsorshipController extends Controller
             ->whereDate('confirmed_at', '>=', $startOfPreviousMonth)
             ->get()
             ->each(function (SpecialSponsorship $sponsorship) {
-                if (!$sponsorship->is_anonymous) {
+                if (! $sponsorship->is_anonymous) {
                     $sponsorship->load('sponsor');
                 }
             });

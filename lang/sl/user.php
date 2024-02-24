@@ -5,5 +5,5 @@ return [
     'email' => 'E-mail naslov',
     'password' => 'Geslo',
     'password_confirm' => 'Potrditev gesla',
-    'is_active' => 'Aktiviran'
+    'is_active' => 'Aktiviran',
 ];

@@ -30,7 +30,7 @@ class UserCrudController extends BackpackUserCrudController
     public function setup(): void
     {
         parent::setup();
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.users'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.users'));
         $this->crud->enableExportButtons();
     }
 
@@ -51,17 +51,17 @@ class UserCrudController extends BackpackUserCrudController
         $this->crud->modifyField('name', [
             'label' => trans('user.name'),
             'wrapper' => [
-                'dusk' => 'name-input-wrapper'
+                'dusk' => 'name-input-wrapper',
             ],
         ]);
         $this->crud->modifyField('email', [
             'wrapper' => [
-                'dusk' => 'email-input-wrapper'
+                'dusk' => 'email-input-wrapper',
             ],
         ]);
         $this->crud->modifyField('password', [
             'wrapper' => [
-                'dusk' => 'password-input-wrapper'
+                'dusk' => 'password-input-wrapper',
             ],
         ]);
     }

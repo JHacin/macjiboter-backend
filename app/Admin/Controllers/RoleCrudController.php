@@ -7,12 +7,12 @@ use Backpack\PermissionManager\app\Http\Controllers\RoleCrudController as Backpa
 class RoleCrudController extends BackpackRoleCrudController
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function setup()
     {
         parent::setup();
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.roles'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.roles'));
     }
 
     public function setupListOperation()
@@ -30,7 +30,7 @@ class RoleCrudController extends BackpackRoleCrudController
             [
                 'wrapper' => [
                     'href' => function ($crud, $column, $entry, $related_key) {
-                        return backpack_url(config('routes.admin.users') . '?role=' . $entry->getKey());
+                        return backpack_url(config('routes.admin.users').'?role='.$entry->getKey());
                     },
                 ],
                 'suffix' => ' uporabnikov',
@@ -39,5 +39,4 @@ class RoleCrudController extends BackpackRoleCrudController
 
         $this->crud->removeColumn('name');
     }
-
 }

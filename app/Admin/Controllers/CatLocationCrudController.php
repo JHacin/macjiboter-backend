@@ -16,11 +16,11 @@ use Exception;
 
 class CatLocationCrudController extends CrudController
 {
-    use ListOperation;
     use CreateOperation;
-    use UpdateOperation;
     use DeleteOperation;
+    use ListOperation;
     use ReviseOperation;
+    use UpdateOperation;
 
     /**
      * @throws Exception
@@ -28,7 +28,7 @@ class CatLocationCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(CatLocation::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.cat_locations'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.cat_locations'));
         $this->crud->setEntityNameStrings('Lokacija', 'Lokacije');
         $this->crud->setSubheading('Dodaj novo lokacijo', 'create');
         $this->crud->setSubheading('Uredi lokacijo', 'edit');
@@ -66,7 +66,7 @@ class CatLocationCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'name-wrapper'
+                'dusk' => 'name-wrapper',
             ],
         ]);
 

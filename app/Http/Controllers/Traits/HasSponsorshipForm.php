@@ -24,14 +24,14 @@ trait HasSponsorshipForm
     protected function constructPersonDataFields(FormRequest $request, string $prefix): array
     {
         return [
-            'email' => $request->input($prefix . '_email'),
-            'first_name' => $request->input($prefix . '_first_name'),
-            'last_name' => $request->input($prefix . '_last_name'),
-            'gender' => $request->input($prefix . '_gender'),
-            'address' => $request->input($prefix . '_address'),
-            'zip_code' => $request->input($prefix . '_zip_code'),
-            'city' => $request->input($prefix . '_city'),
-            'country' => $request->input($prefix . '_country'),
+            'email' => $request->input($prefix.'_email'),
+            'first_name' => $request->input($prefix.'_first_name'),
+            'last_name' => $request->input($prefix.'_last_name'),
+            'gender' => $request->input($prefix.'_gender'),
+            'address' => $request->input($prefix.'_address'),
+            'zip_code' => $request->input($prefix.'_zip_code'),
+            'city' => $request->input($prefix.'_city'),
+            'country' => $request->input($prefix.'_country'),
         ];
     }
 
@@ -42,6 +42,7 @@ trait HasSponsorshipForm
         if ($existing instanceof PersonData) {
             $existing->update($personDataFormInput);
             $existing->refresh();
+
             return $existing;
         }
 
@@ -51,8 +52,8 @@ trait HasSponsorshipForm
     private function findPersonWithSameNameAndEmail(array $personDataFormInput): ?PersonData
     {
         return PersonData::where(['email' => $personDataFormInput['email']])
-            ->whereRaw("UPPER(first_name) = '" . strtoupper($personDataFormInput['first_name']) . "'")
-            ->whereRaw("UPPER(last_name) = '" . strtoupper($personDataFormInput['last_name']) . "'")
+            ->whereRaw("UPPER(first_name) = '".strtoupper($personDataFormInput['first_name'])."'")
+            ->whereRaw("UPPER(last_name) = '".strtoupper($personDataFormInput['last_name'])."'")
             ->get()
             ->first();
     }

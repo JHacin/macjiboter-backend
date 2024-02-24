@@ -21,8 +21,8 @@ class AdminSponsorshipRequest extends FormRequest
             'monthly_amount' => [
                 'required',
                 'numeric',
-                'min:' . config('money.donation_minimum'),
-                'max:' . config('validation.integer_max'),
+                'min:'.config('money.donation_minimum'),
+                'max:'.config('validation.integer_max'),
             ],
             'payment_type' => ['required', Rule::in(Sponsorship::PAYMENT_TYPES)],
             'cat' => [
@@ -37,7 +37,7 @@ class AdminSponsorshipRequest extends FormRequest
                 Rule::unique('sponsorships', 'sponsor_id')
                     ->where('is_active', true)
                     ->where('cat_id', $this->input('cat'))
-                    ->ignore($this->get('id'))
+                    ->ignore($this->get('id')),
             ],
             'payer' => [
                 'required_if:is_gift,1',

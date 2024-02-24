@@ -30,7 +30,7 @@ class CatSeeder extends Seeder
                 CatPhoto::factory()->createOne([
                     'cat_id' => $cat->id,
                     'filename' => $filename,
-                    'caption' => $cat->name . '-' . $index . '-naslov',
+                    'caption' => $cat->name.'-'.$index.'-naslov',
                     'index' => $index,
                     'sizes' => [
                         'md' => ['name' => 'md', 'width' => 960, 'filename' => $filename],
@@ -44,7 +44,7 @@ class CatSeeder extends Seeder
         $photosDirectory = storage_path("app/public/{$pathRoot}");
 
         // On fresh install, the root dir does not exist.
-        if (!File::isDirectory($photosDirectory)) {
+        if (! File::isDirectory($photosDirectory)) {
             File::makeDirectory($photosDirectory, 0777, true, true);
         }
 

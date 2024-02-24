@@ -29,6 +29,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $cats_count
  * @property-read Collection|Revision[] $revisionHistory
  * @property-read int|null $revision_history_count
+ *
  * @method static Builder|CatLocation newModelQuery()
  * @method static Builder|CatLocation newQuery()
  * @method static Builder|CatLocation query()
@@ -41,11 +42,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|CatLocation whereUpdatedAt($value)
  * @method static Builder|CatLocation whereZipCode($value)
  * @method static CatLocationFactory factory(...$parameters)
+ *
  * @mixin Eloquent
  */
 class CatLocation extends Model
 {
-    use CrudTrait, RevisionableTrait, HasFactory;
+    use CrudTrait, HasFactory, RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -54,6 +56,7 @@ class CatLocation extends Model
     */
 
     protected $table = 'cat_locations';
+
     protected $guarded = ['id'];
 
     /*
@@ -70,8 +73,6 @@ class CatLocation extends Model
 
     /**
      * Get the cats that are on this location.
-     *
-     * @return HasMany
      */
     public function cats(): HasMany
     {

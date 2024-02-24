@@ -25,11 +25,13 @@ use Illuminate\Http\Request;
 
 class SponsorshipMessageCrudController extends CrudController
 {
-    use ListOperation;
     use CreateOperation { store as traitStore; }
+    use ListOperation;
 
     private MailTemplateParser $mailTemplateParser;
+
     private TemplateApiClient $templateApiClient;
+
     private SponsorshipMessageHandler $sponsorshipMessageHandler;
 
     public function __construct(
@@ -51,7 +53,7 @@ class SponsorshipMessageCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(SponsorshipMessage::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsorship_messages'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.sponsorship_messages'));
         $this->crud->setEntityNameStrings('Pismo', 'Pisma');
         $this->crud->enableExportButtons();
     }
@@ -72,7 +74,7 @@ class SponsorshipMessageCrudController extends CrudController
                 $query->orWhereHas('messageType', function (Builder $query) use ($searchTerm) {
                     $query->where('name', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn([
             'name' => 'sponsor',
@@ -87,7 +89,7 @@ class SponsorshipMessageCrudController extends CrudController
                 $query->orWhereHas('sponsor', function (Builder $query) use ($searchTerm) {
                     $query->where('email', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn(CrudColumnGenerator::cat());
         $this->crud->addColumn(CrudColumnGenerator::createdAt(['label' => 'Poslano']));
@@ -142,8 +144,8 @@ class SponsorshipMessageCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'messageType-wrapper'
-            ]
+                'dusk' => 'messageType-wrapper',
+            ],
         ]);
 
         $this->crud->addField([
@@ -155,14 +157,14 @@ class SponsorshipMessageCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'sponsor-wrapper'
-            ]
+                'dusk' => 'sponsor-wrapper',
+            ],
         ]);
         $this->crud->addField(CrudFieldGenerator::cat());
         $this->crud->addField([
-            'name'  => 'separator_1',
-            'type'  => 'custom_html',
-            'value' => '<hr>'
+            'name' => 'separator_1',
+            'type' => 'custom_html',
+            'value' => '<hr>',
         ]);
         $this->crud->addField([
             'name' => 'sponsor_sent_messages',
@@ -170,9 +172,9 @@ class SponsorshipMessageCrudController extends CrudController
             'view' => 'admin/sponsor-sent-messages',
         ]);
         $this->crud->addField([
-            'name'  => 'separator_2',
-            'type'  => 'custom_html',
-            'value' => '<hr>'
+            'name' => 'separator_2',
+            'type' => 'custom_html',
+            'value' => '<hr>',
         ]);
         $this->crud->addField([
             'name' => 'parsed_template_preview',
@@ -180,9 +182,9 @@ class SponsorshipMessageCrudController extends CrudController
             'view' => 'admin/parsed-template-preview',
         ]);
         $this->crud->addField([
-            'name'  => 'separator_3',
-            'type'  => 'custom_html',
-            'value' => '<hr>'
+            'name' => 'separator_3',
+            'type' => 'custom_html',
+            'value' => '<hr>',
         ]);
         $this->crud->addField([
             'name' => 'should_send_email',
@@ -197,7 +199,7 @@ class SponsorshipMessageCrudController extends CrudController
                 'dusk' => 'should_send_email-input-wrapper',
             ],
             'attributes' => [
-                'required' => 'required'
+                'required' => 'required',
             ],
         ]);
     }
@@ -240,4 +242,3 @@ class SponsorshipMessageCrudController extends CrudController
         return response()->json(['parsedTemplate' => $parsed]);
     }
 }
-

@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
             return new MailClient(
                 Mailgun::create(
                     config('services.mailgun.secret'),
-                    config('services.mailgun.scheme') . '://' . config('services.mailgun.endpoint')
+                    config('services.mailgun.scheme').'://'.config('services.mailgun.endpoint')
                 )
             );
         });

@@ -53,7 +53,7 @@ class SpecialSponsorshipMail
             'bcc' => config('mail.vars.bcc_copy_address'),
             'subject' => 'Navodila po izpolnitvi obrazca za botrstvo',
             'template' => 'navodila_za_posebno_botrstvo',
-            'h:X-Mailgun-Variables' => json_encode($variables)
+            'h:X-Mailgun-Variables' => json_encode($variables),
         ];
 
         $this->mailClient->send($params);

@@ -22,7 +22,7 @@ class PersonDataObserver
 
     public function created(PersonData $personData): void
     {
-//        $this->getEmailFromRelatedUser($personData);
+        //        $this->getEmailFromRelatedUser($personData);
         $this->mailingListManager->addToAllLists($personData);
     }
 
@@ -33,9 +33,9 @@ class PersonDataObserver
 
     public function updated(PersonData $personData): void
     {
-//        if ($personData->user) {
-//            $this->syncEmailWithUser($personData);
-//        }
+        //        if ($personData->user) {
+        //            $this->syncEmailWithUser($personData);
+        //        }
     }
 
     public function deleted(PersonData $personData): void
@@ -69,7 +69,7 @@ class PersonDataObserver
             ? $personData->getOriginal('email')
             : $personData->email;
 
-        if (!$emailAssignedInMailingList) {
+        if (! $emailAssignedInMailingList) {
             return;
         }
 

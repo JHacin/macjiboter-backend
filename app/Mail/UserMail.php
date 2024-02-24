@@ -7,7 +7,6 @@ use App\Models\User;
 
 class UserMail
 {
-
     private MailClient $mailClient;
 
     public function __construct(MailClient $mailClient)
@@ -16,7 +15,6 @@ class UserMail
     }
 
     /**
-     * @param \App\Models\User $user
      * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
      */
     public function sendWelcomeEmail(User $user)

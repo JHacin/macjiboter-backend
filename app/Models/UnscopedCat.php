@@ -40,6 +40,7 @@ use Venturecraft\Revisionable\Revision;
  * @property-read int|null $sponsorship_messages_count
  * @property-read Collection<int, Sponsorship> $sponsorships
  * @property-read int|null $sponsorships_count
+ *
  * @method static Builder|UnscopedCat newModelQuery()
  * @method static Builder|UnscopedCat newQuery()
  * @method static Builder|UnscopedCat query()
@@ -57,12 +58,13 @@ use Venturecraft\Revisionable\Revision;
  * @method static Builder|UnscopedCat whereStory($value)
  * @method static Builder|UnscopedCat whereStoryShort($value)
  * @method static Builder|UnscopedCat whereUpdatedAt($value)
+ *
  * @mixin Eloquent
  */
 class UnscopedCat extends Cat
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function booted(): void
     {

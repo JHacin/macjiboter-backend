@@ -30,7 +30,7 @@ class AdminSponsorshipMessageTypeRequest extends FormRequest
                 'max:255',
                 Rule::unique('sponsorship_message_types', 'template_id')->ignore($currentId),
             ],
-            'is_active' => ['boolean']
+            'is_active' => ['boolean'],
         ];
     }
 

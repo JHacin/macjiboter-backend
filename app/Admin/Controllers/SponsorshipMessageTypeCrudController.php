@@ -17,11 +17,11 @@ use Illuminate\Support\Facades\Auth;
 
 class SponsorshipMessageTypeCrudController extends CrudController
 {
-    use ListOperation;
     use CreateOperation;
-    use UpdateOperation;
     use DeleteOperation;
+    use ListOperation;
     use ReviseOperation;
+    use UpdateOperation;
 
     /**
      * @throws Exception
@@ -30,7 +30,7 @@ class SponsorshipMessageTypeCrudController extends CrudController
     {
         $this->crud->setModel(SponsorshipMessageType::class);
         $this->crud->setRoute(
-            config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsorship_message_types')
+            config('backpack.base.route_prefix').'/'.config('routes.admin.sponsorship_message_types')
         );
         $this->crud->setEntityNameStrings('Vrsta pisma', 'Vrste pisem');
         $this->setupAccessToOperations();
@@ -41,7 +41,7 @@ class SponsorshipMessageTypeCrudController extends CrudController
     {
         $user = Auth::user();
 
-        if (!$user->hasRole(User::ROLE_SUPER_ADMIN)) {
+        if (! $user->hasRole(User::ROLE_SUPER_ADMIN)) {
             $this->crud->denyAccess(['create', 'update', 'delete', 'revise']);
         }
     }
@@ -76,7 +76,7 @@ class SponsorshipMessageTypeCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'name-wrapper'
+                'dusk' => 'name-wrapper',
             ],
         ]);
 
@@ -89,7 +89,7 @@ class SponsorshipMessageTypeCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'subject-wrapper'
+                'dusk' => 'subject-wrapper',
             ],
         ]);
 
@@ -102,7 +102,7 @@ class SponsorshipMessageTypeCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'template_id-wrapper'
+                'dusk' => 'template_id-wrapper',
             ],
         ]);
         $this->crud->addField([

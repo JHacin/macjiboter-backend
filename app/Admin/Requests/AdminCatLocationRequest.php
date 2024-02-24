@@ -8,17 +8,11 @@ use Illuminate\Validation\Rule;
 
 class AdminCatLocationRequest extends FormRequest
 {
-    /**
-     * @return bool
-     */
     public function authorize(): bool
     {
         return backpack_auth()->check();
     }
 
-    /**
-     * @return array
-     */
     public function rules(): array
     {
         return [
@@ -33,7 +27,7 @@ class AdminCatLocationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.unique' => 'To ime že uporablja obstoječa lokacija.'
+            'name.unique' => 'To ime že uporablja obstoječa lokacija.',
         ];
     }
 }

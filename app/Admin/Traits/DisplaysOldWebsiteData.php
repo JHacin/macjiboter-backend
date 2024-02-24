@@ -8,10 +8,10 @@ trait DisplaysOldWebsiteData
 {
     public function displayOldWebsiteData(string $entity): void
     {
-        $migrationMeta = DB::table("db_migration_meta")
+        $migrationMeta = DB::table('db_migration_meta')
             ->where([
-                "entity" => $entity,
-                "new_id" => $this->crud->getCurrentEntry()->id,
+                'entity' => $entity,
+                'new_id' => $this->crud->getCurrentEntry()->id,
             ])
             ->first();
 
@@ -20,8 +20,8 @@ trait DisplaysOldWebsiteData
         }
 
         foreach ($this->crud->fields() as $key => $field) {
-            if (!isset($field["tab"])) {
-                $this->crud->modifyField($key, ["tab" => "Urejanje"]);
+            if (! isset($field['tab'])) {
+                $this->crud->modifyField($key, ['tab' => 'Urejanje']);
             }
         }
 

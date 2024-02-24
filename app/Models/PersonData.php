@@ -15,7 +15,6 @@ use Illuminate\Support\Carbon;
 use Venturecraft\Revisionable\Revision;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-
 /**
  * App\Models\PersonData
  *
@@ -43,6 +42,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read Collection|Sponsorship[] $unscopedSponsorships
  * @property-read int|null $unscoped_sponsorships_count
  * @property-read User|null $user
+ *
  * @method static PersonDataFactory factory(...$parameters)
  * @method static Builder|PersonData newModelQuery()
  * @method static Builder|PersonData newQuery()
@@ -59,11 +59,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|PersonData whereLastName($value)
  * @method static Builder|PersonData whereUpdatedAt($value)
  * @method static Builder|PersonData whereZipCode($value)
+ *
  * @mixin Eloquent
  */
 class PersonData extends Model
 {
-    use HasFactory, CrudTrait, RevisionableTrait;
+    use CrudTrait, HasFactory, RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -72,6 +73,7 @@ class PersonData extends Model
     */
 
     public const GENDER_MALE = 1;
+
     public const GENDER_FEMALE = 2;
 
     public const GENDERS = [
@@ -91,13 +93,14 @@ class PersonData extends Model
     */
 
     protected $table = 'person_data';
+
     protected $guarded = ['id'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
-     * Todo: user_id?
+     *            Todo: user_id?
      */
     protected $fillable = [
         'email',
@@ -174,8 +177,6 @@ class PersonData extends Model
 
     /**
      * Convert the stored integer to a label shown on the front end.
-     *
-     * @return string
      */
     public function getGenderLabelAttribute(): string
     {
@@ -184,8 +185,6 @@ class PersonData extends Model
 
     /**
      * Returns the email followed by the user ID (or the "not registered" label) enclosed in parentheses.
-     *
-     * @return string
      */
     public function getEmailAndIdAttribute(): string
     {

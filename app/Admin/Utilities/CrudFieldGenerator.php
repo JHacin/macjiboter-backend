@@ -12,22 +12,22 @@ class CrudFieldGenerator
     public static function addAddressFields(CrudPanel $crudPanel, string $namePrefix = ''): void
     {
         $crudPanel->addField([
-            'name' => $namePrefix . 'address',
+            'name' => $namePrefix.'address',
             'label' => trans('person_data.address'),
             'type' => 'text',
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix . 'zip_code',
+            'name' => $namePrefix.'zip_code',
             'label' => trans('person_data.zip_code'),
             'type' => 'text',
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix . 'city',
+            'name' => $namePrefix.'city',
             'label' => trans('person_data.city'),
             'type' => 'text',
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix . 'country',
+            'name' => $namePrefix.'country',
             'label' => trans('person_data.country'),
             'type' => 'select2_from_array',
             'options' => CountryList::COUNTRY_NAMES,
@@ -38,33 +38,33 @@ class CrudFieldGenerator
 
     public static function addPersonDataFields(CrudPanel $crudPanel): void
     {
-        $isNested = !($crudPanel->getModel() instanceof PersonData);
+        $isNested = ! ($crudPanel->getModel() instanceof PersonData);
         $namePrefix = $isNested ? 'personData.' : '';
 
         $crudPanel->addField([
-            'name' => $namePrefix . 'first_name',
+            'name' => $namePrefix.'first_name',
             'label' => trans('person_data.first_name'),
             'type' => 'text',
             'attributes' => [
-                'required' => 'required'
+                'required' => 'required',
             ],
             'wrapper' => [
                 'dusk' => 'first_name-input-wrapper',
             ],
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix . 'last_name',
+            'name' => $namePrefix.'last_name',
             'label' => trans('person_data.last_name'),
             'type' => 'text',
             'attributes' => [
-                'required' => 'required'
+                'required' => 'required',
             ],
             'wrapper' => [
                 'dusk' => 'last_name-input-wrapper',
             ],
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix . 'gender',
+            'name' => $namePrefix.'gender',
             'label' => trans('person_data.gender'),
             'type' => 'select2_from_array',
             'options' => PersonData::GENDER_LABELS,
@@ -73,11 +73,11 @@ class CrudFieldGenerator
                 'dusk' => 'gender-input-wrapper',
             ],
             'attributes' => [
-                'required' => 'required'
+                'required' => 'required',
             ],
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix . 'date_of_birth',
+            'name' => $namePrefix.'date_of_birth',
             'label' => trans('person_data.date_of_birth'),
             'type' => 'date_picker',
             'date_picker_options' => [
@@ -101,7 +101,7 @@ class CrudFieldGenerator
                 'min' => '0.00',
                 'max' => config('validation.integer_max'),
                 'step' => '1',
-                'placeholder' => '0.00'
+                'placeholder' => '0.00',
             ], $additions['attributes'] ?? []),
         ], $additions);
     }
@@ -137,31 +137,31 @@ class CrudFieldGenerator
                 'toolbar' => [
                     [
                         'name' => 'clipboard',
-                        'items' => ['Undo', 'Redo', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord']
+                        'items' => ['Undo', 'Redo', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord'],
                     ],
                     [
                         'name' => 'links',
-                        'items' => ['Link', 'Unlink']
+                        'items' => ['Link', 'Unlink'],
                     ],
                     [
                         'name' => 'document',
-                        'items' => ['Source']
+                        'items' => ['Source'],
                     ],
                     '/',
                     [
                         'name' => 'basicstyles',
-                        'items' => ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
+                        'items' => ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
                     ],
                     [
                         'name' => 'paragraph',
-                        'items' => ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent']
+                        'items' => ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
                     ],
                     [
                         'name' => 'styles',
-                        'items' => ['Format']
+                        'items' => ['Format'],
                     ],
                 ],
-            ]
+            ],
         ], $additions);
     }
 
@@ -174,7 +174,7 @@ class CrudFieldGenerator
             'attributes' => [
                 'disabled' => true,
                 'rows' => 4,
-            ]
+            ],
         ];
     }
 
@@ -187,7 +187,7 @@ class CrudFieldGenerator
             'attributes' => [
                 'disabled' => true,
                 'rows' => 6,
-            ]
+            ],
         ];
     }
 
@@ -195,7 +195,7 @@ class CrudFieldGenerator
     {
         return [
             'name' => 'cat',
-            'entity'=> 'unscopedCat', // clears status scope
+            'entity' => 'unscopedCat', // clears status scope
             'model' => UnscopedCat::class, // clears status scope
             'label' => trans('cat.cat'),
             'type' => 'relationship',
@@ -204,8 +204,8 @@ class CrudFieldGenerator
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'cat-wrapper'
-            ]
+                'dusk' => 'cat-wrapper',
+            ],
         ];
     }
 }

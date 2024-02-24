@@ -25,12 +25,12 @@ use Prologue\Alerts\Facades\Alert;
 
 class SponsorshipCrudController extends CrudController
 {
-    use ListOperation;
-    use CreateOperation;
-    use UpdateOperation;
-    use DeleteOperation;
-    use ReviseOperation;
     use ClearsModelGlobalScopes, DisplaysOldWebsiteData;
+    use CreateOperation;
+    use DeleteOperation;
+    use ListOperation;
+    use ReviseOperation;
+    use UpdateOperation;
 
     /**
      * @throws Exception
@@ -39,7 +39,7 @@ class SponsorshipCrudController extends CrudController
     {
         $this->crud->setModel(Sponsorship::class);
         $this->clearModelGlobalScopes([Sponsorship::SCOPE_ONLY_ACTIVE]);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsorships'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.sponsorships'));
         $this->crud->setEntityNameStrings('Botrstvo', 'Botrstva');
         $this->crud->setSubheading('Dodaj novo botrstvo', 'create');
         $this->crud->setSubheading('Uredi botrstvo', 'edit');
@@ -66,7 +66,7 @@ class SponsorshipCrudController extends CrudController
                         ->where('email', 'like', "%$searchTerm%")
                         ->orWhere('id', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn([
             'name' => 'payer',
@@ -83,11 +83,11 @@ class SponsorshipCrudController extends CrudController
                         ->where('email', 'like', "%$searchTerm%")
                         ->orWhere('id', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn(CrudColumnGenerator::moneyColumn([
             'name' => 'monthly_amount',
-            'label' => trans('admin.sponsorship_monthly_amount')
+            'label' => trans('admin.sponsorship_monthly_amount'),
         ]));
         $this->crud->addColumn([
             'name' => 'is_gift',
@@ -162,7 +162,6 @@ class SponsorshipCrudController extends CrudController
         CrudFilterGenerator::addBooleanFilter($this->crud, 'is_gift', trans('sponsorship.is_gift'));
     }
 
-
     protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminSponsorshipRequest::class);
@@ -177,14 +176,14 @@ class SponsorshipCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'sponsor-wrapper'
-            ]
+                'dusk' => 'sponsor-wrapper',
+            ],
         ]);
         $this->crud->addField(CrudFieldGenerator::moneyField([
             'name' => 'monthly_amount',
             'label' => trans('admin.sponsorship_monthly_amount'),
             'wrapper' => [
-                'dusk' => 'monthly_amount-wrapper'
+                'dusk' => 'monthly_amount-wrapper',
             ],
             'attributes' => [
                 'required' => 'required',
@@ -195,8 +194,8 @@ class SponsorshipCrudController extends CrudController
             'label' => 'Botrstvo je podarjeno',
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_gift-wrapper'
-            ]
+                'dusk' => 'is_gift-wrapper',
+            ],
         ]);
         $this->crud->addField([
             'name' => 'requested_duration',
@@ -215,8 +214,8 @@ class SponsorshipCrudController extends CrudController
             'type' => 'relationship',
             'placeholder' => 'Izberi plačnika',
             'wrapper' => [
-                'dusk' => 'payer-wrapper'
-            ]
+                'dusk' => 'payer-wrapper',
+            ],
         ]);
         $this->crud->addField([
             'name' => 'payment_type',
@@ -226,7 +225,7 @@ class SponsorshipCrudController extends CrudController
             'default' => Sponsorship::PAYMENT_TYPE_BANK_TRANSFER,
             'inline' => true,
             'wrapper' => [
-                'dusk' => 'payment_type-input-wrapper'
+                'dusk' => 'payment_type-input-wrapper',
             ],
         ]);
         $this->crud->addField([
@@ -234,24 +233,23 @@ class SponsorshipCrudController extends CrudController
             'label' => 'Anonimno',
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_anonymous-wrapper'
-            ]
+                'dusk' => 'is_anonymous-wrapper',
+            ],
         ]);
         $this->crud->addField([
             'name' => 'is_active',
             'label' => 'Aktivno',
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_active-wrapper'
+                'dusk' => 'is_active-wrapper',
             ],
-            'hint' =>
-                'Botrstvo je v teku (redna plačila, muca še kar potrebuje botre itd.).' .
+            'hint' => 'Botrstvo je v teku (redna plačila, muca še kar potrebuje botre itd.).'.
                 '<br>Neaktivna botrstva ne bodo vključena na spletni strani (v seštevkih botrstev, na seznamih botrov itd.)',
         ]);
         $this->crud->addField([
             'name' => 'email_warning',
             'type' => 'custom_html',
-            'value' => '<b>Boter po vnosu ne bo prejel avtomatskega emaila.</b>'
+            'value' => '<b>Boter po vnosu ne bo prejel avtomatskega emaila.</b>',
         ]);
     }
 
@@ -265,15 +263,14 @@ class SponsorshipCrudController extends CrudController
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'ended_at',
             'label' => 'Datum konca',
-            'hint' =>
-                'Če želite uradno prekiniti botrstvo, je treba tudi odkljukati polje \'Aktivno\'.' .
-                ' Datum konca se hrani samo za evidenco tega, koliko časa je trajalo določeno botrstvo.' .
+            'hint' => 'Če želite uradno prekiniti botrstvo, je treba tudi odkljukati polje \'Aktivno\'.'.
+                ' Datum konca se hrani samo za evidenco tega, koliko časa je trajalo določeno botrstvo.'.
                 ' Datum se lahko izbriše s pritiskom na polje > "Clear".',
             'wrapper' => [
-                'dusk' => 'ended_at-wrapper'
-            ]
+                'dusk' => 'ended_at-wrapper',
+            ],
         ]));
-        $this->displayOldWebsiteData("sponsorship");
+        $this->displayOldWebsiteData('sponsorship');
     }
 
     /** @noinspection PhpUnused */
@@ -284,6 +281,7 @@ class SponsorshipCrudController extends CrudController
             $sponsorship->cancel();
             Alert::success('Botrstvo uspešno prekinjeno.')->flash();
         }
+
         return Redirect::back();
     }
 }

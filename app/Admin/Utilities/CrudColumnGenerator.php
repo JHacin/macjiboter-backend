@@ -15,7 +15,7 @@ class CrudColumnGenerator
             'type' => 'text',
             'searchLogic' => function (Builder $query, $column, $searchTerm) {
                 $query->orWhere('id', '=', $searchTerm);
-            }
+            },
         ];
     }
 
@@ -82,11 +82,12 @@ class CrudColumnGenerator
             'options' => CountryList::COUNTRY_NAMES,
             'searchLogic' => function (Builder $query, $column, $searchTerm) {
                 $code = CountryList::getCodeByName($searchTerm);
-                if (!$code) {
+                if (! $code) {
                     return false;
                 }
+
                 return $query->orWhere('country', $code);
-            }
+            },
         ], $additions);
     }
 
@@ -173,7 +174,7 @@ class CrudColumnGenerator
                         ->where('name', 'like', "%$searchTerm%")
                         ->orWhere('id', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ];
     }
 }

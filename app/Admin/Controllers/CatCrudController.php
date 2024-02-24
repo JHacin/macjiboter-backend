@@ -26,16 +26,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CatCrudController extends CrudController
 {
-    use ListOperation;
+    use ClearsModelGlobalScopes, DisplaysOldWebsiteData;
     use CreateOperation {
         store as traitStore;
     }
+    use DeleteOperation;
+    use ListOperation;
+    use ReviseOperation;
     use UpdateOperation {
         update as traitUpdate;
     }
-    use DeleteOperation;
-    use ReviseOperation;
-    use ClearsModelGlobalScopes, DisplaysOldWebsiteData;
 
     /**
      * @throws Exception
@@ -44,7 +44,7 @@ class CatCrudController extends CrudController
     {
         $this->crud->setModel(Cat::class);
         $this->clearModelGlobalScopes([Cat::SCOPE_ONLY_PUBLICLY_VISIBLE_CATS]);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.cats'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.cats'));
         $this->crud->setEntityNameStrings('Muca', 'Muce');
         $this->crud->setSubheading('Dodaj novo muco', 'create');
         $this->crud->setSubheading('Uredi muco', 'edit');
@@ -64,7 +64,7 @@ class CatCrudController extends CrudController
         $this->crud->addColumn([
             'name' => 'status_label',
             'label' => trans('cat.status'),
-            'type' => 'text'
+            'type' => 'text',
         ]);
         $this->crud->addColumn([
             'name' => 'is_published',
@@ -72,26 +72,26 @@ class CatCrudController extends CrudController
             'type' => 'boolean',
         ]);
         $this->crud->addColumn(CrudColumnGenerator::genderLabel());
-//        $this->crud->addColumn([
-//            'name' => 'date_of_arrival_mh',
-//            'label' => trans('cat.date_of_arrival_mh'),
-//            'type' => 'date',
-//        ]);
-//        $this->crud->addColumn([
-//            'name' => 'location',
-//            'label' => trans('cat.location'),
-//            'type' => 'relationship',
-//            'wrapper' => [
-//                'href' => function ($crud, $column, $entry, $related_key) {
-//                    return backpack_url(config('routes.admin.cat_locations'), [$related_key, 'edit']);
-//                },
-//            ],
-//            'searchLogic' => function (Builder $query, $column, $searchTerm) {
-//                $query->orWhereHas('location', function (Builder $query) use ($searchTerm) {
-//                    $query->where('name', 'like', "%$searchTerm%");
-//                });
-//            }
-//        ]);
+        //        $this->crud->addColumn([
+        //            'name' => 'date_of_arrival_mh',
+        //            'label' => trans('cat.date_of_arrival_mh'),
+        //            'type' => 'date',
+        //        ]);
+        //        $this->crud->addColumn([
+        //            'name' => 'location',
+        //            'label' => trans('cat.location'),
+        //            'type' => 'relationship',
+        //            'wrapper' => [
+        //                'href' => function ($crud, $column, $entry, $related_key) {
+        //                    return backpack_url(config('routes.admin.cat_locations'), [$related_key, 'edit']);
+        //                },
+        //            ],
+        //            'searchLogic' => function (Builder $query, $column, $searchTerm) {
+        //                $query->orWhereHas('location', function (Builder $query) use ($searchTerm) {
+        //                    $query->where('name', 'like', "%$searchTerm%");
+        //                });
+        //            }
+        //        ]);
         $this->crud->addColumn(CrudColumnGenerator::createdAt());
         $this->crud->addColumn(CrudColumnGenerator::updatedAt());
 
@@ -134,7 +134,7 @@ class CatCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'name-input-wrapper'
+                'dusk' => 'name-input-wrapper',
             ],
             'tab' => 'Podatki',
         ]);
@@ -145,7 +145,7 @@ class CatCrudController extends CrudController
             'options' => Cat::GENDER_LABELS,
             'inline' => true,
             'wrapper' => [
-                'dusk' => 'gender-input-wrapper'
+                'dusk' => 'gender-input-wrapper',
             ],
             'hint' => 'Pri skupinah muc spol ni obvezen.',
             'tab' => 'Podatki',
@@ -159,19 +159,18 @@ class CatCrudController extends CrudController
             'default' => Cat::STATUS_NOT_SEEKING_SPONSORS,
             'required' => true,
             'wrapper' => [
-                'dusk' => 'status-input-wrapper'
+                'dusk' => 'status-input-wrapper',
             ],
-            'hint' =>
-                '<em>išče botre</em>: objavljena, botrstvo je možno<br>' .
-                '<em>trenutno ne išče botrov</em>: objavljena, botrstvo ni možno, prikazana je opomba<br>' .
-                '<em>ne išče botrov</em>: ni objavljena, botrstvo ni možno<br>' .
-                '<em>v novem domu</em>: ni objavljena, botrstvo ni možno<br>' .
+            'hint' => '<em>išče botre</em>: objavljena, botrstvo je možno<br>'.
+                '<em>trenutno ne išče botrov</em>: objavljena, botrstvo ni možno, prikazana je opomba<br>'.
+                '<em>ne išče botrov</em>: ni objavljena, botrstvo ni možno<br>'.
+                '<em>v novem domu</em>: ni objavljena, botrstvo ni možno<br>'.
                 '<em>RIP</em>: ni objavljena, botrstvo ni možno<br>',
             'tab' => 'Podatki',
         ]);
         $this->crud->addField([
             'name' => 'is_published',
-            'label' => trans('cat.is_published') . '?',
+            'label' => trans('cat.is_published').'?',
             'type' => 'radio',
             'options' => [
                 1 => 'Da',
@@ -184,7 +183,7 @@ class CatCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name' => 'is_group',
-            'label' => trans('cat.is_group') . '?',
+            'label' => trans('cat.is_group').'?',
             'type' => 'radio',
             'options' => [
                 1 => 'Da',
@@ -193,7 +192,7 @@ class CatCrudController extends CrudController
             'default' => 0,
             'inline' => true,
             'wrapper' => [
-                'dusk' => 'is_group-input-wrapper'
+                'dusk' => 'is_group-input-wrapper',
             ],
             'hint' => 'Ali naj se ta vnos obravnava kot druge skupine - Čombe, Pozitivčki, Bubiji...',
             'tab' => 'Podatki',
@@ -202,7 +201,7 @@ class CatCrudController extends CrudController
             'name' => 'story_short',
             'label' => trans('cat.story_short'),
             'type' => 'textarea',
-            'hint' => 'Največ ' . config('validation.cat.story_short_maxlength') . ' znakov.',
+            'hint' => 'Največ '.config('validation.cat.story_short_maxlength').' znakov.',
             'attributes' => [
                 'maxlength' => config('validation.cat.story_short_maxlength'),
                 'required' => 'required',
@@ -219,7 +218,7 @@ class CatCrudController extends CrudController
             'name' => 'date_of_birth',
             'label' => trans('cat.date_of_birth'),
             'wrapper' => [
-                'dusk' => 'date-of-birth-input-wrapper'
+                'dusk' => 'date-of-birth-input-wrapper',
             ],
             'tab' => 'Podatki',
         ]));
@@ -227,7 +226,7 @@ class CatCrudController extends CrudController
             'name' => 'date_of_arrival_mh',
             'label' => trans('cat.date_of_arrival_mh'),
             'wrapper' => [
-                'dusk' => 'date-of-arrival-mh-input-wrapper'
+                'dusk' => 'date-of-arrival-mh-input-wrapper',
             ],
             'tab' => 'Podatki',
         ]));
@@ -237,7 +236,7 @@ class CatCrudController extends CrudController
             'type' => 'relationship',
             'placeholder' => 'Izberi lokacijo',
             'wrapper' => [
-                'dusk' => 'location-input-wrapper'
+                'dusk' => 'location-input-wrapper',
             ],
             'tab' => 'Podatki',
         ]);
@@ -252,7 +251,7 @@ class CatCrudController extends CrudController
                     'type' => 'image',
                     'crop' => true,
                     'aspect_ratio' => 1,
-                    'hint' => 'Dovoljeni formati: .jpg/.jpeg, .png, .gif, .webp'
+                    'hint' => 'Dovoljeni formati: .jpg/.jpeg, .png, .gif, .webp',
                 ],
                 [
                     'name' => 'caption',
@@ -272,7 +271,7 @@ class CatCrudController extends CrudController
     protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
-        $this->displayOldWebsiteData("cat");
+        $this->displayOldWebsiteData('cat');
     }
 
     public function store(): Response
@@ -317,14 +316,15 @@ class CatCrudController extends CrudController
         $cat = $this->crud->getCurrentEntry();
         $photos = $this->crud->getRequest()->input('crud_photos_array');
 
-        if (!$photos) {
+        if (! $photos) {
             $cat->photos()->delete();
+
             return;
         }
 
         $urlsInRequest = array_column($photos, 'url');
         $photosToDelete = $cat->photos->filter(function (CatPhoto $photo) use ($urlsInRequest) {
-            return !in_array($photo->url, $urlsInRequest);
+            return ! in_array($photo->url, $urlsInRequest);
         });
 
         foreach ($photosToDelete as $photo) {

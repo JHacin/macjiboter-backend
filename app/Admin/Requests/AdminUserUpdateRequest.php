@@ -2,25 +2,16 @@
 
 namespace App\Admin\Requests;
 
-use App\Models\PersonData;
-use App\Rules\CountryCode;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Request;
 
 class AdminUserUpdateRequest extends FormRequest
 {
-    /**
-     * @return bool
-     */
     public function authorize(): bool
     {
         return backpack_auth()->check();
     }
 
-    /**
-     * @return array
-     */
     public function rules(): array
     {
         $userModel = config('backpack.permissionmanager.models.user');
@@ -29,7 +20,7 @@ class AdminUserUpdateRequest extends FormRequest
 
         $userId = $this->get('id') ?? Request::instance()->segment($routeSegmentWithId);
 
-        if (!$userModel->find($userId)) {
+        if (! $userModel->find($userId)) {
             abort(400, 'Could not find that entry in the database.');
         }
 
@@ -38,7 +29,7 @@ class AdminUserUpdateRequest extends FormRequest
                 'required',
                 'string',
                 'email',
-                'unique:' . config('permission.table_names.users', 'users') . ',email,' . $userId
+                'unique:'.config('permission.table_names.users', 'users').',email,'.$userId,
             ],
             'name' => ['required'],
             'password' => ['confirmed'],

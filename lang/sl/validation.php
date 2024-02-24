@@ -125,7 +125,7 @@ return [
             'date_of_birth' => [
                 'before' => 'Datum rojstva mora biti v preteklosti.',
             ],
-            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.'
+            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.',
         ],
         'sponsor' => [
             'email' => [
@@ -134,7 +134,7 @@ return [
             'date_of_birth' => [
                 'before' => 'Datum rojstva mora biti v preteklosti.',
             ],
-            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.'
+            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.',
         ],
         'name' => [
             'min' => 'Ime mora biti dolgo vsaj 2 znaka.',

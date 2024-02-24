@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('db_migration_meta', function (Blueprint $table) {
             $table->id();
-            $table->string("entity");
-            $table->unsignedBigInteger("new_id");
-            $table->unsignedBigInteger("prev_id");
-            $table->json("prev_data");
+            $table->string('entity');
+            $table->unsignedBigInteger('new_id');
+            $table->unsignedBigInteger('prev_id');
+            $table->json('prev_data');
         });
     }
 

@@ -23,6 +23,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property Carbon|null $updated_at
  * @property-read Collection|Revision[] $revisionHistory
  * @property-read int|null $revision_history_count
+ *
  * @method static NewsFactory factory(...$parameters)
  * @method static Builder|News newModelQuery()
  * @method static Builder|News newQuery()
@@ -32,11 +33,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|News whereId($value)
  * @method static Builder|News whereTitle($value)
  * @method static Builder|News whereUpdatedAt($value)
+ *
  * @mixin Eloquent
  */
 class News extends Model
 {
-    use CrudTrait, RevisionableTrait, HasFactory;
+    use CrudTrait, HasFactory, RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -45,6 +47,7 @@ class News extends Model
     */
 
     protected $table = 'news';
+
     protected $guarded = ['id'];
 
     /*

@@ -154,7 +154,7 @@ return [
             'after_or_equal' => 'Datum sprejema v zavetišče mora biti kasnejši ali enak datumu rojstva.',
         ],
         'monthly_amount' => [
-            'min' => 'Minimalni mesečni znesek je 5€.',
+            'min' => 'Minimalni mesečni znesek je :min€.',
         ],
         'cat' => [
             'exists' => 'Muca s to šifro ne obstaja v bazi podatkov.',

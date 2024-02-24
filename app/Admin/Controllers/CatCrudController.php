@@ -304,10 +304,11 @@ class CatCrudController extends CrudController
      */
     public function update(): Response
     {
+        $slug = $this->getCurrentEntrySlug();
         $response = $this->traitUpdate();
 
         $this->updatePhotos();
-        $this->revalidateClientPage($this->getCurrentEntrySlug());
+        $this->revalidateClientPage($slug);
 
         return $response;
     }

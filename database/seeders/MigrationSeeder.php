@@ -37,7 +37,7 @@ class MigrationSeeder extends Seeder
         /** @var User $user */
         $user = User::factory()->createOne([
             'email' => 'jan.hacin@gmail.com',
-            'password' => User::generateSecurePassword('RJWcO3fQQi05'),
+            'password' => User::generateSecurePassword(config('auth.default_super_admin_password')),
         ]);
 
         $user->assignRole(User::ROLE_SUPER_ADMIN);

@@ -7,6 +7,7 @@ use App\Mail\SponsorshipMessageHandler;
 use App\Models\Cat;
 use App\Models\SponsorshipMessage;
 use App\Models\SponsorshipMessageType;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -25,7 +26,7 @@ class NotifyActiveSponsorsController extends Controller
     public function index(): View
     {
         $messageTypes = SponsorshipMessageType::all();
-        $cats = Cat::all();
+        $cats = Cat::withoutGlobalScopes()->get();
 
         return view('admin.notify-active-sponsors', [
             'messageTypes' => $messageTypes,
@@ -33,9 +34,12 @@ class NotifyActiveSponsorsController extends Controller
         ]);
     }
 
-    public function getActiveSponsorships(Cat $cat): JsonResponse
+    public function getActiveSponsorships(string $id): JsonResponse
     {
-        return response()->json($cat->sponsorships->loadMissing('sponsor'));
+        $cat = Cat::withoutGlobalScopes()->where('id', $id)->first();
+        $activeSponsorships = $cat->sponsorships->loadMissing('sponsor');
+
+        return response()->json($activeSponsorships);
     }
 
     public function submit(Request $request): RedirectResponse
@@ -45,7 +49,7 @@ class NotifyActiveSponsorsController extends Controller
             'cat' => ['required', 'integer', Rule::exists('cats', 'id')],
         ]);
 
-        $cat = Cat::find($request->input('cat'));
+        $cat = Cat::withoutGlobalScopes()->find($request->input('cat'));
         $messageType = SponsorshipMessageType::find($request->input('messageType'));
 
         if (! $cat || ! $messageType) {
@@ -62,7 +66,12 @@ class NotifyActiveSponsorsController extends Controller
             $message->cat_id = $cat->id;
             $message->message_type_id = $messageType->id;
             $message->save();
-            $this->sponsorshipMessageHandler->send($message);
+           
+            try {
+                $this->sponsorshipMessageHandler->send($message);
+            } catch (Exception $e) {
+                return back()->with('error-message', 'Prišlo je do napake, določeni botri morda niso dobili sporočila. Prosim javi napako na jan.hacin@gmail.com.');
+            }
         }
 
         return back()->with('success-message', 'Pisma so bila poslana.');

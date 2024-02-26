@@ -135,7 +135,7 @@ class Sponsorship extends Model implements BankTransferFields
 
     public function cat(): BelongsTo
     {
-        return $this->belongsTo(Cat::class, 'cat_id');
+        return $this->belongsTo(Cat::class, 'cat_id')->withoutGlobalScopes();
     }
 
     /** @noinspection PhpUnused */

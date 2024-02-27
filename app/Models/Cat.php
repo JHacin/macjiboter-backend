@@ -26,7 +26,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property string $name
  * @property int|null $gender
  * @property int $status
- * @property string $story_short
  * @property string|null $story
  * @property Carbon|null $date_of_arrival_mh
  * @property Carbon|null $date_of_birth
@@ -66,7 +65,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|Cat whereSlug($value)
  * @method static Builder|Cat whereStatus($value)
  * @method static Builder|Cat whereStory($value)
- * @method static Builder|Cat whereStoryShort($value)
  * @method static Builder|Cat whereUpdatedAt($value)
  *
  * @mixin Eloquent

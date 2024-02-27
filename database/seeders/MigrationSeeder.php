@@ -100,7 +100,6 @@ class MigrationSeeder extends Seeder
 
             $entry = Cat::create([
                 'name' => $this->parseNullableString($record['ime']),
-                'story_short' => '',
                 'status' => $status,
                 'gender' => $gender,
                 'story' => $this->parseNullableString($record['zgodba']),

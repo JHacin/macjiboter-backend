@@ -199,18 +199,6 @@ class CatCrudController extends CrudController
             'hint' => 'Ali naj se ta vnos obravnava kot druge skupine - Čombe, Pozitivčki, Bubiji...',
             'tab' => 'Podatki',
         ]);
-        $this->crud->addField([
-            'name' => 'story_short',
-            'label' => trans('cat.story_short'),
-            'type' => 'textarea',
-            'hint' => 'Največ '.config('validation.cat.story_short_maxlength').' znakov.',
-            'attributes' => [
-                'maxlength' => config('validation.cat.story_short_maxlength'),
-                'required' => 'required',
-                'rows' => 3,
-            ],
-            'tab' => 'Zgodba',
-        ]);
         $this->crud->addField(CrudFieldGenerator::richTextField([
             'name' => 'story',
             'label' => trans('cat.story'),

@@ -23,7 +23,6 @@ class CatFactory extends Factory
             'name' => $this->faker->unique()->name,
             'gender' => array_rand(Cat::GENDER_LABELS),
             'status' => $this->faker->boolean(80) ? Cat::STATUS_SEEKING_SPONSORS : array_rand(Cat::STATUS_LABELS),
-            'story_short' => $this->faker->text(config('validation.cat.story_short_maxlength')),
             'story' => $randomStoryHtml,
             'date_of_birth' => $this->faker->date(),
             'date_of_arrival_mh' => $this->faker->date(),

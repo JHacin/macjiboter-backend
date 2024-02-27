@@ -17,7 +17,6 @@ use Venturecraft\Revisionable\Revision;
  * @property string $name
  * @property int|null $gender
  * @property int $status
- * @property string $story_short
  * @property string|null $story
  * @property Carbon|null $date_of_arrival_mh
  * @property Carbon|null $date_of_birth
@@ -56,7 +55,6 @@ use Venturecraft\Revisionable\Revision;
  * @method static Builder|UnscopedCat whereSlug($value)
  * @method static Builder|UnscopedCat whereStatus($value)
  * @method static Builder|UnscopedCat whereStory($value)
- * @method static Builder|UnscopedCat whereStoryShort($value)
  * @method static Builder|UnscopedCat whereUpdatedAt($value)
  *
  * @mixin Eloquent

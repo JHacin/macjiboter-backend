@@ -21,7 +21,6 @@ class AdminCatRequest extends FormRequest
             'status' => ['required', Rule::in(Cat::STATUSES)],
             'date_of_birth' => ['nullable', 'date', 'before:now'],
             'date_of_arrival_mh' => ['nullable', 'date', 'before:now', 'after_or_equal:date_of_birth'],
-            'story_short' => ['required', 'string', 'max:'.config('validation.cat.story_short_maxlength')],
             'story' => ['nullable', 'string'],
             'is_group' => ['boolean'],
             'is_published' => ['boolean'],

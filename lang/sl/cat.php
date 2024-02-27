@@ -9,7 +9,6 @@ return [
     'date_of_birth' => 'Datum rojstva',
     'location' => 'Lokacija',
     'story' => 'Zgodba',
-    'story_short' => 'Kratek opis',
     'is_group' => 'Skupina',
     'is_published' => 'Objavljena',
     'date_of_arrival_mh' => 'Datum sprejema v Mačjo hišo',

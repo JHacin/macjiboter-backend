@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "742ef69c0b649129c218fe64956c2db2",
+    "content-hash": "53b67516126d190146737e102bef0334",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5494,26 +5494,26 @@
         },
         {
             "name": "spatie/laravel-image-optimizer",
-            "version": "1.7.1",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-image-optimizer.git",
-                "reference": "cd8945e47b9fd01bc7b770eecd57c56f46c47422"
+                "reference": "024752cba691fee3cd1800000b6aa3da3b8b2474"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-image-optimizer/zipball/cd8945e47b9fd01bc7b770eecd57c56f46c47422",
-                "reference": "cd8945e47b9fd01bc7b770eecd57c56f46c47422",
+                "url": "https://api.github.com/repos/spatie/laravel-image-optimizer/zipball/024752cba691fee3cd1800000b6aa3da3b8b2474",
+                "reference": "024752cba691fee3cd1800000b6aa3da3b8b2474",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^8.0|^9.0|^10.0",
+                "laravel/framework": "^8.0|^9.0|^10.0|^11.0",
                 "php": "^8.0",
                 "spatie/image-optimizer": "^1.2.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.23|^7.0|^8.0",
-                "phpunit/phpunit": "^9.4"
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.4|^10.5"
             },
             "type": "library",
             "extra": {
@@ -5550,7 +5550,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-image-optimizer/tree/1.7.1"
+                "source": "https://github.com/spatie/laravel-image-optimizer/tree/1.8.0"
             },
             "funding": [
                 {
@@ -5558,7 +5558,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-01-24T23:44:33+00:00"
+            "time": "2024-02-29T10:55:08+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -9130,49 +9130,6 @@
             "time": "2023-10-11T07:11:09+00:00"
         },
         {
-            "name": "deployer/deployer",
-            "version": "v7.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/deployphp/deployer.git",
-                "reference": "3535bdb2f6360662bd95f6e26fce31dbc269af64"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/deployer/zipball/3535bdb2f6360662bd95f6e26fce31dbc269af64",
-                "reference": "3535bdb2f6360662bd95f6e26fce31dbc269af64",
-                "shasum": ""
-            },
-            "bin": [
-                "dep"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Anton Medvedev",
-                    "email": "anton@medv.io"
-                }
-            ],
-            "description": "Deployment Tool",
-            "homepage": "https://deployer.org",
-            "support": {
-                "docs": "https://deployer.org/docs",
-                "issues": "https://github.com/deployphp/deployer/issues",
-                "source": "https://github.com/deployphp/deployer"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sponsors/antonmedv",
-                    "type": "github"
-                }
-            ],
-            "time": "2023-11-07T10:27:12+00:00"
-        },
-        {
             "name": "doctrine/instantiator",
             "version": "2.0.0",
             "source": {
@@ -11872,7 +11829,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1"
+        "php": "^8.3"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

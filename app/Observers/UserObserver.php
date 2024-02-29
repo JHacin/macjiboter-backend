@@ -9,7 +9,7 @@ class UserObserver
 {
     public function created(User $user): void
     {
-//        $this->createOrAssociatePersonData($user);
+        //        $this->createOrAssociatePersonData($user);
     }
 
     protected function createOrAssociatePersonData(User $user): void
@@ -26,7 +26,7 @@ class UserObserver
 
     public function updated(User $user): void
     {
-//        $this->syncEmailWithPersonData($user);
+        //        $this->syncEmailWithPersonData($user);
     }
 
     protected function syncEmailWithPersonData(User $user): void

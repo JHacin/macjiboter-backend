@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'donation_minimum' => 5,
+    'donation_minimum' => 10,
 ];

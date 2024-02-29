@@ -8,8 +8,6 @@ class PermissionsAddInitialRoles extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -21,7 +19,6 @@ class PermissionsAddInitialRoles extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return void
      * @throws Exception
      */
     public function down(): void

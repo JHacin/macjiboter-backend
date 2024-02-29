@@ -5,10 +5,10 @@ namespace App\Admin\Controllers;
 use App\Admin\Requests\AdminSponsorshipRequest;
 use App\Admin\Requests\AdminSponsorshipUpdateRequest;
 use App\Admin\Traits\ClearsModelGlobalScopes;
+use App\Admin\Traits\DisplaysOldWebsiteData;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
-use App\Models\Cat;
 use App\Models\PersonData;
 use App\Models\Sponsorship;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -25,21 +25,21 @@ use Prologue\Alerts\Facades\Alert;
 
 class SponsorshipCrudController extends CrudController
 {
-    use ListOperation;
+    use ClearsModelGlobalScopes, DisplaysOldWebsiteData;
     use CreateOperation;
-    use UpdateOperation;
     use DeleteOperation;
+    use ListOperation;
     use ReviseOperation;
-    use ClearsModelGlobalScopes;
+    use UpdateOperation;
 
     /**
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         $this->crud->setModel(Sponsorship::class);
         $this->clearModelGlobalScopes([Sponsorship::SCOPE_ONLY_ACTIVE]);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsorships'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.sponsorships'));
         $this->crud->setEntityNameStrings('Botrstvo', 'Botrstva');
         $this->crud->setSubheading('Dodaj novo botrstvo', 'create');
         $this->crud->setSubheading('Uredi botrstvo', 'edit');
@@ -47,26 +47,10 @@ class SponsorshipCrudController extends CrudController
         $this->crud->enableExportButtons();
     }
 
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         $this->crud->addColumn(CrudColumnGenerator::id());
-        $this->crud->addColumn([
-            'name' => 'cat',
-            'label' => trans('cat.cat'),
-            'type' => 'relationship',
-            'wrapper' => [
-                'href' => function ($crud, $column, $entry, $related_key) {
-                    return backpack_url(config('routes.admin.cats'), [$related_key, 'edit']);
-                },
-            ],
-            'searchLogic' => function (Builder $query, $column, $searchTerm) {
-                $query->orWhereHas('cat', function (Builder $query) use ($searchTerm) {
-                    $query
-                        ->where('name', 'like', "%$searchTerm%")
-                        ->orWhere('id', 'like', "%$searchTerm%");
-                });
-            }
-        ]);
+        $this->crud->addColumn(CrudColumnGenerator::cat());
         $this->crud->addColumn([
             'name' => 'sponsor',
             'label' => trans('sponsor.sponsor'),
@@ -82,7 +66,7 @@ class SponsorshipCrudController extends CrudController
                         ->where('email', 'like', "%$searchTerm%")
                         ->orWhere('id', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn([
             'name' => 'payer',
@@ -99,11 +83,11 @@ class SponsorshipCrudController extends CrudController
                         ->where('email', 'like', "%$searchTerm%")
                         ->orWhere('id', 'like', "%$searchTerm%");
                 });
-            }
+            },
         ]);
         $this->crud->addColumn(CrudColumnGenerator::moneyColumn([
             'name' => 'monthly_amount',
-            'label' => trans('admin.sponsorship_monthly_amount')
+            'label' => trans('admin.sponsorship_monthly_amount'),
         ]));
         $this->crud->addColumn([
             'name' => 'is_gift',
@@ -141,21 +125,9 @@ class SponsorshipCrudController extends CrudController
         $this->addFilters();
     }
 
-    protected function addFilters()
+    protected function addFilters(): void
     {
-        $this->crud->addFilter(
-            [
-                'name' => 'cat',
-                'type' => 'select2',
-                'label' => trans('cat.cat'),
-            ],
-            function () {
-                return Cat::all()->pluck('name_and_id', 'id')->toArray();
-            },
-            function ($value) {
-                $this->crud->addClause('where', 'cat_id', $value);
-            }
-        );
+        CrudFilterGenerator::addCatFilter($this->crud);
 
         $this->crud->addFilter(
             [
@@ -190,23 +162,11 @@ class SponsorshipCrudController extends CrudController
         CrudFilterGenerator::addBooleanFilter($this->crud, 'is_gift', trans('sponsorship.is_gift'));
     }
 
-
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminSponsorshipRequest::class);
 
-        $this->crud->addField([
-            'name' => 'cat',
-            'label' => trans('cat.cat'),
-            'type' => 'relationship',
-            'placeholder' => 'Izberi muco',
-            'attributes' => [
-                'required' => 'required',
-            ],
-            'wrapper' => [
-                'dusk' => 'cat-wrapper'
-            ]
-        ]);
+        $this->crud->addField(CrudFieldGenerator::cat());
         $this->crud->addField([
             'name' => 'sponsor',
             'label' => trans('sponsor.sponsor'),
@@ -216,14 +176,14 @@ class SponsorshipCrudController extends CrudController
                 'required' => 'required',
             ],
             'wrapper' => [
-                'dusk' => 'sponsor-wrapper'
-            ]
+                'dusk' => 'sponsor-wrapper',
+            ],
         ]);
         $this->crud->addField(CrudFieldGenerator::moneyField([
             'name' => 'monthly_amount',
             'label' => trans('admin.sponsorship_monthly_amount'),
             'wrapper' => [
-                'dusk' => 'monthly_amount-wrapper'
+                'dusk' => 'monthly_amount-wrapper',
             ],
             'attributes' => [
                 'required' => 'required',
@@ -234,8 +194,8 @@ class SponsorshipCrudController extends CrudController
             'label' => 'Botrstvo je podarjeno',
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_gift-wrapper'
-            ]
+                'dusk' => 'is_gift-wrapper',
+            ],
         ]);
         $this->crud->addField([
             'name' => 'requested_duration',
@@ -254,8 +214,8 @@ class SponsorshipCrudController extends CrudController
             'type' => 'relationship',
             'placeholder' => 'Izberi plačnika',
             'wrapper' => [
-                'dusk' => 'payer-wrapper'
-            ]
+                'dusk' => 'payer-wrapper',
+            ],
         ]);
         $this->crud->addField([
             'name' => 'payment_type',
@@ -265,7 +225,7 @@ class SponsorshipCrudController extends CrudController
             'default' => Sponsorship::PAYMENT_TYPE_BANK_TRANSFER,
             'inline' => true,
             'wrapper' => [
-                'dusk' => 'payment_type-input-wrapper'
+                'dusk' => 'payment_type-input-wrapper',
             ],
         ]);
         $this->crud->addField([
@@ -273,28 +233,27 @@ class SponsorshipCrudController extends CrudController
             'label' => 'Anonimno',
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_anonymous-wrapper'
-            ]
+                'dusk' => 'is_anonymous-wrapper',
+            ],
         ]);
         $this->crud->addField([
             'name' => 'is_active',
             'label' => 'Aktivno',
             'type' => 'checkbox',
             'wrapper' => [
-                'dusk' => 'is_active-wrapper'
+                'dusk' => 'is_active-wrapper',
             ],
-            'hint' =>
-                'Botrstvo je v teku (redna plačila, muca še kar potrebuje botre itd.).' .
+            'hint' => 'Botrstvo je v teku (redna plačila, muca še kar potrebuje botre itd.).'.
                 '<br>Neaktivna botrstva ne bodo vključena na spletni strani (v seštevkih botrstev, na seznamih botrov itd.)',
         ]);
         $this->crud->addField([
             'name' => 'email_warning',
             'type' => 'custom_html',
-            'value' => '<b>Boter po vnosu ne bo prejel avtomatskega emaila.</b>'
+            'value' => '<b>Boter po vnosu ne bo prejel avtomatskega emaila.</b>',
         ]);
     }
 
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
         $this->crud->removeField('email_warning');
@@ -304,16 +263,17 @@ class SponsorshipCrudController extends CrudController
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'ended_at',
             'label' => 'Datum konca',
-            'hint' =>
-                'Če želite uradno prekiniti botrstvo, je treba tudi odkljukati polje \'Aktivno\'.' .
-                ' Datum konca se hrani samo za evidenco tega, koliko časa je trajalo določeno botrstvo.' .
+            'hint' => 'Če želite uradno prekiniti botrstvo, je treba tudi odkljukati polje \'Aktivno\'.'.
+                ' Datum konca se hrani samo za evidenco tega, koliko časa je trajalo določeno botrstvo.'.
                 ' Datum se lahko izbriše s pritiskom na polje > "Clear".',
             'wrapper' => [
-                'dusk' => 'ended_at-wrapper'
-            ]
+                'dusk' => 'ended_at-wrapper',
+            ],
         ]));
+        $this->displayOldWebsiteData('sponsorship');
     }
 
+    /** @noinspection PhpUnused */
     public function cancelSponsorship(Sponsorship $sponsorship): RedirectResponse
     {
         $this->crud->hasAccessOrFail('update');
@@ -321,6 +281,7 @@ class SponsorshipCrudController extends CrudController
             $sponsorship->cancel();
             Alert::success('Botrstvo uspešno prekinjeno.')->flash();
         }
+
         return Redirect::back();
     }
 }

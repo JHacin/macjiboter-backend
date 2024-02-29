@@ -46,7 +46,7 @@ class SponsorshipMail
             'placnik_drzava' => $payer->country ? CountryList::COUNTRY_NAMES[$payer->country] : '/',
             'placnik_email' => $payer->email,
             'muca_ime' => $cat->name,
-            'muca_povezava' => config('app.frontend_url') . '/muce/' . $cat->slug,
+            'muca_povezava' => config('app.frontend_url').'/muce/'.$cat->slug,
             'je_darilo' => $sponsorship->is_gift === true,
             'je_anonimno' => $sponsorship->is_anonymous === true,
             'znesek' => CurrencyFormat::format($sponsorship->monthly_amount),
@@ -59,15 +59,15 @@ class SponsorshipMail
             'bcc' => config('mail.vars.bcc_copy_address'),
             'subject' => 'Navodila po izpolnitvi obrazca za pristop k botrstvu',
             'template' => $template,
-            'h:X-Mailgun-Variables' => json_encode($variables)
+            'h:X-Mailgun-Variables' => json_encode($variables),
         ];
 
         if ($sponsorship->payment_type === Sponsorship::PAYMENT_TYPE_DIRECT_DEBIT) {
             $params['attachment'] = [
                 [
-                    'filePath' => Storage::disk('public')->path('docs/trajnik_pooblastilo.pdf'),
+                    'filePath' => Storage::disk('s3')->url('static/trajnik_pooblastilo.pdf'),
                     'filename' => 'trajnik_pooblastilo.pdf',
-                ]
+                ],
             ];
         }
 

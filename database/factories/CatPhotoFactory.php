@@ -4,9 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Cat;
 use App\Models\CatPhoto;
-use App\Services\CatPhotoService;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Arr;
 
 class CatPhotoFactory extends Factory
 {
@@ -19,7 +17,7 @@ class CatPhotoFactory extends Factory
     {
         return [
             'cat_id' => Cat::inRandomOrder()->first() ?? Cat::factory(),
-            'filename' => $this->faker->ean13() . '.jpg',
+            'filename' => $this->faker->ean13().'.jpg',
             'caption' => $this->faker->text,
             'index' => $this->faker->numberBetween(0, 3),
             'sizes' => [],

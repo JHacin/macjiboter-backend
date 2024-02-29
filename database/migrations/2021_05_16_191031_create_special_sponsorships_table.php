@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateSpecialSponsorshipsTable extends Migration
 {
@@ -15,7 +15,7 @@ class CreateSpecialSponsorshipsTable extends Migration
             $table->boolean('is_gift')->default(false);
             $table->date('confirmed_at')->nullable();
             $table->boolean('is_anonymous')->default(false);
-            $table->decimal('amount');
+            $table->decimal('amount', 10);
             $table->text('gift_message')->nullable();
             $table->text('gift_notes')->nullable();
             $table->date('gift_requested_activation_date')->nullable();

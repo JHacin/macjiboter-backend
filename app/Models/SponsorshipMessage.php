@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property-read Cat|null $cat
  * @property-read SponsorshipMessageType|null $messageType
  * @property-read PersonData|null $sponsor
+ *
  * @method static Builder|SponsorshipMessage newModelQuery()
  * @method static Builder|SponsorshipMessage newQuery()
  * @method static Builder|SponsorshipMessage query()
@@ -33,6 +34,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|SponsorshipMessage whereSponsorId($value)
  * @method static Builder|SponsorshipMessage whereUpdatedAt($value)
  * @method static SponsorshipMessageFactory factory(...$parameters)
+ *
+ * @property-read \App\Models\Cat|null $unscopedCat
+ *
  * @mixin Eloquent
  */
 class SponsorshipMessage extends Model
@@ -46,6 +50,7 @@ class SponsorshipMessage extends Model
     */
 
     protected $table = 'sponsorship_messages';
+
     protected $guarded = ['id'];
 
     /*
@@ -72,7 +77,13 @@ class SponsorshipMessage extends Model
 
     public function cat(): BelongsTo
     {
-        return $this->belongsTo(Cat::class, 'cat_id');
+        return $this->belongsTo(Cat::class, 'cat_id')->withoutGlobalScopes();
+    }
+
+    /** @noinspection PhpUnused */
+    public function unscopedCat(): BelongsTo
+    {
+        return $this->cat()->withoutGlobalScopes();
     }
 
     /*

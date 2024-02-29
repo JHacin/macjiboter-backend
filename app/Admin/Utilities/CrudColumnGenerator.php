@@ -12,10 +12,10 @@ class CrudColumnGenerator
         return [
             'name' => 'id',
             'label' => trans('model.id'),
-            'type' => 'number',
+            'type' => 'text',
             'searchLogic' => function (Builder $query, $column, $searchTerm) {
                 $query->orWhere('id', '=', $searchTerm);
-            }
+            },
         ];
     }
 
@@ -82,11 +82,12 @@ class CrudColumnGenerator
             'options' => CountryList::COUNTRY_NAMES,
             'searchLogic' => function (Builder $query, $column, $searchTerm) {
                 $code = CountryList::getCodeByName($searchTerm);
-                if (!$code) {
+                if (! $code) {
                     return false;
                 }
+
                 return $query->orWhere('country', $code);
-            }
+            },
         ], $additions);
     }
 
@@ -153,5 +154,27 @@ class CrudColumnGenerator
             'dec_point' => ',',
             'thousands_sep' => '.',
         ], $additions);
+    }
+
+    public static function cat(): array
+    {
+        return [
+            'name' => 'cat',
+            'entity' => 'unscopedCat', // removes status scope
+            'label' => trans('cat.cat'),
+            'type' => 'relationship',
+            'wrapper' => [
+                'href' => function ($crud, $column, $entry, $related_key) {
+                    return backpack_url(config('routes.admin.cats'), [$related_key, 'edit']);
+                },
+            ],
+            'searchLogic' => function (Builder $query, $column, $searchTerm) {
+                $query->orWhereHas('cat', function (Builder $query) use ($searchTerm) {
+                    $query
+                        ->where('name', 'like', "%$searchTerm%")
+                        ->orWhere('id', 'like', "%$searchTerm%");
+                });
+            },
+        ];
     }
 }

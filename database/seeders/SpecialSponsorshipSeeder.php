@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\SpecialSponsorship;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class SpecialSponsorshipSeeder extends Seeder

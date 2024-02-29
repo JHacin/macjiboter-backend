@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 class SponsorListViewParser
 {
     /**
-     * @param Collection|Sponsorship[]|SpecialSponsorship[] $sponsorships
+     * @param  Collection|Sponsorship[]|SpecialSponsorship[]  $sponsorships
      */
     public static function prepareViewData($sponsorships): array
     {
@@ -24,7 +24,7 @@ class SponsorListViewParser
     }
 
     /**
-     * @param Collection|Sponsorship[]|SpecialSponsorship[] $sponsorships
+     * @param  Collection|Sponsorship[]|SpecialSponsorship[]  $sponsorships
      */
     protected static function separateAnonymousSponsors($sponsorships): array
     {
@@ -45,7 +45,7 @@ class SponsorListViewParser
     }
 
     /**
-     * @param Sponsorship|SpecialSponsorship $sponsorship
+     * @param  Sponsorship|SpecialSponsorship  $sponsorship
      */
     protected static function isConsideredAnonymous($sponsorship): bool
     {
@@ -54,6 +54,6 @@ class SponsorListViewParser
 
     protected static function isMissingAllDisplayableProperties(PersonData $sponsor): bool
     {
-        return !$sponsor->first_name && !$sponsor->city;
+        return ! $sponsor->first_name && ! $sponsor->city;
     }
 }

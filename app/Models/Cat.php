@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ClearsGlobalScopes;
 use App\Services\CatPhotoService;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Database\Factories\CatFactory;
@@ -17,7 +18,6 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Venturecraft\Revisionable\Revision;
 use Venturecraft\Revisionable\RevisionableTrait;
-use App\Models\Traits\ClearsGlobalScopes;
 
 /**
  * App\Models\Cat
@@ -26,12 +26,11 @@ use App\Models\Traits\ClearsGlobalScopes;
  * @property string $name
  * @property int|null $gender
  * @property int $status
- * @property string $story_short
  * @property string|null $story
  * @property Carbon|null $date_of_arrival_mh
- * @property Carbon|null $date_of_arrival_boter
  * @property Carbon|null $date_of_birth
  * @property bool $is_group
+ * @property bool $is_published
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $slug
@@ -60,18 +59,19 @@ use App\Models\Traits\ClearsGlobalScopes;
  * @method static Builder|Cat whereGender($value)
  * @method static Builder|Cat whereId($value)
  * @method static Builder|Cat whereIsGroup($value)
+ * @method static Builder|Cat whereIsPublished($value)
  * @method static Builder|Cat whereLocationId($value)
  * @method static Builder|Cat whereName($value)
  * @method static Builder|Cat whereSlug($value)
  * @method static Builder|Cat whereStatus($value)
  * @method static Builder|Cat whereStory($value)
- * @method static Builder|Cat whereStoryShort($value)
  * @method static Builder|Cat whereUpdatedAt($value)
+ *
  * @mixin Eloquent
  */
 class Cat extends Model
 {
-    use HasFactory, CrudTrait, RevisionableTrait, HasSlug, ClearsGlobalScopes;
+    use ClearsGlobalScopes, CrudTrait, HasFactory, HasSlug, RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -80,21 +80,29 @@ class Cat extends Model
     */
 
     public const GENDER_MALE = 1;
+
     public const GENDER_FEMALE = 2;
+
     public const GENDERS = [
         self::GENDER_MALE,
         self::GENDER_FEMALE,
     ];
+
     public const GENDER_LABELS = [
         self::GENDER_MALE => 'samček',
         self::GENDER_FEMALE => 'samička',
     ];
 
     public const STATUS_SEEKING_SPONSORS = 1;
+
     public const STATUS_TEMP_NOT_SEEKING_SPONSORS = 2;
+
     public const STATUS_NOT_SEEKING_SPONSORS = 3;
+
     public const STATUS_ADOPTED = 4;
+
     public const STATUS_RIP = 5;
+
     public const STATUSES = [
         self::STATUS_SEEKING_SPONSORS,
         self::STATUS_TEMP_NOT_SEEKING_SPONSORS,
@@ -102,6 +110,7 @@ class Cat extends Model
         self::STATUS_ADOPTED,
         self::STATUS_RIP,
     ];
+
     public const STATUS_LABELS = [
         self::STATUS_SEEKING_SPONSORS => 'išče botre',
         self::STATUS_TEMP_NOT_SEEKING_SPONSORS => 'trenutno ne išče botrov',
@@ -109,13 +118,14 @@ class Cat extends Model
         self::STATUS_ADOPTED => 'v novem domu',
         self::STATUS_RIP => 'RIP',
     ];
+
     public const STATUSES_EXCLUDED_FROM_PUBLIC = [
         self::STATUS_NOT_SEEKING_SPONSORS,
         self::STATUS_ADOPTED,
         self::STATUS_RIP,
     ];
 
-    public const SCOPE_ONLY_PUBLICALLY_VISIBLE_STATUSES = 'cat_onlyStatusesNotExcludedFromPublic';
+    public const SCOPE_ONLY_PUBLICLY_VISIBLE_CATS = 'cat_onlyPubliclyVisible';
 
     /*
     |--------------------------------------------------------------------------
@@ -124,8 +134,11 @@ class Cat extends Model
     */
 
     protected $table = 'cats';
+
     protected $guarded = ['id'];
+
     protected $with = ['photos', 'sponsorships'];
+
     protected $withCount = ['sponsorships'];
 
     /**
@@ -136,14 +149,12 @@ class Cat extends Model
     protected $casts = [
         'date_of_birth' => 'date',
         'date_of_arrival_mh' => 'date',
-        'date_of_arrival_boter' => 'date',
         'is_group' => 'boolean',
+        'is_published' => 'boolean',
     ];
 
     /**
      * Used in Backpack when showing the model instance label via relationship inputs.
-     *
-     * @var string
      */
     protected string $identifiableAttribute = 'name_and_id';
 
@@ -154,7 +165,7 @@ class Cat extends Model
     */
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getRouteKeyName(): string
     {
@@ -202,15 +213,17 @@ class Cat extends Model
     */
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::addGlobalScope(self::SCOPE_ONLY_PUBLICALLY_VISIBLE_STATUSES, function (Builder $builder) {
-            $builder->whereNotIn('status', self::STATUSES_EXCLUDED_FROM_PUBLIC);
+        static::addGlobalScope(self::SCOPE_ONLY_PUBLICLY_VISIBLE_CATS, function (Builder $builder) {
+            $builder
+                ->whereNotIn('status', self::STATUSES_EXCLUDED_FROM_PUBLIC)
+                ->where('is_published', true);
         });
 
-        static::deleting(function(Cat $cat) {
+        static::deleting(function (Cat $cat) {
             foreach ($cat->photos as $photo) {
                 CatPhotoService::deleteFiles($photo);
                 $photo->delete();
@@ -226,7 +239,7 @@ class Cat extends Model
 
     public function getGenderLabelAttribute(): string
     {
-        if (!$this->gender) {
+        if (! $this->gender) {
             return '/';
         }
 
@@ -245,7 +258,7 @@ class Cat extends Model
 
     public function getCrudPhotosArrayAttribute(): array
     {
-        return $this->photos()->orderBy("index")->get()->map(function (CatPhoto $photo) {
+        return $this->photos()->orderBy('index')->get()->map(function (CatPhoto $photo) {
             return [
                 'url' => $photo->url,
                 'caption' => $photo->caption,
@@ -270,16 +283,16 @@ class Cat extends Model
     {
         $classes = 'btn btn-sm btn-link';
 
-        if (in_array($this->status, self::STATUSES_EXCLUDED_FROM_PUBLIC)) {
+        if (! $this->is_published || in_array($this->status, self::STATUSES_EXCLUDED_FROM_PUBLIC)) {
             $classes .= ' disabled';
         }
 
-        $url = config('app.frontend_url') . '/muce/' . $this->slug;
+        $url = config('app.frontend_url').'/muce/'.$this->slug;
 
         return '
             <a
-                href="' . $url . '"
-                class="' . $classes . '"
+                href="'.$url.'"
+                class="'.$classes.'"
                 target="_blank"
             >
               <i class="la la-eye"></i>

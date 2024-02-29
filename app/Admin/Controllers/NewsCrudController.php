@@ -17,16 +17,16 @@ use Exception;
 
 /**
  * Class NewsCrudController
- * @package App\Http\Controllers\Admin
+ *
  * @property-read CrudPanel $crud
  */
 class NewsCrudController extends CrudController
 {
-    use ListOperation;
     use CreateOperation;
-    use UpdateOperation;
     use DeleteOperation;
+    use ListOperation;
     use ReviseOperation;
+    use UpdateOperation;
 
     /**
      * @throws Exception
@@ -34,7 +34,7 @@ class NewsCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(News::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.news'));
+        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.news'));
         $this->crud->setEntityNameStrings('Novica', 'Novice');
         $this->crud->enableExportButtons();
     }

@@ -9,9 +9,6 @@ class SponsorshipMessageTypeFactory extends Factory
 {
     protected $model = SponsorshipMessageType::class;
 
-    /**
-     * @return array
-     */
     public function definition(): array
     {
         return [

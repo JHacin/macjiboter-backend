@@ -37,6 +37,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read Collection|Revision[] $revisionHistory
  * @property-read int|null $revision_history_count
  * @property-read PersonData|null $sponsor
+ *
  * @method static SpecialSponsorshipFactory factory(...$parameters)
  * @method static Builder|SpecialSponsorship newModelQuery()
  * @method static Builder|SpecialSponsorship newQuery()
@@ -54,11 +55,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|SpecialSponsorship whereSponsorId($value)
  * @method static Builder|SpecialSponsorship whereType($value)
  * @method static Builder|SpecialSponsorship whereUpdatedAt($value)
+ *
  * @mixin Eloquent
  */
 class SpecialSponsorship extends Model implements BankTransferFields
 {
-    use CrudTrait, RevisionableTrait, HasFactory;
+    use CrudTrait, HasFactory, RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -67,13 +69,21 @@ class SpecialSponsorship extends Model implements BankTransferFields
     */
 
     public const TYPE_BOTER_MESECA = 1;
+
     public const TYPE_MUC_GRE_BREZ_SKRBI_V_NOVE_DNI = 2;
+
     public const TYPE_MUCA_GRE_BREZ_SKRBI_V_NOVE_DNI = 3;
+
     public const TYPE_NOV_ZACETEK = 4;
+
     public const TYPE_FIP_BOJEVNIK_ZA_1_DAN = 5;
+
     public const TYPE_FIP_BOJEVNIK_ZA_2_DNI = 6;
+
     public const TYPE_FIP_BOJEVNIK_ZA_1_TEDEN = 7;
+
     public const TYPE_MAJHNA_ZOBNA_MISKA = 8;
+
     public const TYPE_VELIKA_ZOBNA_MIS = 9;
 
     public const TYPES = [
@@ -119,6 +129,7 @@ class SpecialSponsorship extends Model implements BankTransferFields
     */
 
     protected $table = 'special_sponsorships';
+
     protected $guarded = ['id'];
 
     /**
@@ -174,12 +185,12 @@ class SpecialSponsorship extends Model implements BankTransferFields
 
     public function getPaymentPurposeAttribute(): string
     {
-        return self::TYPE_LABELS[$this->type] . ' - ' . $this->sponsor->last_name;
+        return self::TYPE_LABELS[$this->type].' - '.$this->sponsor->last_name;
     }
 
     public function getPaymentReferenceNumberAttribute(): string
     {
-        return 'SI00 80-1' . $this->type . '-' . $this->id;
+        return 'SI00 80-1'.$this->type.'-'.$this->id;
     }
 
     /*

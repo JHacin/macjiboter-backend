@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Storage;
 
 /**
  * App\Models\CatPhoto
@@ -27,6 +26,7 @@ use Storage;
  * @property Carbon|null $updated_at
  * @property-read Cat $cat
  * @property-read string $url
+ *
  * @method static CatPhotoFactory factory(...$parameters)
  * @method static Builder|CatPhoto newModelQuery()
  * @method static Builder|CatPhoto newQuery()
@@ -39,6 +39,7 @@ use Storage;
  * @method static Builder|CatPhoto whereIndex($value)
  * @method static Builder|CatPhoto whereSizes($value)
  * @method static Builder|CatPhoto whereUpdatedAt($value)
+ *
  * @mixin Eloquent
  */
 class CatPhoto extends Model
@@ -60,10 +61,13 @@ class CatPhoto extends Model
     */
 
     protected $table = 'cat_photos';
+
     protected $guarded = ['id'];
+
     protected $appends = ['url'];
+
     protected $casts = [
-        'sizes' => 'array'
+        'sizes' => 'array',
     ];
 
     /*
@@ -80,8 +84,6 @@ class CatPhoto extends Model
 
     /**
      * Get the cat this photo belongs to.
-     *
-     * @return BelongsTo
      */
     public function cat(): BelongsTo
     {
@@ -128,6 +130,7 @@ class CatPhoto extends Model
         return Attribute::make(
             get: fn ($string) => Arr::map((array) json_decode($string), function ($size) {
                 $size->url = CatPhotoService::getUrl($size->filename);
+
                 return $size;
             }),
         );

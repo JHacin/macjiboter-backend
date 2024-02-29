@@ -118,5 +118,5 @@ return [
     'vars' => [
         'bcc_copy_address' => env('MAIL_BCC_COPY_ADDRESS'),
         'test_to_address' => env('MAIL_TEST_TO'),
-    ]
+    ],
 ];

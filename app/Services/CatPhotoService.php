@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Models\Cat;
 use App\Models\CatPhoto;
 use Image;
-use Storage;
 use ImageOptimizer;
+use Storage;
 
 class CatPhotoService
 {
@@ -38,7 +38,7 @@ class CatPhotoService
             'sm' => ['name' => 'sm', 'width' => 480],
         ];
         $disk = Storage::disk('public');
-        $fileNameBase = md5($base64 . time());
+        $fileNameBase = md5($base64.time());
 
         $image = Image::make($base64)->encode('jpg', 80);
 
@@ -47,7 +47,7 @@ class CatPhotoService
                 $constraint->upsize();
             });
 
-            $filename = $fileNameBase . '_' . $sizeConfig['name'] . '.jpg';
+            $filename = $fileNameBase.'_'.$sizeConfig['name'].'.jpg';
             $images[$size]['filename'] = $filename;
 
             $path = CatPhotoService::getFullPath($filename);
@@ -60,7 +60,7 @@ class CatPhotoService
 
     public static function getFullPath(string $filename): string
     {
-        return static::PATH_ROOT . '/' . $filename;
+        return static::PATH_ROOT.'/'.$filename;
     }
 
     public static function getUrl(string $filename): string

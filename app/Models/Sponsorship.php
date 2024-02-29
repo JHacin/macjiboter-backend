@@ -40,6 +40,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read Collection|Revision[] $revisionHistory
  * @property-read int|null $revision_history_count
  * @property-read PersonData|null $sponsor
+ *
  * @method static SponsorshipFactory factory(...$parameters)
  * @method static Builder|Sponsorship newModelQuery()
  * @method static Builder|Sponsorship newQuery()
@@ -59,11 +60,14 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|Sponsorship whereRequestedDuration($value)
  * @method static Builder|Sponsorship whereSponsorId($value)
  * @method static Builder|Sponsorship whereUpdatedAt($value)
+ *
+ * @property-read \App\Models\Cat|null $unscopedCat
+ *
  * @mixin Eloquent
  */
 class Sponsorship extends Model implements BankTransferFields
 {
-    use HasFactory, CrudTrait, RevisionableTrait, ClearsGlobalScopes;
+    use ClearsGlobalScopes, CrudTrait, HasFactory, RevisionableTrait;
 
     /*
     |--------------------------------------------------------------------------
@@ -72,6 +76,7 @@ class Sponsorship extends Model implements BankTransferFields
     */
 
     public const PAYMENT_TYPE_BANK_TRANSFER = 1;
+
     public const PAYMENT_TYPE_DIRECT_DEBIT = 2;
 
     public const PAYMENT_TYPES = [
@@ -93,6 +98,7 @@ class Sponsorship extends Model implements BankTransferFields
     */
 
     protected $table = 'sponsorships';
+
     protected $guarded = ['id'];
 
     /**
@@ -129,7 +135,13 @@ class Sponsorship extends Model implements BankTransferFields
 
     public function cat(): BelongsTo
     {
-        return $this->belongsTo(Cat::class, 'cat_id');
+        return $this->belongsTo(Cat::class, 'cat_id')->withoutGlobalScopes();
+    }
+
+    /** @noinspection PhpUnused */
+    public function unscopedCat(): BelongsTo
+    {
+        return $this->cat()->withoutGlobalScopes();
     }
 
     public function sponsor(): BelongsTo
@@ -149,7 +161,7 @@ class Sponsorship extends Model implements BankTransferFields
     */
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function booted()
     {
@@ -166,22 +178,22 @@ class Sponsorship extends Model implements BankTransferFields
 
     public function getPaymentPurposeAttribute(): string
     {
-        if (!$this->cat) {
+        if (! $this->cat) {
             return '/';
         }
 
         $formattedCatName = mb_strtoupper(str_replace(' ', '-', $this->cat->name));
 
-        return 'BOTER-' . $formattedCatName . '-' . $this->cat->id;
+        return 'BOTER-'.$formattedCatName.'-'.$this->cat->id;
     }
 
     public function getPaymentReferenceNumberAttribute(): string
     {
-        if (!$this->cat || !$this->sponsor) {
+        if (! $this->cat || ! $this->sponsor) {
             return '/';
         }
 
-        return 'SI00 80-0' . $this->cat_id . '-' . $this->sponsor_id;
+        return 'SI00 80-0'.$this->cat_id.'-'.$this->sponsor_id;
     }
 
     /*

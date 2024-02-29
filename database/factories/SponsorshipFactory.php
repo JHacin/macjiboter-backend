@@ -18,7 +18,7 @@ class SponsorshipFactory extends Factory
             'sponsor_id' => PersonData::factory(),
             'payer_id' => PersonData::factory(),
             'payment_type' => Sponsorship::PAYMENT_TYPE_BANK_TRANSFER,
-            'monthly_amount' => 5,
+            'monthly_amount' => config('money.donation_minimum'),
             'is_active' => true,
             'is_anonymous' => $this->faker->boolean(20),
             'is_gift' => $this->faker->boolean(20),

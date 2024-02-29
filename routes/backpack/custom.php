@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix' => config('backpack.base.route_prefix', 'admin'),
     'middleware' => array_merge(
-        (array)config('backpack.base.web_middleware', 'web'),
-        (array)config('backpack.base.middleware_key', 'admin')
+        (array) config('backpack.base.web_middleware', 'web'),
+        (array) config('backpack.base.middleware_key', 'admin')
     ),
     'namespace' => 'App\Admin\Controllers',
 ], function () {
@@ -18,6 +18,9 @@ Route::group([
     Route::post(config('routes.admin.sponsor_cancel_all_sponsorships'), 'SponsorCrudController@cancelAllSponsorships')->name('admin.sponsor_cancel_all_sponsorships');
     Route::crud(config('routes.admin.sponsorship_message_types'), 'SponsorshipMessageTypeCrudController');
     Route::crud(config('routes.admin.sponsorship_messages'), 'SponsorshipMessageCrudController');
+    Route::get(config('routes.admin.notify_active_sponsors'), 'NotifyActiveSponsorsController@index');
+    Route::post(config('routes.admin.notify_active_sponsors'), 'NotifyActiveSponsorsController@submit');
+    Route::get(config('routes.admin.get_active_sponsorships_for_cat'), 'NotifyActiveSponsorsController@getActiveSponsorships')->name('admin.get_active_sponsorships_for_cat');
     Route::get(config('routes.admin.get_messages_sent_to_sponsor'), 'SponsorshipMessageCrudController@getMessagesSentToSponsor')->name('admin.get_messages_sent_to_sponsor');
     Route::get(config('routes.admin.get_parsed_template_preview'), 'SponsorshipMessageCrudController@getParsedTemplatePreview')->name('admin.get_parsed_template_preview');
     Route::crud(config('routes.admin.news'), 'NewsCrudController');
@@ -31,11 +34,11 @@ Route::group([
 // Routes you generate using Backpack\Generators will be placed here.
 
 Route::group([
-    'prefix'     => config('backpack.base.route_prefix', 'admin'),
+    'prefix' => config('backpack.base.route_prefix', 'admin'),
     'middleware' => array_merge(
         (array) config('backpack.base.web_middleware', 'web'),
         (array) config('backpack.base.middleware_key', 'admin')
     ),
-    'namespace'  => 'App\Http\Controllers\Admin',
+    'namespace' => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
 }); // this should be the absolute last line of this file

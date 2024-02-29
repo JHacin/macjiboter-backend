@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 
 class MetaController extends Controller
 {
-
     /**
      * Returns the data needed on the homepage.
      */

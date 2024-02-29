@@ -12,7 +12,7 @@ return [
     |-------------------
     */
 
-    'show_translatable_field_icon'     => true,
+    'show_translatable_field_icon' => true,
     'translatable_field_icon_position' => 'right', // left or right
 
     'locales' => [
@@ -362,7 +362,7 @@ return [
         // "sk_SK" => "Slovak (Slovakia)",
         // "sk" => "Slovak",
         // "sl_SI" => "Slovenian (Slovenia)",
-        "sl" => "Slovenian",
+        'sl' => 'Slovenian',
         // "xog_UG" => "Soga (Uganda)",
         // "xog" => "Soga",
         // "so_DJ" => "Somali (Djibouti)",

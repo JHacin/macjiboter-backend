@@ -7,9 +7,11 @@ use Setting;
 class Settings
 {
     public const VALUE_TRUE = '1';
+
     public const VALUE_FALSE = '0';
 
     public const KEY_ENABLE_EMAILS = 'enable_emails';
+
     public const KEY_ENABLE_MAILING_LISTS = 'enable_mailing_lists';
 
     public static function get(string $key, string $fallback = ''): string

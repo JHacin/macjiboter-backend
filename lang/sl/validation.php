@@ -125,7 +125,7 @@ return [
             'date_of_birth' => [
                 'before' => 'Datum rojstva mora biti v preteklosti.',
             ],
-            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.'
+            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.',
         ],
         'sponsor' => [
             'email' => [
@@ -134,7 +134,7 @@ return [
             'date_of_birth' => [
                 'before' => 'Datum rojstva mora biti v preteklosti.',
             ],
-            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.'
+            'exists' => 'Uporabnik s to šifro ne obstaja v bazi podatkov.',
         ],
         'name' => [
             'min' => 'Ime mora biti dolgo vsaj 2 znaka.',
@@ -153,12 +153,8 @@ return [
             'before' => 'Datum sprejema v zavetišče mora biti v preteklosti.',
             'after_or_equal' => 'Datum sprejema v zavetišče mora biti kasnejši ali enak datumu rojstva.',
         ],
-        'date_of_arrival_boter' => [
-            'before' => 'Datum vstopa v botrstvo mora biti v preteklosti.',
-            'after_or_equal' => 'Datum vstopa v botrstvo mora biti kasnejši ali enak datumu rojstva.',
-        ],
         'monthly_amount' => [
-            'min' => 'Minimalni mesečni znesek je 5€.',
+            'min' => 'Minimalni mesečni znesek je :min€.',
         ],
         'cat' => [
             'exists' => 'Muca s to šifro ne obstaja v bazi podatkov.',

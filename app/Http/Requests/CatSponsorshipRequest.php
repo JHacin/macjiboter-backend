@@ -25,8 +25,8 @@ class CatSponsorshipRequest extends FormRequest
             'monthly_amount' => [
                 'required',
                 'numeric',
-                'min:' . config('money.donation_minimum'),
-                'max:' . config('validation.integer_max'),
+                'min:'.config('money.donation_minimum'),
+                'max:'.config('validation.integer_max'),
             ],
             'is_anonymous' => ['boolean'],
             'is_gift' => ['boolean'],
@@ -50,7 +50,7 @@ class CatSponsorshipRequest extends FormRequest
                     'nullable',
                     'numeric',
                     'min:1',
-                    'max:' . config('validation.integer_max'),
+                    'max:'.config('validation.integer_max'),
                 ],
             ];
 
@@ -61,7 +61,7 @@ class CatSponsorshipRequest extends FormRequest
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function failedValidation(Validator $validator)
     {

@@ -6,10 +6,12 @@ use App\Settings\Settings;
 use Exception;
 use Log;
 use Mailgun\Mailgun;
+use Psr\Http\Client\ClientExceptionInterface;
 
 class MailClient
 {
     private Mailgun $client;
+
     private string $domain;
 
     public function __construct(Mailgun $client)
@@ -20,7 +22,7 @@ class MailClient
 
     public function send(array $params): void
     {
-        if (!Settings::hasValueTrue(Settings::KEY_ENABLE_EMAILS)) {
+        if (! Settings::hasValueTrue(Settings::KEY_ENABLE_EMAILS)) {
             return;
         }
 
@@ -28,15 +30,22 @@ class MailClient
             $params['to'] = config('mail.vars.test_to_address');
         }
 
-        $this->client->messages()->send(
-            $this->domain,
-            array_merge(['from' => config('mail.from.address')], $params)
-        );
+        $from = config('mail.from.address');
+        $name = config('mail.from.name');
+
+        try {
+            $this->client->messages()->send(
+                $this->domain,
+                array_merge(['from' => "{$name} <{$from}>"], $params)
+            );
+        } catch (Exception|ClientExceptionInterface $e) {
+            $this->logException($e);
+        }
     }
 
     public function addMemberToList(string $list, string $email, array $variables): void
     {
-        if (!Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
+        if (! Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
             return;
         }
 
@@ -54,7 +63,7 @@ class MailClient
 
     public function updateListMember(string $list, string $email, array $parameters): void
     {
-        if (!Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
+        if (! Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
             return;
         }
 
@@ -71,7 +80,7 @@ class MailClient
 
     public function removeMemberFromList(string $list, string $email): void
     {
-        if (!Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
+        if (! Settings::hasValueTrue(Settings::KEY_ENABLE_MAILING_LISTS)) {
             return;
         }
 

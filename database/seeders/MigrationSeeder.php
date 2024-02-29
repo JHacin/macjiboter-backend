@@ -104,6 +104,8 @@ class MigrationSeeder extends Seeder
                 'gender' => $gender,
                 'story' => $this->parseNullableString($record['zgodba']),
                 'is_published' => $record['objavi_zgodbo'] === '1',
+                'created_at' => $this->parseNullableDate($record['add_date']),
+                'updated_at' => $this->parseNullableDate($record['last_update']),
             ]);
 
             $this->catMigrationCache[$record['id']] = ['new_id' => $entry->id];
@@ -130,6 +132,8 @@ class MigrationSeeder extends Seeder
                 'address' => $this->parseNullableString($record['naslov']),
                 'zip_code' => $this->parseNullableString($record['postna_st']),
                 'city' => $this->parseNullableString($record['kraj']),
+                'created_at' => $this->parseNullableDate($record['datum_pristopa']),
+                'updated_at' => $this->parseNullableDate($record['datum_pristopa']),
             ]);
 
             $this->sponsorMigrationCache[$record['id']] = [

@@ -16,6 +16,7 @@
     "backpack/pro": "1.6.4",
     "backpack/revise-operation": "^1.0",
     "backpack/settings": "^3.0",
+    "fakerphp/faker": "^1.21",
     "guzzlehttp/guzzle": "^7.2",
     "intervention/image": "^2.7",
     "laravel/breeze": "^1.11",

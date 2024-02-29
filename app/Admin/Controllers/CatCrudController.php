@@ -22,6 +22,7 @@ use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class CatCrudController extends CrudController
@@ -371,10 +372,14 @@ class CatCrudController extends CrudController
     {
         $client = new Client(['base_uri' => config('app.frontend_url')]);
 
-        $client->request('POST', 'api/revalidate-cat', [
-            'query' => ['secret' => config('app.frontend_revalidate_secret')],
-            'json' => ['slug' => $slug],
-        ]);
+        try {
+            $client->request('POST', 'api/revalidate-cat', [
+                'query' => ['secret' => config('app.frontend_revalidate_secret')],
+                'json' => ['slug' => $slug],
+            ]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage(), ['trace' => $e->getTrace()]);
+        }
     }
 
     private function getCurrentEntrySlug(): string

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use Alert;
 use App\Admin\Requests\AdminCatRequest;
 use App\Admin\Traits\ClearsModelGlobalScopes;
 use App\Admin\Traits\DisplaysOldWebsiteData;
@@ -378,6 +379,7 @@ class CatCrudController extends CrudController
                 'json' => ['slug' => $slug],
             ]);
         } catch (Exception $e) {
+            Alert::error('Prišlo je do napake pri posodabljanju javne strani muce. Prosim javi na jan.hacin@gmail.com.')->flash();
             Log::error($e->getMessage(), ['trace' => $e->getTrace()]);
         }
     }

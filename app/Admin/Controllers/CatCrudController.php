@@ -377,6 +377,7 @@ class CatCrudController extends CrudController
             $client->request('POST', 'api/revalidate-cat', [
                 'query' => ['secret' => config('app.frontend_revalidate_secret')],
                 'json' => ['slug' => $slug],
+                'delay' => 200,
             ]);
         } catch (Exception $e) {
             Alert::error('Prišlo je do napake pri posodabljanju javne strani muce. Prosim javi na jan.hacin@gmail.com.')->flash();

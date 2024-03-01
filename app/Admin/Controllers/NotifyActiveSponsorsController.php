@@ -25,7 +25,7 @@ class NotifyActiveSponsorsController extends Controller
 
     public function index(): View
     {
-        $messageTypes = SponsorshipMessageType::all();
+        $messageTypes = SponsorshipMessageType::where('is_active', true)->get();
         $cats = Cat::withoutGlobalScopes()->get();
 
         return view('admin.notify-active-sponsors', [
@@ -66,7 +66,7 @@ class NotifyActiveSponsorsController extends Controller
             $message->cat_id = $cat->id;
             $message->message_type_id = $messageType->id;
             $message->save();
-           
+
             try {
                 $this->sponsorshipMessageHandler->send($message);
             } catch (Exception $e) {

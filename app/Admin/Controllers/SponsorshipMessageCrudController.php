@@ -237,6 +237,8 @@ class SponsorshipMessageCrudController extends CrudController
         $parsed = $this->mailTemplateParser->parse($templateId, [
             'ime_botra' => $sponsor->first_name,
             'ime_muce' => $cat->name,
+            'boter_moski' => $sponsor->gender === PersonData::GENDER_MALE,
+            'muca_moski' => $cat->gender === Cat::GENDER_MALE,
         ]);
 
         return response()->json(['parsedTemplate' => $parsed]);

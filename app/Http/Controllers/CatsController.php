@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cat;
+use App\Utilities\SponsorListViewParser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -54,5 +55,14 @@ class CatsController extends Controller
     public function getOne(Cat $cat): JsonResponse
     {
         return response()->json($cat);
+    }
+
+    public function getSponsors(Cat $cat): JsonResponse
+    {
+        $cat->loadMissing('sponsorships.sponsor');
+
+        $viewData = SponsorListViewParser::prepareViewData($cat->sponsorships);
+
+        return response()->json($viewData);
     }
 }

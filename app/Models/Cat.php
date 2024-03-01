@@ -48,6 +48,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $sponsorship_messages_count
  * @property-read Collection|Sponsorship[] $sponsorships
  * @property-read int|null $sponsorships_count
+ *
  * @method static CatFactory factory(...$parameters)
  * @method static Builder|Cat newModelQuery()
  * @method static Builder|Cat newQuery()
@@ -137,7 +138,7 @@ class Cat extends Model
 
     protected $guarded = ['id'];
 
-    protected $with = ['photos', 'sponsorships'];
+    protected $with = ['photos'];
 
     protected $withCount = ['sponsorships'];
 

@@ -28,7 +28,7 @@ Route::get('/meta/home', [MetaController::class, 'homePage']);
 
 Route::get('/cats', [CatsController::class, 'getAll']);
 Route::get('/cats/{cat}', [CatsController::class, 'getOne']);
-
+Route::get('/cats/{cat:id}/sponsors', [CatsController::class, 'getSponsors']);
 Route::post('/cats/{cat:id}/adopt', [CatSponsorshipController::class, 'submitForm']);
 
 Route::post('/special-sponsorships', [SpecialSponsorshipController::class, 'submitForm']);

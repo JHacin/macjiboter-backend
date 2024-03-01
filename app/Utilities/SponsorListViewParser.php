@@ -14,34 +14,26 @@ class SponsorListViewParser
      */
     public static function prepareViewData($sponsorships): array
     {
-        $separated = self::separateAnonymousSponsors($sponsorships);
-
-        return [
-            'anonymous' => $separated['anonymous'],
-            'anonymous_count_label' => trans_choice('sponsor.anonymous_count', count($separated['anonymous'])),
-            'identified' => $separated['identified'],
-        ];
-    }
-
-    /**
-     * @param  Collection|Sponsorship[]|SpecialSponsorship[]  $sponsorships
-     */
-    protected static function separateAnonymousSponsors($sponsorships): array
-    {
-        $result = [
-            'anonymous' => [],
-            'identified' => [],
-        ];
+        $anonymousCount = 0;
+        $identifiedSponsors = [];
 
         foreach ($sponsorships as $sponsorship) {
             if (self::isConsideredAnonymous($sponsorship)) {
-                $result['anonymous'][] = $sponsorship->sponsor;
+                $anonymousCount++;
             } else {
-                $result['identified'][] = $sponsorship->sponsor;
+                $identifiedSponsors[] = [
+                    'id' => $sponsorship->sponsor->id,
+                    'first_name' => $sponsorship->sponsor->first_name,
+                    'city' => $sponsorship->sponsor->city,
+                ];
             }
+
         }
 
-        return $result;
+        return [
+            'anonymousCount' => $anonymousCount,
+            'identifiedSponsors' => $identifiedSponsors,
+        ];
     }
 
     /**

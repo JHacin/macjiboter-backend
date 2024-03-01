@@ -3,12 +3,6 @@
 @endphp
 
 <li class="nav-item">
-    <a id="goHome" class="nav-link" href="{{ backpack_url(config('routes.admin.dashboard')) }}">
-        <i class="la la-home nav-icon"></i> {{ trans('backpack::base.dashboard') }}
-    </a>
-</li>
-
-<li class="nav-item">
     <div class="nav-title">Muce</div>
     <a class="nav-link" href="{{ backpack_url(config('routes.admin.cats')) }}">
         <i class="nav-icon la la-cat"></i> Muce

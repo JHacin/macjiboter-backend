@@ -27,6 +27,10 @@ Route::group([
     Route::crud(config('routes.admin.special_sponsorships'), 'SpecialSponsorshipCrudController');
 });
 
+Route::redirect('/', '/admin/muce');
+Route::redirect('/admin', '/admin/muce');
+Route::redirect('/admin/dashboard', '/admin/muce');
+
 // --------------------------
 // Custom Backpack Routes
 // --------------------------

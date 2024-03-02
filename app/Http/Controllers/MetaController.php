@@ -12,9 +12,7 @@ class MetaController extends Controller
      */
     public function homePage(): JsonResponse
     {
-        $heroCats = Cat::has('photos')
-            ->whereNotNull('date_of_arrival_mh')
-            ->where('is_group', false)
+        $heroCats = Cat::where('is_group', false)
             ->inRandomOrder()
             ->get()
             ->slice(0, 4);

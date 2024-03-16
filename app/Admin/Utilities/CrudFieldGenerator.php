@@ -109,14 +109,7 @@ class CrudFieldGenerator
     public static function dateField(array $additions = []): array
     {
         return array_merge([
-            'type' => 'date_picker',
-            'date_picker_options' => [
-                'format' => 'd. m. yyyy',
-                'clearBtn' => true,
-                'language' => 'sl',
-                'autoclose' => true,
-                'todayHighlight' => true,
-            ],
+            'type' => 'date',
         ], $additions);
     }
 

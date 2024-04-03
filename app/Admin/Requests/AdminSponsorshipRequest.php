@@ -21,7 +21,7 @@ class AdminSponsorshipRequest extends FormRequest
             'monthly_amount' => [
                 'required',
                 'numeric',
-                'min:'.config('money.donation_minimum'),
+                'min:0',
                 'max:'.config('validation.integer_max'),
             ],
             'payment_type' => ['required', Rule::in(Sponsorship::PAYMENT_TYPES)],

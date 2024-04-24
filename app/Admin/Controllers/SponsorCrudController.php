@@ -46,7 +46,9 @@ class SponsorCrudController extends CrudController
         $this->crud->addColumn(CrudColumnGenerator::email());
         $this->crud->addColumn(CrudColumnGenerator::firstName());
         $this->crud->addColumn(CrudColumnGenerator::lastName());
+        $this->crud->addColumn(CrudColumnGenerator::genderLabel());
         $this->crud->addColumn(CrudColumnGenerator::city());
+        $this->crud->addColumn(CrudColumnGenerator::country());
         $this->crud->addColumn(CrudColumnGenerator::createdAt());
         $this->crud->addColumn([
             'label' => 'Aktivna botrstva',

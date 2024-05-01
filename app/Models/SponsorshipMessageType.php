@@ -28,7 +28,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $sponsorship_messages_count
  * @property-read Collection|Revision[] $revisionHistory
  * @property-read int|null $revision_history_count
- *
  * @method static Builder|SponsorshipMessageType newModelQuery()
  * @method static Builder|SponsorshipMessageType newQuery()
  * @method static Builder|SponsorshipMessageType query()
@@ -40,7 +39,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|SponsorshipMessageType whereTemplateId($value)
  * @method static Builder|SponsorshipMessageType whereUpdatedAt($value)
  * @method static SponsorshipMessageTypeFactory factory(...$parameters)
- *
  * @mixin Eloquent
  */
 class SponsorshipMessageType extends Model

@@ -190,14 +190,12 @@ class CrudFieldGenerator
             'name' => 'cat',
             'entity' => 'unscopedCat', // clears status scope
             'model' => UnscopedCat::class, // clears status scope
+            'attribute' => 'name_and_id_and_status', // shows name, id and status label
             'label' => trans('cat.cat'),
             'type' => 'relationship',
             'placeholder' => 'Izberi muco',
             'attributes' => [
                 'required' => 'required',
-            ],
-            'wrapper' => [
-                'dusk' => 'cat-wrapper',
             ],
         ];
     }

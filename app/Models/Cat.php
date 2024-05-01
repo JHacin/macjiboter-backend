@@ -48,7 +48,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $sponsorship_messages_count
  * @property-read Collection|Sponsorship[] $sponsorships
  * @property-read int|null $sponsorships_count
- *
  * @method static CatFactory factory(...$parameters)
  * @method static Builder|Cat newModelQuery()
  * @method static Builder|Cat newQuery()
@@ -67,7 +66,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|Cat whereStatus($value)
  * @method static Builder|Cat whereStory($value)
  * @method static Builder|Cat whereUpdatedAt($value)
- *
+ * @property-read string $name_and_id_and_status
  * @mixin Eloquent
  */
 class Cat extends Model
@@ -255,6 +254,11 @@ class Cat extends Model
     public function getNameAndIdAttribute(): string
     {
         return sprintf('%s (%d)', $this->name, $this->id);
+    }
+
+    public function getNameAndIdAndStatusAttribute(): string
+    {
+        return sprintf('%s (%s)', $this->name_and_id, $this->status_label);
     }
 
     public function getCrudPhotosArrayAttribute(): array

@@ -37,7 +37,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read Collection|Revision[] $revisionHistory
  * @property-read int|null $revision_history_count
  * @property-read PersonData|null $sponsor
- *
  * @method static SpecialSponsorshipFactory factory(...$parameters)
  * @method static Builder|SpecialSponsorship newModelQuery()
  * @method static Builder|SpecialSponsorship newQuery()
@@ -55,7 +54,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|SpecialSponsorship whereSponsorId($value)
  * @method static Builder|SpecialSponsorship whereType($value)
  * @method static Builder|SpecialSponsorship whereUpdatedAt($value)
- *
  * @mixin Eloquent
  */
 class SpecialSponsorship extends Model implements BankTransferFields

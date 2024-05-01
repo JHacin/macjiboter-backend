@@ -26,7 +26,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Cat $cat
  * @property-read string $url
- *
  * @method static CatPhotoFactory factory(...$parameters)
  * @method static Builder|CatPhoto newModelQuery()
  * @method static Builder|CatPhoto newQuery()
@@ -39,7 +38,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CatPhoto whereIndex($value)
  * @method static Builder|CatPhoto whereSizes($value)
  * @method static Builder|CatPhoto whereUpdatedAt($value)
- *
  * @mixin Eloquent
  */
 class CatPhoto extends Model

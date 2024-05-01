@@ -37,8 +37,11 @@ class CrudFilterGenerator
                 'label' => trans('cat.cat'),
             ],
             function () {
-                // clears status scope
-                return Cat::withoutGlobalScopes()->get()->pluck('name_and_id', 'id')->toArray();
+                return Cat::withoutGlobalScopes()
+                    ->get()
+                    ->keyBy('id')
+                    ->pluck('name_and_id_and_status', 'id')
+                    ->toArray();
             },
             function ($value) use ($crud) {
                 $crud->addClause('where', 'cat_id', $value);

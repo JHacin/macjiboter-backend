@@ -10,7 +10,7 @@ use Venturecraft\Revisionable\Revision;
 
 /**
  * App\Models\UnscopedCat
- *
+ * 
  * Clears status scope in admin.
  *
  * @property int $id
@@ -39,7 +39,6 @@ use Venturecraft\Revisionable\Revision;
  * @property-read int|null $sponsorship_messages_count
  * @property-read Collection<int, Sponsorship> $sponsorships
  * @property-read int|null $sponsorships_count
- *
  * @method static Builder|UnscopedCat newModelQuery()
  * @method static Builder|UnscopedCat newQuery()
  * @method static Builder|UnscopedCat query()
@@ -56,7 +55,7 @@ use Venturecraft\Revisionable\Revision;
  * @method static Builder|UnscopedCat whereStatus($value)
  * @method static Builder|UnscopedCat whereStory($value)
  * @method static Builder|UnscopedCat whereUpdatedAt($value)
- *
+ * @property-read string $name_and_id_and_status
  * @mixin Eloquent
  */
 class UnscopedCat extends Cat

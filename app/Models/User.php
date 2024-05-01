@@ -39,7 +39,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $notifications_count
  * @property-read Collection|PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
- *
  * @method static UserFactory factory(...$parameters)
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -52,7 +51,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
- *
  * @property-read string $email_and_id
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
@@ -60,10 +58,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read int|null $revision_history_count
  * @property-read Collection|Role[] $roles
  * @property-read int|null $roles_count
- *
  * @method static Builder|User permission($permissions)
  * @method static Builder|User role($roles, $guard = null)
- *
  * @mixin Eloquent
  */
 class User extends Authenticatable

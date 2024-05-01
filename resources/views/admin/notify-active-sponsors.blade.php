@@ -65,9 +65,9 @@
                                 <option value="">-</option>
                                 @foreach($cats as $cat)
                                     @if(old("cat") == $cat->id)
-                                        <option value="{{ $cat->id }}" selected>{{ $cat->name_and_id }}</option>
+                                        <option value="{{ $cat->id }}" selected>{{ $cat->name_and_id_and_status }}</option>
                                     @else
-                                        <option value="{{ $cat->id }}">{{ $cat->name_and_id }}</option>
+                                        <option value="{{ $cat->id }}">{{ $cat->name_and_id_and_status }}</option>
                                     @endif
                                 @endforeach
                             </select>

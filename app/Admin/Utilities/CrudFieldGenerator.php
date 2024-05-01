@@ -147,7 +147,7 @@ class CrudFieldGenerator
                     ],
                     [
                         'name' => 'paragraph',
-                        'items' => ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+                        'items' => ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'],
                     ],
                     [
                         'name' => 'styles',

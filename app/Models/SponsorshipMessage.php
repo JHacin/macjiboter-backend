@@ -16,11 +16,13 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property int|null $message_type_id
+ * @property string|null $subject
  * @property int|null $cat_id
  * @property int|null $sponsor_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Cat|null $cat
+ * @property-read Cat|null $unscopedCat
  * @property-read SponsorshipMessageType|null $messageType
  * @property-read PersonData|null $sponsor
  * @method static Builder|SponsorshipMessage newModelQuery()
@@ -30,10 +32,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|SponsorshipMessage whereCreatedAt($value)
  * @method static Builder|SponsorshipMessage whereId($value)
  * @method static Builder|SponsorshipMessage whereMessageTypeId($value)
+ * @method static Builder|SponsorshipMessage whereSubject($value)
  * @method static Builder|SponsorshipMessage whereSponsorId($value)
  * @method static Builder|SponsorshipMessage whereUpdatedAt($value)
  * @method static SponsorshipMessageFactory factory(...$parameters)
- * @property-read \App\Models\Cat|null $unscopedCat
  * @mixin Eloquent
  */
 class SponsorshipMessage extends Model

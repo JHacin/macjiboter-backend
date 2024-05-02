@@ -51,6 +51,11 @@ class SponsorshipMessageTypeCrudController extends CrudController
         $this->crud->addColumn(CrudColumnGenerator::id());
         $this->crud->addColumn(CrudColumnGenerator::name());
         $this->crud->addColumn([
+            'name' => 'subject',
+            'label' => trans('sponsorship_message_type.subject'),
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
             'name' => 'template_id',
             'label' => trans('sponsorship_message_type.template_id'),
             'type' => 'text',
@@ -84,12 +89,9 @@ class SponsorshipMessageTypeCrudController extends CrudController
             'name' => 'subject',
             'label' => trans('sponsorship_message_type.subject'),
             'type' => 'text',
-            'hint' => 'Naslov, ki bo prikazan v mailu.',
+            'hint' => 'Naslov, ki bo prikazan v mailu (razen, če se pri pošiljanju uporabi drugačen naslov).',
             'attributes' => [
                 'required' => 'required',
-            ],
-            'wrapper' => [
-                'dusk' => 'subject-wrapper',
             ],
         ]);
 
@@ -101,18 +103,12 @@ class SponsorshipMessageTypeCrudController extends CrudController
             'attributes' => [
                 'required' => 'required',
             ],
-            'wrapper' => [
-                'dusk' => 'template_id-wrapper',
-            ],
         ]);
         $this->crud->addField([
             'name' => 'is_active',
             'label' => trans('sponsorship_message_type.is_active'),
             'type' => 'checkbox',
             'hint' => 'Če pismo ni aktivno, ne bo na voljo med možnostmi pri pošiljanju botrom.',
-            'wrapper' => [
-                'dusk' => 'is_active-wrapper',
-            ],
         ]);
     }
 

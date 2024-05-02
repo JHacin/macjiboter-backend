@@ -47,6 +47,7 @@ class NotifyActiveSponsorsController extends Controller
         $request->validate([
             'messageType' => ['required', 'integer', Rule::exists('sponsorship_message_types', 'id')],
             'cat' => ['required', 'integer', Rule::exists('cats', 'id')],
+            'subject' => ['nullable', 'string', 'max:255'],
         ]);
 
         $cat = Cat::withoutGlobalScopes()->find($request->input('cat'));
@@ -64,6 +65,7 @@ class NotifyActiveSponsorsController extends Controller
             $message = new SponsorshipMessage;
             $message->sponsor_id = $sponsorship->sponsor_id;
             $message->cat_id = $cat->id;
+            $message->subject = $request->input('subject');
             $message->message_type_id = $messageType->id;
             $message->save();
 

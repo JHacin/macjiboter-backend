@@ -92,6 +92,11 @@ class SponsorshipMessageCrudController extends CrudController
             },
         ]);
         $this->crud->addColumn(CrudColumnGenerator::cat());
+        $this->crud->addColumn([
+            'name' => 'subject',
+            'type' => 'text',
+            'label' => trans('sponsorship_message.subject'),
+        ]);
         $this->crud->addColumn(CrudColumnGenerator::createdAt(['label' => 'Poslano']));
 
         $this->addFilters();
@@ -147,7 +152,6 @@ class SponsorshipMessageCrudController extends CrudController
                 'dusk' => 'messageType-wrapper',
             ],
         ]);
-
         $this->crud->addField([
             'name' => 'sponsor',
             'label' => trans('sponsorship_message.sponsor'),
@@ -161,6 +165,12 @@ class SponsorshipMessageCrudController extends CrudController
             ],
         ]);
         $this->crud->addField(CrudFieldGenerator::cat());
+        $this->crud->addField([
+            'name' => 'subject',
+            'label' => trans('sponsorship_message.subject'),
+            'type' => 'text',
+            'hint' => trans('sponsorship_message.subject_hint'),
+        ]);
         $this->crud->addField([
             'name' => 'separator_1',
             'type' => 'custom_html',

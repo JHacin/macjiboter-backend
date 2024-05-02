@@ -73,6 +73,12 @@
                             </select>
                         </div>
                         <div class="form-group col-sm-12">
+                            <label for="subject">{{ trans('sponsorship_message.subject') }}</label>
+                            <input type="text" name="subject" class="form-control">
+                            <p class="help-block">{{ trans('sponsorship_message.subject_hint') }}</p>
+                        </div>  
+                
+                        <div class="form-group col-sm-12">
                             <hr>
                         </div>
                         <div class="form-group col-sm-12">

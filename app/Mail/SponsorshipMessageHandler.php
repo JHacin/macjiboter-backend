@@ -21,7 +21,7 @@ class SponsorshipMessageHandler
         $this->mailClient->send([
             'to' => $message->sponsor->email,
             'bcc' => config('mail.vars.bcc_copy_address'),
-            'subject' => $message->messageType->subject,
+            'subject' => $message->subject ? $message->subject : $message->messageType->subject,
             'template' => $message->messageType->template_id,
             'h:X-Mailgun-Variables' => json_encode([
                 'ime_botra' => $message->sponsor->first_name,

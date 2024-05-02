@@ -44,8 +44,6 @@
     <!--suppress JSUnresolvedVariable -->
     <script>
         (function() {
-          new ClipboardJS('.msg-preview-copy-to-clipboard');
-
           const $messageTypeSelect = $('select[name="messageType"]');
           const $sponsorSelect = $('select[name="sponsor"]');
           const $catSelect = $('select[name="cat"]');
@@ -62,7 +60,29 @@
             }
           }
 
+          function initClipboard() {
+            const clipboard = new ClipboardJS('.msg-preview-copy-to-clipboard');
+            let clipboardTextResetTimeoutId;
+            let prevBtnText;
+
+            clipboard.on('success', e => {
+              if (clipboardTextResetTimeoutId) {
+                clearTimeout(clipboardTextResetTimeoutId);
+              }
+              if (!prevBtnText) {
+                prevBtnText = e.trigger.textContent;
+              }
+
+              e.trigger.textContent = "Kopirano!";
+
+              clipboardTextResetTimeoutId = setTimeout(() => {
+                e.trigger.textContent = prevBtnText;
+              }, 3000)
+            });
+          }
+
           enableGeneratingPreviewIfPossible() // if selects already have values, e.g. there's an error when submitting
+          initClipboard();
           $messageTypeSelect.on('change', enableGeneratingPreviewIfPossible);
           $sponsorSelect.on('change', enableGeneratingPreviewIfPossible);
           $catSelect.on('change', enableGeneratingPreviewIfPossible);

@@ -282,9 +282,32 @@
                         $previewContent.html($.parseHTML(parsedText));
                         $modalContent.append($previewContent);
 
-                        const clipboard = new ClipboardJS('.copy-to-clipboard-button', {
-                            target: () => $previewContent[0]
-                        });
+                        function initClipboard() {
+                            const clipboard = new ClipboardJS('.copy-to-clipboard-button', {
+                                target: () => $previewContent[0]
+                            });
+                            let clipboardTextResetTimeoutId;
+                            let prevBtnText;
+
+                            clipboard.on('success', e => {
+                                if (clipboardTextResetTimeoutId) {
+                                    clearTimeout(clipboardTextResetTimeoutId);
+                                }
+                                if (!prevBtnText) {
+                                    prevBtnText = e.trigger.textContent;
+                                }
+
+                                e.trigger.textContent = "Kopirano!";
+
+                                clipboardTextResetTimeoutId = setTimeout(() => {
+                                    e.trigger.textContent = prevBtnText;
+                                }, 3000)
+                            });
+
+                            return clipboard;
+                        }
+
+                        const clipboard = initClipboard();
 
                         swal({
                             title: "Predogled pisma",

@@ -4,10 +4,13 @@
     $messageTypes = SponsorshipMessageType::all()
 @endphp
 
-<label>Poslana pisma izbranemu botru:</label>
+<label>Poslana pisma izbranemu botru za izbrano muco:</label>
 
-<div class="sent-messages-none-selected-msg" dusk="sent-messages-none-selected-msg">
+<div class="sent-messages-no-sponsor-selected-msg">
    <small>Izbran še ni noben boter.</small>
+</div>
+<div class="sent-messages-no-cat-selected-msg">
+   <small>Izbrana še ni nobena muca.</small>
 </div>
 
 <div class="sent-messages-loader spinner-border text-primary" role="status" dusk="sent-messages-loader">
@@ -65,7 +68,9 @@
       (function (){
         const $messageTypeSelect = $('select[name="messageType"]');
         const $sponsorSelect = $('select[name="sponsor"]');
-        const $emptyStateMsg = $('.sent-messages-none-selected-msg');
+        const $catSelect = $('select[name="cat"]');
+        const $sponsorEmptyStateMsg = $('.sent-messages-no-sponsor-selected-msg');
+        const $catEmptyStateMsg = $('.sent-messages-no-cat-selected-msg');
         const $table = $('.sent-messages-table-wrapper');
         const $loader = $('.sent-messages-loader');
         const $alreadySentWarning = $('.already-sent-warning');
@@ -87,27 +92,38 @@
           }
         }
 
-        $sponsorSelect.on('change', function(e) {
+        function handleCatOrSponsorSelectChange() {
+          const sponsorId = $sponsorSelect.val();
+          const catId = $catSelect.val();
+
           $table.hide();
-          $emptyStateMsg.hide();
+          $sponsorEmptyStateMsg.hide();
+          $catEmptyStateMsg.hide();
           $loader.show();
 
-          if (!e.target.value) {
-            $emptyStateMsg.show();
+          if (!sponsorId || !catId) {
+            if (!sponsorId) {
+              $sponsorEmptyStateMsg.show();
+            }
+            if (!catId) {
+              $catEmptyStateMsg.show();
+            }
+            
             $loader.hide();
             return;
           }
 
-          const urlWithPlaceholder = "{{ route('admin.get_messages_sent_to_sponsor', ':sponsorId') }}";
-          const requestUrl = urlWithPlaceholder.replace(':sponsorId', e.target.value);
+
+          const urlWithPlaceholder = "{{ route('admin.get_messages_sent_to_sponsor_for_cat', ['sponsor' => ':sponsorId', 'catId' => ':catId']) }}";
+          const requestUrl = urlWithPlaceholder
+            .replace(':sponsorId', $sponsorSelect.val())
+            .replace(':catId', $catSelect.val());
 
           $.ajax({
             url: requestUrl,
             type: 'GET',
             success: function(result) {
-              const sentMessageIds = result.map(function(message) {
-                return message.message_type.id;
-              });
+              const sentMessageIds = result.map((message) => message.message_type_id);
 
               toggleStatusIconsVisibility(sentMessageIds)
               checkIfMessageWasAlreadySent(sentMessageIds)
@@ -121,7 +137,11 @@
               $loader.hide();
             }
           });
-        });
+        }
+
+        $sponsorSelect.on('change', handleCatOrSponsorSelectChange);
+        $catSelect.on('change', handleCatOrSponsorSelectChange);
+
         // if selects already have values, e.g. there's an error when submitting
         if ($sponsorSelect.val()) {
           $sponsorSelect.change()

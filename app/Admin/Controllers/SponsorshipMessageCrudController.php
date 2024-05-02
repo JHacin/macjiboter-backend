@@ -229,11 +229,15 @@ class SponsorshipMessageCrudController extends CrudController
         return $response;
     }
 
-    public function getMessagesSentToSponsor(PersonData $sponsor): JsonResponse
+    public function getMessagesSentToSponsorForCat(PersonData $sponsor, string $catId): JsonResponse
     {
         $this->crud->hasAccessOrFail('create');
 
-        return response()->json($sponsor->sponsorshipMessages->load('messageType'));
+        $messages = $sponsor->sponsorshipMessages
+            ->where('cat_id', (int) $catId)
+            ->values();
+
+        return response()->json($messages);
     }
 
     public function getParsedTemplatePreview(Request $request): JsonResponse

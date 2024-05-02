@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use App\Mail\SponsorshipMessageHandler;
 use App\Models\Cat;
+use App\Models\Sponsorship;
 use App\Models\SponsorshipMessage;
 use App\Models\SponsorshipMessageType;
 use Exception;
@@ -48,6 +49,7 @@ class NotifyActiveSponsorsController extends Controller
             'messageType' => ['required', 'integer', Rule::exists('sponsorship_message_types', 'id')],
             'cat' => ['required', 'integer', Rule::exists('cats', 'id')],
             'subject' => ['nullable', 'string', 'max:255'],
+            'excluded_sponsors' => ['nullable', 'array'],
         ]);
 
         $cat = Cat::withoutGlobalScopes()->find($request->input('cat'));
@@ -56,12 +58,21 @@ class NotifyActiveSponsorsController extends Controller
         if (! $cat || ! $messageType) {
             return back()->with('error-message', 'Prišlo je do napake pri pridobivanju podatkov na strežniku.')->withInput();
         }
-
         if ($cat->sponsorships->isEmpty()) {
             return back()->with('error-message', 'Muca nima aktivnih botrov.')->withInput();
         }
 
-        foreach ($cat->sponsorships as $sponsorship) {
+        $excludedSponsors = $request->input('excluded_sponsors');
+        $filteredSponsorships = $excludedSponsors
+            ? $cat->sponsorships->filter(function (Sponsorship $sponsorship) use ($excludedSponsors) {
+                return ! in_array($sponsorship->sponsor_id, $excludedSponsors);
+            })
+            : $cat->sponsorships;
+        if ($filteredSponsorships->isEmpty()) {
+            return back()->with('error-message', 'Vključen ni bil noben boter.')->withInput();
+        }
+
+        foreach ($filteredSponsorships as $sponsorship) {
             $message = new SponsorshipMessage;
             $message->sponsor_id = $sponsorship->sponsor_id;
             $message->cat_id = $cat->id;

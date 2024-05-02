@@ -2,93 +2,37 @@
 
 namespace App\Admin\Utilities;
 
-use App\Models\PersonData;
 use App\Models\UnscopedCat;
 use App\Utilities\CountryList;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 
 class CrudFieldGenerator
 {
-    public static function addAddressFields(CrudPanel $crudPanel, string $namePrefix = ''): void
+    public static function addAddressFields(CrudPanel $crudPanel): void
     {
         $crudPanel->addField([
-            'name' => $namePrefix.'address',
+            'name' => 'address',
             'label' => trans('person_data.address'),
             'type' => 'text',
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix.'zip_code',
+            'name' => 'zip_code',
             'label' => trans('person_data.zip_code'),
             'type' => 'text',
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix.'city',
+            'name' => 'city',
             'label' => trans('person_data.city'),
             'type' => 'text',
         ]);
         $crudPanel->addField([
-            'name' => $namePrefix.'country',
+            'name' => 'country',
             'label' => trans('person_data.country'),
             'type' => 'select2_from_array',
             'options' => CountryList::COUNTRY_NAMES,
             'allows_null' => true,
             'default' => CountryList::DEFAULT,
         ]);
-    }
-
-    public static function addPersonDataFields(CrudPanel $crudPanel): void
-    {
-        $isNested = ! ($crudPanel->getModel() instanceof PersonData);
-        $namePrefix = $isNested ? 'personData.' : '';
-
-        $crudPanel->addField([
-            'name' => $namePrefix.'first_name',
-            'label' => trans('person_data.first_name'),
-            'type' => 'text',
-            'attributes' => [
-                'required' => 'required',
-            ],
-            'wrapper' => [
-                'dusk' => 'first_name-input-wrapper',
-            ],
-        ]);
-        $crudPanel->addField([
-            'name' => $namePrefix.'last_name',
-            'label' => trans('person_data.last_name'),
-            'type' => 'text',
-            'attributes' => [
-                'required' => 'required',
-            ],
-            'wrapper' => [
-                'dusk' => 'last_name-input-wrapper',
-            ],
-        ]);
-        $crudPanel->addField([
-            'name' => $namePrefix.'gender',
-            'label' => trans('person_data.gender'),
-            'type' => 'select2_from_array',
-            'options' => PersonData::GENDER_LABELS,
-            'allows_null' => true,
-            'wrapper' => [
-                'dusk' => 'gender-input-wrapper',
-            ],
-            'attributes' => [
-                'required' => 'required',
-            ],
-        ]);
-        $crudPanel->addField([
-            'name' => $namePrefix.'date_of_birth',
-            'label' => trans('person_data.date_of_birth'),
-            'type' => 'date_picker',
-            'date_picker_options' => [
-                'format' => 'dd. mm. yyyy',
-            ],
-            'wrapper' => [
-                'dusk' => 'date_of_birth-input-wrapper',
-            ],
-        ]);
-
-        self::addAddressFields($crudPanel, $namePrefix);
     }
 
     public static function moneyField(array $additions = []): array

@@ -111,12 +111,46 @@ class SponsorCrudController extends CrudController
             'attributes' => [
                 'required' => 'required',
             ],
-            'wrapper' => [
-                'dusk' => 'email-input-wrapper',
+        ]);
+        $this->crud->addField([
+            'name' => 'first_name',
+            'label' => trans('person_data.first_name'),
+            'type' => 'text',
+            'attributes' => [
+                'required' => 'required',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'last_name',
+            'label' => trans('person_data.last_name'),
+            'type' => 'text',
+            'attributes' => [
+                'required' => 'required',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'gender',
+            'label' => trans('person_data.gender'),
+            'type' => 'select2_from_array',
+            'options' => PersonData::GENDER_LABELS,
+            'allows_null' => true,
+        ]);
+        $this->crud->addField([
+            'name' => 'is_gender_exception',
+            'label' => '(interno) Izjema pri spolu',
+            'type' => 'checkbox',
+            'hint' => 'Ali gre za več oseb, podjetje...',
+        ]);
+        $this->crud->addField([
+            'name' => 'date_of_birth',
+            'label' => trans('person_data.date_of_birth'),
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'format' => 'dd. mm. yyyy',
             ],
         ]);
 
-        CrudFieldGenerator::addPersonDataFields($this->crud);
+        CrudFieldGenerator::addAddressFields($this->crud);
     }
 
     protected function setupUpdateOperation(): void

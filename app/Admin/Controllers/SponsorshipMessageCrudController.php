@@ -182,11 +182,6 @@ class SponsorshipMessageCrudController extends CrudController
             'view' => 'admin/sponsor-sent-messages',
         ]);
         $this->crud->addField([
-            'name' => 'separator_2',
-            'type' => 'custom_html',
-            'value' => '<hr>',
-        ]);
-        $this->crud->addField([
             'name' => 'parsed_template_preview',
             'type' => 'view',
             'view' => 'admin/parsed-template-preview',
@@ -237,7 +232,10 @@ class SponsorshipMessageCrudController extends CrudController
             ->where('cat_id', (int) $catId)
             ->values();
 
-        return response()->json($messages);
+        return response()->json([
+            'messages' => $messages,
+            'is_gender_exception' => $sponsor->is_gender_exception,
+        ]);
     }
 
     public function getParsedTemplatePreview(Request $request): JsonResponse

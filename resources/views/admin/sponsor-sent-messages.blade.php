@@ -4,6 +4,10 @@
     $messageTypes = SponsorshipMessageType::all()
 @endphp
 
+<div class="is-gender-exception-alert">
+  <div class="alert alert-danger d-inline-block">Pozor: boter je označen kot izjema pri spolu.</div>
+</div>
+
 <label>Poslana pisma izbranemu botru za izbrano muco:</label>
 
 <div class="sent-messages-no-sponsor-selected-msg">
@@ -52,7 +56,8 @@
     <style>
         .sent-messages-table-wrapper,
         .sent-messages-loader,
-        .already-sent-warning {
+        .already-sent-warning,
+        .is-gender-exception-alert {
             display: none;
         }
 
@@ -74,6 +79,7 @@
         const $table = $('.sent-messages-table-wrapper');
         const $loader = $('.sent-messages-loader');
         const $alreadySentWarning = $('.already-sent-warning');
+        const $isGenderExceptionAlert = $('.is-gender-exception-alert')
 
         function toggleStatusIconsVisibility(sentMessageIds) {
           $('.sent-message-row').attr('data-status', 'not-sent');
@@ -123,10 +129,14 @@
             url: requestUrl,
             type: 'GET',
             success: function(result) {
-              const sentMessageIds = result.map((message) => message.message_type_id);
+              const sentMessageIds = result.messages.map((message) => message.message_type_id);
 
               toggleStatusIconsVisibility(sentMessageIds)
               checkIfMessageWasAlreadySent(sentMessageIds)
+
+              if (result.is_gender_exception) {
+                $isGenderExceptionAlert.show();
+              }
 
               $table.show();
             },
@@ -139,7 +149,10 @@
           });
         }
 
-        $sponsorSelect.on('change', handleCatOrSponsorSelectChange);
+        $sponsorSelect.on('change', () => {
+          $isGenderExceptionAlert.hide();
+          handleCatOrSponsorSelectChange();
+        });
         $catSelect.on('change', handleCatOrSponsorSelectChange);
 
         // if selects already have values, e.g. there's an error when submitting

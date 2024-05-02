@@ -93,19 +93,25 @@
                                 <span class="sr-only">Nalagam...</span>
                             </div>
 
-                            <table class="active-sponsors-table table table-sm table-striped table-bordered table-hover mb-0">
-                                <thead class="bg-primary">
-                                    <tr>
-                                        <td>ID</td>
-                                        <td>Email</td>
-                                        <td>Ime</td>
-                                        <td>Priimek</td>
-                                        <td>Botrstvo</td>
-                                        <td>Dejanja</td>
-                                    </tr>
-                                </thead>
-                                <tbody class="active-sponsors-table-body"></tbody>
-                            </table>
+                            <div class="active-sponsors-table">
+                                <div class="mb-2">
+                                    <small>Če želiš katerega od botrov izključiti iz pošiljanja (npr. če je izjema pri spolu), obkljukaj polje "Izključi".</small>
+                                </div>
+                                <table class="active-sponsors-table table table-sm table-striped table-bordered table-hover mb-0">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <td style="width:70px;text-align:center;">Izključi?</td>
+                                            <td>Boter</td>
+                                            <td>Ime</td>
+                                            <td>Priimek</td>
+                                            <td>Izjema (spol)</td>
+                                            <td>Botrstvo</td>
+                                            <td style="text-align:center;">Dejanja</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="active-sponsors-table-body"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -211,18 +217,22 @@
                         result.forEach(sponsorship => {
                             const sponsor = sponsorship.sponsor;
 
-                            const editUrlWithPlaceholder = "{{ route('botrstva.edit', ':sponsorshipId') }}";
-                            const editUrl = editUrlWithPlaceholder.replace(":sponsorshipId", sponsorship.id);
+                            const sponsorEditUrlWithPlaceholder = "{{ backpack_url(config('routes.admin.sponsors'), ['tmpSponsorId', 'edit']) }}";
+                            const sponsorEditUrl = sponsorEditUrlWithPlaceholder.replace("tmpSponsorId", sponsor.id);
+
+                            const sponsorshipEditUrlWithPlaceholder = "{{ backpack_url(config('routes.admin.sponsorships'), ['tmpSponsorshipId', 'edit']) }}";
+                            const sponsorshipEditUrl = sponsorshipEditUrlWithPlaceholder.replace("tmpSponsorshipId", sponsorship.id);
 
                             const $tableRow = $("<tr></tr>")
-                                .append(`<td>${sponsor.id}</td>`)
-                                .append(`<td><a href="mailto:${sponsor.email}">${sponsor.email}</a></td>`)
+                                .append(`<td style="text-align:center;"><input type="checkbox" name="excluded_sponsors[]" value="${sponsor.id}" /></td>`)
+                                .append(`<td><a href="${sponsorEditUrl}" target="_blank">${sponsor.email} (${sponsor.id})</a></td>`)
                                 .append(`<td>${sponsor.first_name}</td>`)
                                 .append(`<td>${sponsor.last_name}</td>`)
-                                .append(`<td>Vnešeno: ${moment(sponsorship.created_at).format("D. M. YYYY")} | <a href="${editUrl}" target="_blank">Povezava</a></td>`)
+                                .append(`<td><div class="badge ${sponsor.is_gender_exception ? "badge-danger" : "badge-light"}">${sponsor.is_gender_exception ? "Da" : "Ne"}</div></td>`)
+                                .append(`<td><span>Vnešeno: ${moment(sponsorship.created_at).format("D. M. YYYY")}</span> <a href="${sponsorshipEditUrl}" target="_blank"><i class="las la-external-link-alt"></i></a></td>`)
                                 .append(`<td class="text-center">
                                   <span class="msg-preview-not-selected">Izberi vrsto pisma</span>
-                                  <button type="button" class="msg-preview-button btn btn-link btn-sm" data-sponsor-id="${sponsor.id}">
+                                  <button type="button" class="msg-preview-button btn btn-link btn-sm p-0" data-sponsor-id="${sponsor.id}">
                                     <i class="las la-search"></i> Predogled
                                   </button>
                                   <div class="msg-preview-loader spinner-border spinner-border-sm text-primary mx-auto">

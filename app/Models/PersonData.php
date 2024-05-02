@@ -21,6 +21,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property int $id
  * @property string $email
  * @property int|null $gender
+ * @property int $is_gender_exception
  * @property string|null $first_name
  * @property string|null $last_name
  * @property Carbon|null $date_of_birth
@@ -42,6 +43,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read Collection|Sponsorship[] $unscopedSponsorships
  * @property-read int|null $unscoped_sponsorships_count
  * @property-read User|null $user
+ *
  * @method static PersonDataFactory factory(...$parameters)
  * @method static Builder|PersonData newModelQuery()
  * @method static Builder|PersonData newQuery()
@@ -54,10 +56,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|PersonData whereEmail($value)
  * @method static Builder|PersonData whereFirstName($value)
  * @method static Builder|PersonData whereGender($value)
+ * @method static Builder|PersonData whereIsGenderException($value)
  * @method static Builder|PersonData whereId($value)
  * @method static Builder|PersonData whereLastName($value)
  * @method static Builder|PersonData whereUpdatedAt($value)
  * @method static Builder|PersonData whereZipCode($value)
+ *
  * @mixin Eloquent
  */
 class PersonData extends Model
@@ -103,6 +107,7 @@ class PersonData extends Model
     protected $fillable = [
         'email',
         'gender',
+        'is_gender_exception',
         'first_name',
         'last_name',
         'date_of_birth',
@@ -119,6 +124,7 @@ class PersonData extends Model
      */
     protected $casts = [
         'date_of_birth' => 'date',
+        'is_gender_exception' => 'boolean',
     ];
 
     /**

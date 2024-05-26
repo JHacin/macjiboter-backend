@@ -224,16 +224,12 @@ class SponsorshipMessageCrudController extends CrudController
         return $response;
     }
 
-    public function getMessagesSentToSponsorForCat(PersonData $sponsor, string $catId): JsonResponse
+    public function getMessagesSentToSponsor(PersonData $sponsor): JsonResponse
     {
         $this->crud->hasAccessOrFail('create');
 
-        $messages = $sponsor->sponsorshipMessages
-            ->where('cat_id', (int) $catId)
-            ->values();
-
         return response()->json([
-            'messages' => $messages,
+            'messages' => $sponsor->sponsorshipMessages->load('messageType'),
             'is_gender_exception' => $sponsor->is_gender_exception,
         ]);
     }

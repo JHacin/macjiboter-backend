@@ -8,13 +8,10 @@
   <div class="alert alert-danger d-inline-block">Pozor: boter je označen kot izjema pri spolu.</div>
 </div>
 
-<label>Poslana pisma izbranemu botru za izbrano muco:</label>
+<label>Poslana pisma izbranemu botru:</label>
 
-<div class="sent-messages-no-sponsor-selected-msg">
+<div class="sent-messages-none-selected-msg">
    <small>Izbran še ni noben boter.</small>
-</div>
-<div class="sent-messages-no-cat-selected-msg">
-   <small>Izbrana še ni nobena muca.</small>
 </div>
 
 <div class="sent-messages-loader spinner-border text-primary" role="status" dusk="sent-messages-loader">
@@ -73,9 +70,7 @@
       (function (){
         const $messageTypeSelect = $('select[name="messageType"]');
         const $sponsorSelect = $('select[name="sponsor"]');
-        const $catSelect = $('select[name="cat"]');
-        const $sponsorEmptyStateMsg = $('.sent-messages-no-sponsor-selected-msg');
-        const $catEmptyStateMsg = $('.sent-messages-no-cat-selected-msg');
+        const $emptyStateMsg = $('.sent-messages-none-selected-msg');
         const $table = $('.sent-messages-table-wrapper');
         const $loader = $('.sent-messages-loader');
         const $alreadySentWarning = $('.already-sent-warning');
@@ -84,7 +79,7 @@
         function toggleStatusIconsVisibility(sentMessageIds) {
           $('.sent-message-row').attr('data-status', 'not-sent');
 
-          sentMessageIds.forEach(function(messageId) {
+          sentMessageIds.forEach((messageId) => {
             const $associatedRow = $(`.sent-message-row[data-message-type-id="${messageId}"]`);
             $associatedRow.attr('data-status', 'sent');
           });
@@ -98,38 +93,27 @@
           }
         }
 
-        function handleCatOrSponsorSelectChange() {
-          const sponsorId = $sponsorSelect.val();
-          const catId = $catSelect.val();
-
+        $sponsorSelect.on('change', function(e) {
           $table.hide();
-          $sponsorEmptyStateMsg.hide();
-          $catEmptyStateMsg.hide();
+          $emptyStateMsg.hide();
+          $isGenderExceptionAlert.hide();
+
           $loader.show();
 
-          if (!sponsorId || !catId) {
-            if (!sponsorId) {
-              $sponsorEmptyStateMsg.show();
-            }
-            if (!catId) {
-              $catEmptyStateMsg.show();
-            }
-            
+          if (!e.target.value) {
+            $emptyStateMsg.show();
             $loader.hide();
             return;
           }
 
-
-          const urlWithPlaceholder = "{{ route('admin.get_messages_sent_to_sponsor_for_cat', ['sponsor' => ':sponsorId', 'catId' => ':catId']) }}";
-          const requestUrl = urlWithPlaceholder
-            .replace(':sponsorId', $sponsorSelect.val())
-            .replace(':catId', $catSelect.val());
+          const urlWithPlaceholder = "{{ route('admin.get_messages_sent_to_sponsor', ':sponsorId') }}";
+          const requestUrl = urlWithPlaceholder.replace(':sponsorId', e.target.value);
 
           $.ajax({
             url: requestUrl,
             type: 'GET',
             success: function(result) {
-              const sentMessageIds = result.messages.map((message) => message.message_type_id);
+              const sentMessageIds = result.messages.map((message) => message.message_type.id);
 
               toggleStatusIconsVisibility(sentMessageIds)
               checkIfMessageWasAlreadySent(sentMessageIds)
@@ -147,13 +131,7 @@
               $loader.hide();
             }
           });
-        }
-
-        $sponsorSelect.on('change', () => {
-          $isGenderExceptionAlert.hide();
-          handleCatOrSponsorSelectChange();
-        });
-        $catSelect.on('change', handleCatOrSponsorSelectChange);
+        })
 
         // if selects already have values, e.g. there's an error when submitting
         if ($sponsorSelect.val()) {

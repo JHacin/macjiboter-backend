@@ -21,7 +21,7 @@ Route::group([
     Route::get(config('routes.admin.notify_active_sponsors'), 'NotifyActiveSponsorsController@index');
     Route::post(config('routes.admin.notify_active_sponsors'), 'NotifyActiveSponsorsController@submit');
     Route::get(config('routes.admin.get_active_sponsorships_for_cat'), 'NotifyActiveSponsorsController@getActiveSponsorships')->name('admin.get_active_sponsorships_for_cat');
-    Route::get(config('routes.admin.get_messages_sent_to_sponsor_for_cat'), 'SponsorshipMessageCrudController@getMessagesSentToSponsorForCat')->name('admin.get_messages_sent_to_sponsor_for_cat');
+    Route::get(config('routes.admin.get_messages_sent_to_sponsor'), 'SponsorshipMessageCrudController@getMessagesSentToSponsor')->name('admin.get_messages_sent_to_sponsor');
     Route::get(config('routes.admin.get_parsed_template_preview'), 'SponsorshipMessageCrudController@getParsedTemplatePreview')->name('admin.get_parsed_template_preview');
     Route::crud(config('routes.admin.news'), 'NewsCrudController');
     Route::crud(config('routes.admin.special_sponsorships'), 'SpecialSponsorshipCrudController');

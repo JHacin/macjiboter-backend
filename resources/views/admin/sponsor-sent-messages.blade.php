@@ -8,6 +8,10 @@
   <div class="alert alert-danger d-inline-block">Pozor: boter je označen kot izjema pri spolu.</div>
 </div>
 
+<div class="already-sent-warning">
+  <div class="alert alert-danger d-inline-block">Pozor: Izbrano pismo je že bilo poslano temu botru.</div>
+</div>
+
 <label>Poslana pisma izbranemu botru:</label>
 
 <div class="sent-messages-none-selected-msg">
@@ -25,6 +29,7 @@
                 <tr>
                     <td>Vrsta pisma</td>
                     <td class="text-center">Poslano?</td>
+                    <td class="text-center">Poslana pisma</td>
                 </tr>
             </thead>
             <tbody >
@@ -37,15 +42,12 @@
                         <i class="las la-check-circle sent-icon text-success"></i>
                         <i class="las la-times-circle not-sent-icon text-danger"></i>
                     </td>
+                    <td class="sent-messages-cell text-center"></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
     </div>
-</div>
-
-<div class="already-sent-warning text-danger mt-2" dusk="sent-messages-already-sent-warning">
-    Pozor! Izbrano pismo je že bilo poslano temu botru.
 </div>
 
 @push('crud_fields_styles')
@@ -85,6 +87,21 @@
           });
         }
 
+        function insertSentMessages(messages) {
+          $('.sent-messages-cell').empty();
+
+          messages.forEach(message => {
+            const $associatedCell = $(`.sent-message-row[data-message-type-id="${message.message_type_id}"] .sent-messages-cell`);
+            if (!$associatedCell.length) {
+              return;
+            }
+
+            const messagesListUrl = "{{ backpack_url(config('routes.admin.sponsorship_messages')) }}";
+            const filteredMessagesListUrl = `${messagesListUrl}?messageType=${message.message_type_id}&sponsor=${message.sponsor_id}`
+            $associatedCell.html(`<a href=${filteredMessagesListUrl} target="_blank">Povezava</a>`);
+          });
+        }
+
         function checkIfMessageWasAlreadySent(sentMessageIds) {
           if (sentMessageIds.includes(Number($messageTypeSelect.val()))) {
             $alreadySentWarning.show();
@@ -113,10 +130,11 @@
             url: requestUrl,
             type: 'GET',
             success: function(result) {
-              const sentMessageIds = result.messages.map((message) => message.message_type.id);
+              const sentMessageIds = result.messages.map((message) => message.message_type_id);
 
-              toggleStatusIconsVisibility(sentMessageIds)
-              checkIfMessageWasAlreadySent(sentMessageIds)
+              toggleStatusIconsVisibility(sentMessageIds);
+              insertSentMessages(result.messages);
+              checkIfMessageWasAlreadySent(sentMessageIds);
 
               if (result.is_gender_exception) {
                 $isGenderExceptionAlert.show();

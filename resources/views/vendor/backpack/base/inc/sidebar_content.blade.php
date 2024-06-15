@@ -20,12 +20,19 @@
 </li>
 
 <li class="nav-item">
-    <div class="nav-title">Botrstva</div>
+    <div class="nav-title">Redna botrstva</div>
     <a class="nav-link" href="{{ backpack_url(config('routes.admin.sponsorships')) }}">
-        <i class="nav-icon la la-gratipay"></i> Botrstva
+        <i class="nav-icon las la-list"></i> Redna botrstva
     </a>
+    <a class="nav-link" href="{{ backpack_url(config('routes.admin.sponsorship_wallpapers')) }}">
+        <i class="nav-icon las la-image"></i> Ozadja
+    </a>
+</li>
+
+<li class="nav-item">
+    <div class="nav-title">Posebna botrstva</div>
     <a class="nav-link" href="{{ backpack_url(config('routes.admin.special_sponsorships')) }}">
-        <i class="nav-icon la la-money-check-alt"></i> Posebna botrstva
+        <i class="nav-icon las la-list"></i> Posebna botrstva
     </a>
 </li>
 
@@ -35,7 +42,7 @@
         <i class="las la-list nav-icon"></i> Vrste pisem
     </a>
     <a class="nav-link" href="{{ backpack_url(config('routes.admin.sponsorship_messages')) }}">
-        <i class="las la-paper-plane nav-icon"></i> Poslana pisma
+        <i class="las la-share-square nav-icon"></i> Poslana pisma
     </a>
     <a class="nav-link" href="{{ backpack_url(config('routes.admin.sponsorship_messages_add')) }}">
         <i class="las la-envelope nav-icon"></i> Pošlji enemu botru

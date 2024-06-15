@@ -43,7 +43,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property-read Collection|Sponsorship[] $unscopedSponsorships
  * @property-read int|null $unscoped_sponsorships_count
  * @property-read User|null $user
- *
  * @method static PersonDataFactory factory(...$parameters)
  * @method static Builder|PersonData newModelQuery()
  * @method static Builder|PersonData newQuery()
@@ -61,7 +60,6 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|PersonData whereLastName($value)
  * @method static Builder|PersonData whereUpdatedAt($value)
  * @method static Builder|PersonData whereZipCode($value)
- *
  * @mixin Eloquent
  */
 class PersonData extends Model

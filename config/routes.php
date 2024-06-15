@@ -39,6 +39,7 @@ return [
         'sponsorships_add' => 'botrstva/create',
         'sponsorships_edit' => 'botrstva/{id}/edit',
         'sponsorships_cancel' => 'botrstva/{sponsorship}/cancel',
+        'sponsorship_wallpapers' => 'ozadja',
         'special_sponsorships' => 'posebna-botrstva',
         'special_sponsorships_add' => 'posebna-botrstva/create',
         'special_sponsorships_edit' => 'posebna-botrstva/{id}/edit',

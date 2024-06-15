@@ -6,6 +6,7 @@ use App\Http\Controllers\MetaController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PersonDataController;
 use App\Http\Controllers\SpecialSponsorshipController;
+use App\Http\Controllers\SponsorshipWallpaperController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,8 @@ Route::post('/cats/{cat:id}/adopt', [CatSponsorshipController::class, 'submitFor
 
 Route::post('/special-sponsorships', [SpecialSponsorshipController::class, 'submitForm']);
 Route::get('/special-sponsorships/recent', [SpecialSponsorshipController::class, 'getRecent']);
+Route::get('/sponsorship-wallpapers', [SponsorshipWallpaperController::class, 'getAll']);
+Route::get('/sponsorship-wallpapers/download/{wallpaper}', [SponsorshipWallpaperController::class, 'download']);
 
 Route::get('/person-data/{personData}', [PersonDataController::class, 'getOne']);
 

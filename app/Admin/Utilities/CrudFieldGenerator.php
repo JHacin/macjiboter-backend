@@ -70,6 +70,7 @@ class CrudFieldGenerator
                 'disableNativeSpellChecker' => true,
                 'linkDefaultProtocol' => 'https://',
                 'removeButtons' => '',
+                'fillEmptyBlocks' => false,
                 'format_tags' => 'p;h1;h2;h3',
                 'toolbar' => [
                     [

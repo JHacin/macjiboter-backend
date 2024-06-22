@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminSponsorshipMessageRequest;
+use App\Admin\Traits\RevokesCrudPermissions;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
@@ -25,8 +26,11 @@ use Illuminate\Http\Request;
 
 class SponsorshipMessageCrudController extends CrudController
 {
-    use CreateOperation { store as traitStore; }
+    use CreateOperation {
+        store as traitStore;
+    }
     use ListOperation;
+    use RevokesCrudPermissions;
 
     private MailTemplateParser $mailTemplateParser;
 
@@ -35,11 +39,12 @@ class SponsorshipMessageCrudController extends CrudController
     private SponsorshipMessageHandler $sponsorshipMessageHandler;
 
     public function __construct(
-        CrudPanel $crud,
-        MailTemplateParser $mailTemplateParser,
-        TemplateApiClient $templateApiClient,
+        CrudPanel                 $crud,
+        MailTemplateParser        $mailTemplateParser,
+        TemplateApiClient         $templateApiClient,
         SponsorshipMessageHandler $sponsorshipMessageHandler
-    ) {
+    )
+    {
         parent::__construct();
         $this->crud = $crud;
         $this->mailTemplateParser = $mailTemplateParser;
@@ -53,8 +58,9 @@ class SponsorshipMessageCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(SponsorshipMessage::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.sponsorship_messages'));
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsorship_messages'));
         $this->crud->setEntityNameStrings('Pismo', 'Pisma');
+        $this->denyAccessBelowAdmin(['create', 'update', 'delete', 'revise']);
         $this->crud->enableExportButtons();
     }
 

@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminSpecialSponsorshipRequest;
+use App\Admin\Traits\RevokesCrudPermissions;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
@@ -24,19 +25,21 @@ class SpecialSponsorshipCrudController extends CrudController
     use ListOperation;
     use ReviseOperation;
     use UpdateOperation;
+    use RevokesCrudPermissions;
 
     /**
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         $this->crud->setModel(SpecialSponsorship::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.special_sponsorships'));
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.special_sponsorships'));
         $this->crud->setEntityNameStrings('Posebno botrstvo', 'Posebna botrstva');
+        $this->denyAccessBelowAdmin(['create', 'update', 'delete', 'revise']);
         $this->crud->enableExportButtons();
     }
 
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         $this->crud->addColumn(CrudColumnGenerator::id());
         $this->crud->addColumn([
@@ -103,7 +106,7 @@ class SpecialSponsorshipCrudController extends CrudController
         $this->addFilters();
     }
 
-    protected function addFilters()
+    protected function addFilters(): void
     {
         CrudFilterGenerator::addDropdownFilter(
             $this->crud,
@@ -150,7 +153,7 @@ class SpecialSponsorshipCrudController extends CrudController
             function ($value) {
                 $dates = json_decode($value);
                 $this->crud->addClause('where', 'confirmed_at', '>=', $dates->from);
-                $this->crud->addClause('where', 'confirmed_at', '<=', $dates->to.' 23:59:59');
+                $this->crud->addClause('where', 'confirmed_at', '<=', $dates->to . ' 23:59:59');
             }
         );
 
@@ -158,7 +161,7 @@ class SpecialSponsorshipCrudController extends CrudController
         CrudFilterGenerator::addBooleanFilter($this->crud, 'is_gift', 'Podarjeno');
     }
 
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminSpecialSponsorshipRequest::class);
 
@@ -238,7 +241,7 @@ class SpecialSponsorshipCrudController extends CrudController
         ]));
     }
 
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
 

@@ -36,6 +36,7 @@
     </a>
 </li>
 
+@hasanyrole([User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN])
 <li class="nav-item">
     <div class="nav-title">Pisma botrom</div>
     <a class="nav-link" href="{{ backpack_url(config('routes.admin.sponsorship_message_types')) }}">
@@ -51,6 +52,7 @@
         <i class="las la-mail-bulk nav-icon"></i> Pošlji aktivnim botrom
     </a>
 </li>
+@endhasanyrole
 
 <li class="nav-item">
     <div class="nav-title">Vsebina</div>

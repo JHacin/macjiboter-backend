@@ -2,12 +2,14 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Traits\ProhibitsCrudAccess;
 use App\Http\Controllers\Controller;
 use App\Mail\SponsorshipMessageHandler;
 use App\Models\Cat;
 use App\Models\Sponsorship;
 use App\Models\SponsorshipMessage;
 use App\Models\SponsorshipMessageType;
+use Backpack\CRUD\app\Exceptions\AccessDeniedException;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -17,6 +19,8 @@ use Illuminate\Validation\Rule;
 
 class NotifyActiveSponsorsController extends Controller
 {
+    use ProhibitsCrudAccess;
+
     private SponsorshipMessageHandler $sponsorshipMessageHandler;
 
     public function __construct(SponsorshipMessageHandler $sponsorshipMessageHandler)
@@ -24,8 +28,13 @@ class NotifyActiveSponsorsController extends Controller
         $this->sponsorshipMessageHandler = $sponsorshipMessageHandler;
     }
 
+    /**
+     * @throws AccessDeniedException
+     */
     public function index(): View
     {
+        $this->throwBelowAdmin();
+
         $messageTypes = SponsorshipMessageType::where('is_active', true)->get();
         $cats = Cat::withoutGlobalScopes()->get();
 
@@ -55,7 +64,7 @@ class NotifyActiveSponsorsController extends Controller
         $cat = Cat::withoutGlobalScopes()->find($request->input('cat'));
         $messageType = SponsorshipMessageType::find($request->input('messageType'));
 
-        if (! $cat || ! $messageType) {
+        if (!$cat || !$messageType) {
             return back()->with('error-message', 'Prišlo je do napake pri pridobivanju podatkov na strežniku.')->withInput();
         }
         if ($cat->sponsorships->isEmpty()) {
@@ -65,7 +74,7 @@ class NotifyActiveSponsorsController extends Controller
         $excludedSponsors = $request->input('excluded_sponsors');
         $filteredSponsorships = $excludedSponsors
             ? $cat->sponsorships->filter(function (Sponsorship $sponsorship) use ($excludedSponsors) {
-                return ! in_array($sponsorship->sponsor_id, $excludedSponsors);
+                return !in_array($sponsorship->sponsor_id, $excludedSponsors);
             })
             : $cat->sponsorships;
         if ($filteredSponsorships->isEmpty()) {

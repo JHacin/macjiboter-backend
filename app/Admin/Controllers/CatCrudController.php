@@ -6,6 +6,7 @@ use Alert;
 use App\Admin\Requests\AdminCatRequest;
 use App\Admin\Traits\ClearsModelGlobalScopes;
 use App\Admin\Traits\DisplaysOldWebsiteData;
+use App\Admin\Traits\RevokesCrudPermissions;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
@@ -40,6 +41,7 @@ class CatCrudController extends CrudController
     use UpdateOperation {
         update as traitUpdate;
     }
+    use RevokesCrudPermissions;
 
     /**
      * @throws Exception
@@ -48,11 +50,12 @@ class CatCrudController extends CrudController
     {
         $this->crud->setModel(Cat::class);
         $this->clearModelGlobalScopes([Cat::SCOPE_ONLY_PUBLICLY_VISIBLE_CATS]);
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.cats'));
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.cats'));
         $this->crud->setEntityNameStrings('Muca', 'Muce');
         $this->crud->setSubheading('Dodaj novo muco', 'create');
         $this->crud->setSubheading('Uredi muco', 'edit');
         $this->crud->addButtonFromModelFunction('line', 'open_view', 'openViewFromCrud');
+        $this->denyAccessBelowAdmin(['revise', 'delete']);
         $this->crud->enableExportButtons();
     }
 
@@ -165,16 +168,16 @@ class CatCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'status-input-wrapper',
             ],
-            'hint' => '<em>išče botre</em>: objavljena, botrstvo je možno<br>'.
-                '<em>trenutno ne išče botrov</em>: objavljena, botrstvo ni možno, prikazana je opomba<br>'.
-                '<em>ne išče botrov</em>: ni objavljena, botrstvo ni možno<br>'.
-                '<em>v novem domu</em>: ni objavljena, botrstvo ni možno<br>'.
+            'hint' => '<em>išče botre</em>: objavljena, botrstvo je možno<br>' .
+                '<em>trenutno ne išče botrov</em>: objavljena, botrstvo ni možno, prikazana je opomba<br>' .
+                '<em>ne išče botrov</em>: ni objavljena, botrstvo ni možno<br>' .
+                '<em>v novem domu</em>: ni objavljena, botrstvo ni možno<br>' .
                 '<em>RIP</em>: ni objavljena, botrstvo ni možno<br>',
             'tab' => 'Podatki',
         ]);
         $this->crud->addField([
             'name' => 'is_published',
-            'label' => trans('cat.is_published').'?',
+            'label' => trans('cat.is_published') . '?',
             'type' => 'radio',
             'options' => [
                 1 => 'Da',
@@ -187,7 +190,7 @@ class CatCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name' => 'is_group',
-            'label' => trans('cat.is_group').'?',
+            'label' => trans('cat.is_group') . '?',
             'type' => 'radio',
             'options' => [
                 1 => 'Da',
@@ -326,7 +329,7 @@ class CatCrudController extends CrudController
         $cat = $this->crud->getCurrentEntry();
         $photos = $this->crud->getRequest()->input('crud_photos_array');
 
-        if (! $photos) {
+        if (!$photos) {
             $cat->photos()->delete();
 
             return;
@@ -334,7 +337,7 @@ class CatCrudController extends CrudController
 
         $urlsInRequest = array_column($photos, 'url');
         $photosToDelete = $cat->photos->filter(function (CatPhoto $photo) use ($urlsInRequest) {
-            return ! in_array($photo->url, $urlsInRequest);
+            return !in_array($photo->url, $urlsInRequest);
         });
 
         foreach ($photosToDelete as $photo) {

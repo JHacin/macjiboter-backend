@@ -6,6 +6,7 @@ use App\Admin\Requests\AdminSponsorshipRequest;
 use App\Admin\Requests\AdminSponsorshipUpdateRequest;
 use App\Admin\Traits\ClearsModelGlobalScopes;
 use App\Admin\Traits\DisplaysOldWebsiteData;
+use App\Admin\Traits\RevokesCrudPermissions;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Admin\Utilities\CrudFilterGenerator;
@@ -31,6 +32,7 @@ class SponsorshipCrudController extends CrudController
     use ListOperation;
     use ReviseOperation;
     use UpdateOperation;
+    use RevokesCrudPermissions;
 
     /**
      * @throws Exception
@@ -39,11 +41,12 @@ class SponsorshipCrudController extends CrudController
     {
         $this->crud->setModel(Sponsorship::class);
         $this->clearModelGlobalScopes([Sponsorship::SCOPE_ONLY_ACTIVE]);
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.sponsorships'));
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsorships'));
         $this->crud->setEntityNameStrings('Botrstvo', 'Botrstva');
         $this->crud->setSubheading('Dodaj novo botrstvo', 'create');
         $this->crud->setSubheading('Uredi botrstvo', 'edit');
         $this->crud->addButtonFromView('line', 'sponsorship_cancel', 'sponsorship_cancel');
+        $this->denyAccessBelowAdmin(['create', 'update', 'delete', 'revise']);
         $this->crud->enableExportButtons();
     }
 
@@ -243,7 +246,7 @@ class SponsorshipCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'is_active-wrapper',
             ],
-            'hint' => 'Botrstvo je v teku (redna plačila, muca še kar potrebuje botre itd.).'.
+            'hint' => 'Botrstvo je v teku (redna plačila, muca še kar potrebuje botre itd.).' .
                 '<br>Neaktivna botrstva ne bodo vključena na spletni strani (v seštevkih botrstev, na seznamih botrov itd.)',
         ]);
         $this->crud->addField([
@@ -263,8 +266,8 @@ class SponsorshipCrudController extends CrudController
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'ended_at',
             'label' => 'Datum konca',
-            'hint' => 'Če želite uradno prekiniti botrstvo, je treba tudi odkljukati polje \'Aktivno\'.'.
-                ' Datum konca se hrani samo za evidenco tega, koliko časa je trajalo določeno botrstvo.'.
+            'hint' => 'Če želite uradno prekiniti botrstvo, je treba tudi odkljukati polje \'Aktivno\'.' .
+                ' Datum konca se hrani samo za evidenco tega, koliko časa je trajalo določeno botrstvo.' .
                 ' Datum se lahko izbriše s pritiskom na polje > "Clear".',
             'wrapper' => [
                 'dusk' => 'ended_at-wrapper',

@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminSponsorRequest;
 use App\Admin\Traits\DisplaysOldWebsiteData;
+use App\Admin\Traits\RevokesCrudPermissions;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
 use App\Models\PersonData;
@@ -27,6 +28,7 @@ class SponsorCrudController extends CrudController
     use ListOperation;
     use ReviseOperation;
     use UpdateOperation;
+    use RevokesCrudPermissions;
 
     /**
      * @throws Exception
@@ -34,9 +36,10 @@ class SponsorCrudController extends CrudController
     public function setup(): void
     {
         $this->crud->setModel(PersonData::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.sponsors'));
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsors'));
         $this->crud->setEntityNameStrings('Boter', 'Botri');
         $this->crud->addButtonFromView('line', 'sponsor_cancel_all_sponsorships', 'sponsor_cancel_all_sponsorships');
+        $this->denyAccessBelowAdmin(['create', 'update', 'delete', 'revise']);
         $this->crud->enableExportButtons();
     }
 
@@ -59,9 +62,9 @@ class SponsorCrudController extends CrudController
                 'dusk' => 'related-sponsorships-link',
                 'href' => function ($crud, $column, $entry) {
                     return backpack_url(
-                        config('routes.admin.sponsorships').
-                        '?sponsor='.
-                        $entry->getKey().
+                        config('routes.admin.sponsorships') .
+                        '?sponsor=' .
+                        $entry->getKey() .
                         '&is_active=1'
                     );
                 },
@@ -75,7 +78,7 @@ class SponsorCrudController extends CrudController
             'wrapper' => [
                 'dusk' => 'related-unscopedSponsorships-link',
                 'href' => function ($crud, $column, $entry) {
-                    return backpack_url(config('routes.admin.sponsorships').'?sponsor='.$entry->getKey());
+                    return backpack_url(config('routes.admin.sponsorships') . '?sponsor=' . $entry->getKey());
                 },
             ],
         ]);

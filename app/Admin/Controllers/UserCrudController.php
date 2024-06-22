@@ -4,9 +4,11 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminUserCreateRequest;
 use App\Admin\Requests\AdminUserUpdateRequest;
+use App\Admin\Traits\ProhibitsCrudAccess;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Mail\UserMail;
 use App\Models\User;
+use Backpack\CRUD\app\Exceptions\AccessDeniedException;
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Backpack\PermissionManager\app\Http\Controllers\UserCrudController as BackpackUserCrudController;
 use Backpack\ReviseOperation\ReviseOperation;
@@ -15,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 class UserCrudController extends BackpackUserCrudController
 {
     use ReviseOperation;
+    use ProhibitsCrudAccess;
 
     private UserMail $userMail;
 
@@ -26,12 +29,14 @@ class UserCrudController extends BackpackUserCrudController
 
     /**
      * @throws BackpackProRequiredException
+     * @throws AccessDeniedException
      */
     public function setup(): void
     {
         parent::setup();
         $this->crud->setRoute(config('backpack.base.route_prefix').'/'.config('routes.admin.users'));
         $this->crud->enableExportButtons();
+        $this->throwBelowSuperAdmin();
     }
 
     public function setupListOperation(): void

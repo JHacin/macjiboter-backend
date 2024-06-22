@@ -3,9 +3,9 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Requests\AdminSponsorshipMessageTypeRequest;
+use App\Admin\Traits\RevokesCrudPermissions;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Models\SponsorshipMessageType;
-use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
@@ -13,7 +13,6 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\ReviseOperation\ReviseOperation;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 
 class SponsorshipMessageTypeCrudController extends CrudController
 {
@@ -22,31 +21,23 @@ class SponsorshipMessageTypeCrudController extends CrudController
     use ListOperation;
     use ReviseOperation;
     use UpdateOperation;
+    use RevokesCrudPermissions;
 
     /**
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         $this->crud->setModel(SponsorshipMessageType::class);
         $this->crud->setRoute(
-            config('backpack.base.route_prefix').'/'.config('routes.admin.sponsorship_message_types')
+            config('backpack.base.route_prefix') . '/' . config('routes.admin.sponsorship_message_types')
         );
         $this->crud->setEntityNameStrings('Vrsta pisma', 'Vrste pisem');
-        $this->setupAccessToOperations();
+        $this->denyAccessBelowSuperAdmin(['create', 'update', 'delete', 'revise']);
         $this->crud->enableExportButtons();
     }
 
-    protected function setupAccessToOperations()
-    {
-        $user = Auth::user();
-
-        if (! $user->hasRole(User::ROLE_SUPER_ADMIN)) {
-            $this->crud->denyAccess(['create', 'update', 'delete', 'revise']);
-        }
-    }
-
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         $this->crud->addColumn(CrudColumnGenerator::id());
         $this->crud->addColumn(CrudColumnGenerator::name());
@@ -68,7 +59,7 @@ class SponsorshipMessageTypeCrudController extends CrudController
 
     }
 
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         $this->crud->setValidation(AdminSponsorshipMessageTypeRequest::class);
 
@@ -112,7 +103,7 @@ class SponsorshipMessageTypeCrudController extends CrudController
         ]);
     }
 
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
     }

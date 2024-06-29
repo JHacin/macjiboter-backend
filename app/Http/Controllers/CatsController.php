@@ -44,7 +44,10 @@ class CatsController extends Controller
                 },
                 // If no sort is provided (when user first lands on the page)
                 function (Builder $query) {
-                    return $query->orderBy('is_group', 'desc')->orderBy('id', 'desc');
+                    return $query
+                        ->orderByRaw('(is_group = TRUE) DESC') // place is_group=TRUE items first
+                        ->orderByRaw('CASE WHEN is_group = TRUE THEN id END ASC') // order items with is_group=TRUE by id ASC
+                        ->orderBy('id', 'desc');
                 }
             )
             ->paginate($perPage);

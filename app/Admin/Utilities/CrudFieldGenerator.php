@@ -63,7 +63,8 @@ class CrudFieldGenerator
             'type' => 'wysiwyg',
             'extra_plugins' => ['autogrow'],
             'options' => [
-                'autoGrow_minHeight' => 300,
+                'extraAllowedContent' => 'summary details[*]{*}(*)',
+                'autoGrow_minHeight' => 450,
                 'autoGrow_maxHeight' => 600,
                 'autoGrow_onStartup' => true,
                 'language' => 'sl',

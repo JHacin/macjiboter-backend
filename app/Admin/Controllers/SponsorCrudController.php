@@ -7,6 +7,7 @@ use App\Admin\Traits\DisplaysOldWebsiteData;
 use App\Admin\Traits\RevokesCrudPermissions;
 use App\Admin\Utilities\CrudColumnGenerator;
 use App\Admin\Utilities\CrudFieldGenerator;
+use App\Admin\Utilities\CrudFilterGenerator;
 use App\Models\PersonData;
 use App\Models\Sponsorship;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -50,6 +51,11 @@ class SponsorCrudController extends CrudController
         $this->crud->addColumn(CrudColumnGenerator::firstName());
         $this->crud->addColumn(CrudColumnGenerator::lastName());
         $this->crud->addColumn(CrudColumnGenerator::genderLabel());
+        $this->crud->addColumn([
+            'name' => 'is_legal_entity',
+            'label' => trans('person_data.is_legal_entity'),
+            'type' => 'boolean',
+        ]);
         $this->crud->addColumn(CrudColumnGenerator::city());
         $this->crud->addColumn(CrudColumnGenerator::country());
         $this->crud->addColumn(CrudColumnGenerator::createdAt());
@@ -101,6 +107,7 @@ class SponsorCrudController extends CrudController
                     : $this->crud->query->whereDoesntHave('sponsorships');
             }
         );
+        CrudFilterGenerator::addBooleanFilter($this->crud, 'is_legal_entity', trans('person_data.is_legal_entity'));
     }
 
     protected function setupCreateOperation(): void
@@ -119,6 +126,7 @@ class SponsorCrudController extends CrudController
             'name' => 'first_name',
             'label' => trans('person_data.first_name'),
             'type' => 'text',
+            'hint' => 'Pri pravnih osebah vpiši polno pravno ime.',
             'attributes' => [
                 'required' => 'required',
             ],
@@ -127,6 +135,7 @@ class SponsorCrudController extends CrudController
             'name' => 'last_name',
             'label' => trans('person_data.last_name'),
             'type' => 'text',
+            'hint' => 'Pri pravnih osebah vpiši polno pravno ime.',
             'attributes' => [
                 'required' => 'required',
             ],
@@ -137,6 +146,12 @@ class SponsorCrudController extends CrudController
             'type' => 'select2_from_array',
             'options' => PersonData::GENDER_LABELS,
             'allows_null' => true,
+            'hint' => 'Pri pravnih osebah izberi moški spol.',
+        ]);
+        $this->crud->addField([
+            'name' => 'is_legal_entity',
+            'label' => trans('person_data.is_legal_entity'),
+            'type' => 'checkbox',
         ]);
         $this->crud->addField([
             'name' => 'is_gender_exception',

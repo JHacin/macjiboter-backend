@@ -9,4 +9,5 @@ return [
     'zip_code' => 'Poštna št.',
     'city' => 'Kraj',
     'country' => 'Država',
+    'is_legal_entity' => 'Pravna oseba'
 ];

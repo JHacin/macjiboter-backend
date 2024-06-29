@@ -7,6 +7,9 @@
 <div class="is-gender-exception-alert">
   <div class="alert alert-danger d-inline-block">Pozor: boter je označen kot izjema pri spolu.</div>
 </div>
+<div class="is-legal-entity-alert">
+    <div class="alert alert-danger d-inline-block">Pozor: boter je označen kot pravna oseba.</div>
+</div>
 
 <div class="already-sent-warning">
   <div class="alert alert-danger d-inline-block">Pozor: Izbrano pismo je že bilo poslano temu botru.</div>
@@ -18,11 +21,11 @@
    <small>Izbran še ni noben boter.</small>
 </div>
 
-<div class="sent-messages-loader spinner-border text-primary" role="status" dusk="sent-messages-loader">
+<div class="sent-messages-loader spinner-border text-primary" role="status">
     <span class="sr-only">Nalagam...</span>
 </div>
 
-<div class="row sent-messages-table-wrapper" dusk="sent-messages-table-wrapper">
+<div class="row sent-messages-table-wrapper">
     <div class="col-12 col-sm-6">
         <table class="sent-messages-table table table-sm table-striped table-bordered mb-0">
             <thead class="bg-primary">
@@ -56,7 +59,8 @@
         .sent-messages-table-wrapper,
         .sent-messages-loader,
         .already-sent-warning,
-        .is-gender-exception-alert {
+        .is-gender-exception-alert,
+        .is-legal-entity-alert {
             display: none;
         }
 
@@ -77,6 +81,7 @@
         const $loader = $('.sent-messages-loader');
         const $alreadySentWarning = $('.already-sent-warning');
         const $isGenderExceptionAlert = $('.is-gender-exception-alert')
+        const $isLegalEntityAlert = $('.is-legal-entity-alert')
 
         function toggleStatusIconsVisibility(sentMessageIds) {
           $('.sent-message-row').attr('data-status', 'not-sent');
@@ -114,6 +119,7 @@
           $table.hide();
           $emptyStateMsg.hide();
           $isGenderExceptionAlert.hide();
+          $isLegalEntityAlert.hide();
 
           $loader.show();
 
@@ -138,6 +144,8 @@
 
               if (result.is_gender_exception) {
                 $isGenderExceptionAlert.show();
+              } else if (result.is_legal_entity) {
+                $isLegalEntityAlert.show();
               }
 
               $table.show();

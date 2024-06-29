@@ -76,8 +76,8 @@
                             <label for="subject">{{ trans('sponsorship_message.subject') }}</label>
                             <input type="text" name="subject" class="form-control">
                             <p class="help-block">{{ trans('sponsorship_message.subject_hint') }}</p>
-                        </div>  
-                
+                        </div>
+
                         <div class="form-group col-sm-12">
                             <hr>
                         </div>
@@ -95,7 +95,7 @@
 
                             <div class="active-sponsors-table">
                                 <div class="mb-2">
-                                    <small>Če želiš katerega od botrov izključiti iz pošiljanja (npr. če je izjema pri spolu), obkljukaj polje "Izključi".</small>
+                                    <small>Če želiš katerega od botrov izključiti iz pošiljanja (npr. če je izjema pri spolu ali pravna oseba), obkljukaj polje "Izključi".</small>
                                 </div>
                                 <table class="active-sponsors-table table table-sm table-striped table-bordered table-hover mb-0">
                                     <thead class="bg-primary">
@@ -104,6 +104,7 @@
                                             <td>Boter</td>
                                             <td>Ime</td>
                                             <td>Priimek</td>
+                                            <td>Pravna oseba</td>
                                             <td>Izjema (spol)</td>
                                             <td>Botrstvo</td>
                                             <td style="text-align:center;">Dejanja</td>
@@ -228,6 +229,7 @@
                                 .append(`<td><a href="${sponsorEditUrl}" target="_blank">${sponsor.email} (${sponsor.id})</a></td>`)
                                 .append(`<td>${sponsor.first_name}</td>`)
                                 .append(`<td>${sponsor.last_name}</td>`)
+                                .append(`<td><div class="badge ${sponsor.is_legal_entity ? "badge-danger" : "badge-light"}">${sponsor.is_legal_entity ? "Da" : "Ne"}</div></td>`)
                                 .append(`<td><div class="badge ${sponsor.is_gender_exception ? "badge-danger" : "badge-light"}">${sponsor.is_gender_exception ? "Da" : "Ne"}</div></td>`)
                                 .append(`<td><span>Vnešeno: ${moment(sponsorship.created_at).format("D. M. YYYY")}</span> <a href="${sponsorshipEditUrl}" target="_blank"><i class="las la-external-link-alt"></i></a></td>`)
                                 .append(`<td class="text-center">

@@ -237,6 +237,7 @@ class SponsorshipMessageCrudController extends CrudController
         return response()->json([
             'messages' => $sponsor->sponsorshipMessages->load('messageType'),
             'is_gender_exception' => $sponsor->is_gender_exception,
+            'is_legal_entity' => $sponsor->is_legal_entity,
         ]);
     }
 

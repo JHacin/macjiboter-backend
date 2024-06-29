@@ -22,6 +22,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @property string $email
  * @property int|null $gender
  * @property int $is_gender_exception
+ * @property int $is_legal_entity
  * @property string|null $first_name
  * @property string|null $last_name
  * @property Carbon|null $date_of_birth
@@ -56,6 +57,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
  * @method static Builder|PersonData whereFirstName($value)
  * @method static Builder|PersonData whereGender($value)
  * @method static Builder|PersonData whereIsGenderException($value)
+ * @method static Builder|PersonData whereIsLegalEntity($value)
  * @method static Builder|PersonData whereId($value)
  * @method static Builder|PersonData whereLastName($value)
  * @method static Builder|PersonData whereUpdatedAt($value)
@@ -106,6 +108,7 @@ class PersonData extends Model
         'email',
         'gender',
         'is_gender_exception',
+        'is_legal_entity',
         'first_name',
         'last_name',
         'date_of_birth',

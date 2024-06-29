@@ -22,6 +22,7 @@ class AdminSponsorRequest extends FormRequest
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'gender' => ['required', Rule::in(PersonData::GENDERS)],
+            'is_legal_entity' => ['boolean'],
             'is_gender_exception' => ['boolean'],
             'date_of_birth' => ['nullable', 'date', 'before:now'],
             'address' => ['nullable', 'string', 'max:255'],

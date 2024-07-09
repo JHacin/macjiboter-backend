@@ -140,9 +140,6 @@ class CatCrudController extends CrudController
             'attributes' => [
                 'required' => 'required',
             ],
-            'wrapper' => [
-                'dusk' => 'name-input-wrapper',
-            ],
             'tab' => 'Podatki',
         ]);
         $this->crud->addField([
@@ -151,9 +148,6 @@ class CatCrudController extends CrudController
             'type' => 'radio',
             'options' => Cat::GENDER_LABELS,
             'inline' => true,
-            'wrapper' => [
-                'dusk' => 'gender-input-wrapper',
-            ],
             'hint' => 'Pri skupinah muc spol ni obvezen.',
             'tab' => 'Podatki',
         ]);
@@ -165,9 +159,6 @@ class CatCrudController extends CrudController
             'allows_null' => false,
             'default' => Cat::STATUS_NOT_SEEKING_SPONSORS,
             'required' => true,
-            'wrapper' => [
-                'dusk' => 'status-input-wrapper',
-            ],
             'hint' => '<em>išče botre</em>: objavljena, botrstvo je možno<br>' .
                 '<em>trenutno ne išče botrov</em>: objavljena, botrstvo ni možno, prikazana je opomba<br>' .
                 '<em>ne išče botrov</em>: ni objavljena, botrstvo ni možno<br>' .
@@ -198,9 +189,6 @@ class CatCrudController extends CrudController
             ],
             'default' => 0,
             'inline' => true,
-            'wrapper' => [
-                'dusk' => 'is_group-input-wrapper',
-            ],
             'hint' => 'Ali naj se ta vnos obravnava kot druge skupine - Čombe, Pozitivčki, Bubiji...',
             'tab' => 'Podatki',
         ]);
@@ -212,17 +200,11 @@ class CatCrudController extends CrudController
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'date_of_birth',
             'label' => trans('cat.date_of_birth'),
-            'wrapper' => [
-                'dusk' => 'date-of-birth-input-wrapper',
-            ],
             'tab' => 'Podatki',
         ]));
         $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'date_of_arrival_mh',
             'label' => trans('cat.date_of_arrival_mh'),
-            'wrapper' => [
-                'dusk' => 'date-of-arrival-mh-input-wrapper',
-            ],
             'tab' => 'Podatki',
         ]));
         $this->crud->addField([
@@ -230,9 +212,6 @@ class CatCrudController extends CrudController
             'label' => trans('cat.location'),
             'type' => 'relationship',
             'placeholder' => 'Izberi lokacijo',
-            'wrapper' => [
-                'dusk' => 'location-input-wrapper',
-            ],
             'tab' => 'Podatki',
         ]);
         $this->crud->addField([

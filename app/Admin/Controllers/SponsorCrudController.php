@@ -65,7 +65,6 @@ class SponsorCrudController extends CrudController
             'name' => 'sponsorships',
             'suffix' => ' botrstev',
             'wrapper' => [
-                'dusk' => 'related-sponsorships-link',
                 'href' => function ($crud, $column, $entry) {
                     return backpack_url(
                         config('routes.admin.sponsorships') .
@@ -82,7 +81,6 @@ class SponsorCrudController extends CrudController
             'name' => 'unscopedSponsorships',
             'suffix' => ' botrstev',
             'wrapper' => [
-                'dusk' => 'related-unscopedSponsorships-link',
                 'href' => function ($crud, $column, $entry) {
                     return backpack_url(config('routes.admin.sponsorships') . '?sponsor=' . $entry->getKey());
                 },
@@ -159,14 +157,10 @@ class SponsorCrudController extends CrudController
             'type' => 'checkbox',
             'hint' => 'Ali gre za več oseb, podjetje...',
         ]);
-        $this->crud->addField([
+        $this->crud->addField(CrudFieldGenerator::dateField([
             'name' => 'date_of_birth',
             'label' => trans('person_data.date_of_birth'),
-            'type' => 'date_picker',
-            'date_picker_options' => [
-                'format' => 'dd. mm. yyyy',
-            ],
-        ]);
+        ]));
 
         CrudFieldGenerator::addAddressFields($this->crud);
     }

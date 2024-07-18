@@ -117,6 +117,7 @@ return [
 
     'vars' => [
         'bcc_copy_address' => env('MAIL_BCC_COPY_ADDRESS'),
+        'boter_meseca_additional_bcc' => env('MAIL_BOTER_MESECA_ADDITIONAL_BCC'),
         'test_to_address' => env('MAIL_TEST_TO'),
     ],
 ];

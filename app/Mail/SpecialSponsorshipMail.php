@@ -56,6 +56,11 @@ class SpecialSponsorshipMail
             'h:X-Mailgun-Variables' => json_encode($variables),
         ];
 
+        if ($sponsorship->type === SpecialSponsorship::TYPE_BOTER_MESECA) {
+            $additionalBcc = ',' . config('mail.vars.boter_meseca_additional_bcc');
+            $params['bcc'] .= $additionalBcc;
+        }
+
         $this->mailClient->send($params);
     }
 }

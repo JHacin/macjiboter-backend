@@ -48,10 +48,12 @@ class SpecialSponsorshipMail
             'referencna_stevilka' => $sponsorship->payment_reference_number,
         ];
 
+        $subjectTypeSuffix = '(' . SpecialSponsorship::TYPE_LABELS[$sponsorship->type] . ')';
+
         $params = [
             'to' => $payer->email,
             'bcc' => config('mail.vars.bcc_copy_address'),
-            'subject' => 'Navodila po izpolnitvi obrazca za botrstvo',
+            'subject' => 'Navodila za pristop k posebnemu botrstvu ' . $subjectTypeSuffix,
             'template' => 'navodila_za_posebno_botrstvo',
             'h:X-Mailgun-Variables' => json_encode($variables),
         ];

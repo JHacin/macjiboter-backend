@@ -57,7 +57,7 @@ class SponsorshipMail
         $params = [
             'to' => $payer->email,
             'bcc' => config('mail.vars.bcc_copy_address'),
-            'subject' => 'Navodila po izpolnitvi obrazca za pristop k botrstvu',
+            'subject' => 'Navodila za pristop k rednemu botrstvu ' . '(' . $cat->name . ')',
             'template' => $template,
             'h:X-Mailgun-Variables' => json_encode($variables),
         ];

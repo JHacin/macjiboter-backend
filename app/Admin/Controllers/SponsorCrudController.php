@@ -56,6 +56,8 @@ class SponsorCrudController extends CrudController
             'label' => trans('person_data.is_legal_entity'),
             'type' => 'boolean',
         ]);
+        $this->crud->addColumn(CrudColumnGenerator::address());
+        $this->crud->addColumn(CrudColumnGenerator::zipCode());
         $this->crud->addColumn(CrudColumnGenerator::city());
         $this->crud->addColumn(CrudColumnGenerator::country());
         $this->crud->addColumn(CrudColumnGenerator::createdAt());
